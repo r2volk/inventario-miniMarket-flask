@@ -52,7 +52,7 @@ El sistema utiliza ventanas modales para agilizar la entrada de datos sin perder
 ## 🛠️ Stack Tecnológico
 
 * **Backend:** Python & Flask
-* **Base de Datos:** SQLite 3
+* **Base de Datos:** SQLite3
 * **Frontend:** HTML5, CSS3, JavaScript (ES6+)
 * **Gráficos:** Chart.js
 
