@@ -1,182 +1,221 @@
+/* ============================================================
+   style.css  —  Estilos visuales de la aplicación
+   CSS (Cascading Style Sheets) define cómo se ve cada elemento HTML.
+   "Cascading" = los estilos se heredan y pueden sobreescribirse.
+   ============================================================ */
+
+
+/* --- VARIABLES GLOBALES (DESIGN TOKENS) ---
+   :root es el elemento raíz del documento (equivale a <html>)
+   Las variables CSS se definen con --nombre y se usan con var(--nombre)
+   Centralizar colores aquí facilita cambiar el tema en un solo lugar */
 :root {
-  --bg: #f6f8fa;
-  --card: #ffffff;
-  --primary: #2b7cff;
-  --muted: #6b7280;
-  --success: #16a34a;
-  --warning: #d97706;
-  --danger: #dc2626;
+  --bg: #f6f8fa;       /* Color de fondo general: gris muy claro */
+  --card: #ffffff;     /* Color de las tarjetas/panels: blanco */
+  --primary: #2b7cff;  /* Azul principal para botones y acentos */
+  --muted: #6b7280;    /* Gris para texto secundario/etiquetas */
+  --success: #16a34a;  /* Verde para acciones positivas (guardar, confirmar) */
+  --warning: #d97706;  /* Naranja para alertas moderadas */
+  --danger: #dc2626;   /* Rojo para errores y alertas críticas */
 }
 
+/* --- RESET BÁSICO ---
+   El selector * aplica a TODOS los elementos del documento */
 * {
   box-sizing: border-box;
+  /* Por defecto, width/height no incluyen padding ni border.
+     border-box hace que SÍ los incluya → mucho más intuitivo.
+     Ejemplo: un div con width:200px y padding:20px tendrá 200px total, no 240px */
+
   font-family: Inter, Segoe UI, Helvetica, Arial, sans-serif;
+  /* Jerarquía de fuentes: usa Inter si está disponible,
+     si no Segoe UI, si no Helvetica, etc.
+     sans-serif es el fallback genérico del navegador */
 }
 
 body {
-  margin: 0;
-  background: var(--bg);
-  color: #111;
+  margin: 0;              /* Quita el margen por defecto que los navegadores aplican al body */
+  background: var(--bg);  /* Fondo gris claro usando la variable */
+  color: #111;            /* Color de texto por defecto: casi negro */
 }
 
+/* --- CONTENEDOR CENTRADO ---
+   .container es una clase reutilizable para centrar el contenido */
 .container {
-  max-width: 1100px;
-  margin: 20px auto;
-  padding: 0 16px;
+  max-width: 1100px;  /* Ancho máximo: en pantallas grandes no se estira más de 1100px */
+  margin: 20px auto;  /* auto en los laterales centra horizontalmente el div */
+  padding: 0 16px;    /* Padding lateral para que en móvil no pegue a los bordes */
 }
 
-/* --- CABECERA Y NAVEGACIÓN --- */
+
+/* ============================================================
+   CABECERA Y NAVEGACIÓN
+   ============================================================ */
+
 .topbar {
-  background: var(--card);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-  padding: 12px 0;
+  background: var(--card);                         /* Fondo blanco */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);     /* Sombra sutil debajo: x=0, y=2px, blur=6px, opacidad=4% */
+  padding: 12px 0;                                  /* Espacio arriba y abajo */
 }
 
 .topbar .container {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 15px;
+  /* Dentro del topbar, el container usa flexbox para alinear elementos */
+  display: flex;           /* Activa el modelo de caja flexible */
+  flex-wrap: wrap;         /* Si no caben, los elementos bajan a la siguiente línea */
+  align-items: center;     /* Centra verticalmente todos los hijos */
+  justify-content: space-between;  /* Distribuye espacio: primero al inicio, último al final */
+  gap: 15px;               /* Espacio entre los elementos flex */
 }
 
 .topbar h1 {
   font-size: 18px;
-  margin: 0;
+  margin: 0;  /* Quita el margen por defecto del h1 */
 }
 
 .actions {
+  /* Contenedor de botones agrupados */
   display: flex;
   align-items: center;
   gap: 15px;
 }
 
 .btn-group {
+  /* Grupo de botones muy juntos (sin gap entre ellos) */
   display: flex;
   gap: 5px;
 }
 
 .divider {
+  /* Separador visual vertical entre grupos de botones */
   width: 1px;
   height: 24px;
-  background-color: #ddd;
+  background-color: #ddd;  /* Gris claro */
   margin: 0 5px;
 }
 
-/* --- BOTONES UNIFICADOS (CORRECCIÓN) --- */
+
+/* ============================================================
+   BOTONES
+   .btn es la clase base; se combina con .primary, .success, .danger
+   Ejemplo: <button class="btn primary">Guardar</button>
+   ============================================================ */
+
 .btn {
-  display: inline-flex; /* Alineación flexible */
-  align-items: center; /* Centrar verticalmente */
-  justify-content: center; /* Centrar horizontalmente */
-  padding: 0 16px; /* Relleno lateral */
-  height: 36px; /* Altura FIJA para todos */
-  border-radius: 6px;
-  border: none;
-  background: #e5e7eb; /* Color gris base */
-  color: #1f2937; /* Color texto base */
-  cursor: pointer;
-  font-family: Inter, Segoe UI, Helvetica, Arial, sans-serif;
+  display: inline-flex;      /* Flex para alinear texto/iconos internamente */
+  align-items: center;       /* Centrado vertical interno */
+  justify-content: center;   /* Centrado horizontal interno */
+  padding: 0 16px;           /* Solo padding lateral (el alto lo controla height) */
+  height: 36px;              /* Altura FIJA → todos los botones tienen el mismo alto */
+  border-radius: 6px;        /* Esquinas redondeadas */
+  border: none;              /* Quita el borde por defecto de <button> */
+  background: #e5e7eb;       /* Gris claro por defecto */
+  color: #1f2937;            /* Texto gris oscuro por defecto */
+  cursor: pointer;           /* Cursor de "mano" al pasar sobre el botón */
+  font-family: Inter, Segoe UI, Helvetica, Arial, sans-serif;  /* Igual que el reset global */
   font-size: 14px;
-  font-weight: 500;
-  text-decoration: none; /* Quitar subrayado a enlaces */
-  box-sizing: border-box;
-  transition: opacity 0.2s;
-  white-space: nowrap; /* Evitar que el texto se rompa */
+  font-weight: 500;          /* Semi-negrita */
+  text-decoration: none;     /* Quita subrayado (útil si se usa en <a> con clase btn) */
+  box-sizing: border-box;    /* Reafirma el box model */
+  transition: opacity 0.2s;  /* Animación suave de 0.2 segundos al cambiar opacidad */
+  white-space: nowrap;       /* Evita que el texto del botón se rompa en varias líneas */
 }
 
-/* Colores de botones */
+/* Modificadores de color — se usan JUNTO a .btn */
 .btn.primary {
-  background: var(--primary);
-  color: #fff;
+  background: var(--primary);  /* Azul */
+  color: #fff;                 /* Texto blanco */
 }
 .btn.success {
-  background: var(--success);
+  background: var(--success);  /* Verde */
   color: #fff;
 }
 .btn.danger {
-  background: var(--danger);
+  background: var(--danger);   /* Rojo */
   color: #fff;
 }
 
 .btn:hover {
   opacity: 0.9;
+  /* Al pasar el cursor, baja la opacidad al 90% → efecto de "oscurecimiento" suave
+     Funciona para TODOS los colores de botón sin necesitar reglas extra */
 }
 
-/* --- DASHBOARD --- */
+
+/* ============================================================
+   DASHBOARD — Tarjetas y gráfico
+   ============================================================ */
+
 .dashboard-grid {
+  /* Contenedor principal del dashboard: dos columnas */
   display: flex;
   gap: 20px;
   margin-bottom: 20px;
-  flex-wrap: wrap;
+  flex-wrap: wrap;  /* En pantallas pequeñas las columnas se apilan */
 }
 
 .stats-column {
-  flex: 1;
-  min-width: 240px;
+  /* Columna izquierda: tarjetas de estadísticas */
+  flex: 1;         /* Ocupa 1 parte del espacio disponible */
+  min-width: 240px; /* Mínimo antes de hacer wrap */
   display: flex;
-  flex-direction: column;
+  flex-direction: column;  /* Las tarjetas se apilan verticalmente */
   gap: 15px;
 }
 
 .chart-column {
-  flex: 2;
+  /* Columna derecha: gráfico (más ancha) */
+  flex: 2;          /* Ocupa 2 partes → el doble que .stats-column */
   min-width: 320px;
 }
 
 .card {
-  background: var(--card);
+  background: var(--card);                       /* Fondo blanco */
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  border-left: 5px solid transparent;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);   /* Sombra muy sutil */
+  border-left: 5px solid transparent;            /* Borde izquierdo reservado (color definido por modificador) */
 }
 
-/* Colores de borde tarjetas */
-.card.blue {
-  border-left-color: var(--primary);
-}
-.card.red {
-  border-left-color: var(--danger);
-}
-.card.green {
-  border-left-color: var(--success);
-}
-.card.orange {
-  border-left-color: var(--warning);
-}
+/* Modificadores de color del borde izquierdo de las tarjetas */
+.card.blue   { border-left-color: var(--primary); }
+.card.red    { border-left-color: var(--danger); }
+.card.green  { border-left-color: var(--success); }
+.card.orange { border-left-color: var(--warning); }
 
 .card h3 {
   margin: 0;
-  color: var(--muted);
-  font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  color: var(--muted);           /* Texto gris para el subtítulo */
+  font-size: 0.9rem;             /* rem = relativo al tamaño base del documento (generalmente 16px) */
+  text-transform: uppercase;     /* TODO EN MAYÚSCULAS */
+  letter-spacing: 0.5px;        /* Pequeño espaciado entre letras */
 }
 
 .stat-value {
-  font-size: 2rem;
-  font-weight: 700;
-  margin: 5px 0 0 0;
+  /* El número grande en cada tarjeta */
+  font-size: 2rem;    /* 2 × 16px = 32px */
+  font-weight: 700;   /* Negrita */
+  margin: 5px 0 0 0;  /* Solo margen arriba */
 }
 
-.text-danger {
-  color: var(--danger);
-}
-.text-success {
-  color: var(--success);
-}
-.text-warning {
-  color: var(--warning);
-}
+/* Clases de utilidad para colorear texto */
+.text-danger  { color: var(--danger); }
+.text-success { color: var(--success); }
+.text-warning { color: var(--warning); }
 
 .chart-container {
-  position: relative;
-  height: 250px;
+  /* Contenedor del canvas de Chart.js */
+  position: relative;  /* Necesario para que Chart.js posicione el canvas correctamente */
+  height: 250px;       /* Alto fijo del gráfico */
   width: 100%;
 }
 
-/* --- TABLAS Y CONTROLES --- */
+
+/* ============================================================
+   TABLA Y CONTROLES
+   ============================================================ */
+
 .controls {
+  /* Barra de controles encima de la tabla (búsqueda + botones) */
   margin: 16px 0;
   display: flex;
   gap: 12px;
@@ -184,41 +223,51 @@ body {
 }
 
 .table-wrap {
+  /* Contenedor de la tabla con fondo blanco y scroll horizontal en móvil */
   background: var(--card);
   padding: 12px;
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-  overflow-x: auto; /* Para que la tabla no rompa el diseño en móvil */
+  overflow-x: auto;   /* Si la tabla es más ancha que la pantalla, aparece scroll horizontal */
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
+  /* collapse elimina el espacio doble entre celdas
+     (por defecto cada celda tiene su propio borde y hay espacio entre ellos) */
 }
 
 .table th {
+  /* Encabezados de columna */
   text-align: left;
   padding: 10px;
-  border-bottom: 1px solid #f0f0f0;
-  color: var(--muted);
+  border-bottom: 1px solid #f0f0f0;  /* Línea separadora muy sutil */
+  color: var(--muted);                /* Texto gris */
   font-weight: 600;
 }
 
 .table td {
+  /* Celdas de datos */
   padding: 10px;
-  border-bottom: 1px solid #f7f7f7;
+  border-bottom: 1px solid #f7f7f7;  /* Línea separadora aún más sutil */
 }
 
-/* Semáforo de stock */
+/* --- SEMÁFORO DE STOCK ---
+   Estos estilos se aplican dinámicamente desde el HTML (Jinja2 en Flask)
+   según si el stock está bien, bajo o agotado */
+
 .stock.normal {
-  background: rgba(16, 185, 129, 0.15);
-  color: #065f46;
+  /* Stock OK: verde claro */
+  background: rgba(16, 185, 129, 0.15);  /* Verde muy transparente de fondo */
+  color: #065f46;                          /* Verde oscuro para el texto */
   font-weight: 600;
   padding: 6px 8px;
   border-radius: 6px;
-  display: inline-block;
+  display: inline-block;   /* inline-block para que el padding funcione en elementos inline */
 }
 .stock.critico {
+  /* Stock bajo: naranja */
   background: rgba(217, 119, 6, 0.15);
   color: #92400e;
   font-weight: 600;
@@ -227,6 +276,7 @@ body {
   display: inline-block;
 }
 .stock.agotado {
+  /* Sin stock: rojo */
   background: rgba(220, 38, 38, 0.15);
   color: #991b1b;
   font-weight: 600;
@@ -237,29 +287,41 @@ body {
 
 .info {
   margin-top: 10px;
-  color: var(--muted);
+  color: var(--muted);  /* Texto de "Registros: N" debajo de la tabla */
 }
 
-/* --- MODALES --- */
+
+/* ============================================================
+   MODALES
+   Un modal es una ventana emergente que bloquea el contenido de atrás.
+   Se compone de dos partes: .overlay (fondo oscuro) y .modal (la caja)
+   ============================================================ */
+
 .modal {
-  position: fixed;
-  left: 50%;
-  top: 50%;
+  /* La caja del modal, centrada en la pantalla */
+  position: fixed;            /* fixed = posicionado relativo a la ventana del navegador, no al documento */
+  left: 50%;                  /* Mueve el borde izquierdo al centro */
+  top: 50%;                   /* Mueve el borde superior al centro */
   transform: translate(-50%, -50%);
+  /* translate(-50%, -50%) mueve el elemento la mitad de su propio ancho/alto
+     hacia arriba y a la izquierda → efecto de centrado perfecto */
+
   background: var(--card);
   padding: 16px;
   border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);  /* Sombra más pronunciada que las tarjetas */
   width: 480px;
-  max-width: 94%;
-  z-index: 1000; /* Asegurar que esté encima de todo */
+  max-width: 94%;   /* En móvil no excede el 94% del ancho de pantalla */
+  z-index: 1000;    /* z-index controla qué elemento queda "encima" de otros
+                       1000 asegura que el modal esté sobre todo lo demás */
 }
 
 .modal h3 {
-  margin-top: 0;
+  margin-top: 0;   /* El h3 del título no tiene margen arriba */
 }
 
 .modal .row {
+  /* Fila del formulario: etiqueta + campo de entrada */
   display: flex;
   gap: 8px;
   margin: 8px 0;
@@ -267,50 +329,62 @@ body {
 }
 
 .modal label {
-  min-width: 110px;
+  min-width: 110px;   /* Ancho mínimo fijo para alinear verticalmente todos los campos */
   color: var(--muted);
 }
 
 .modal input,
 .modal textarea,
 .modal select {
-  flex: 1;
+  /* Todos los campos del formulario tienen el mismo estilo */
+  flex: 1;           /* Ocupan todo el espacio disponible en la fila */
   padding: 8px;
   border-radius: 6px;
-  border: 1px solid #e6e6e6;
+  border: 1px solid #e6e6e6;  /* Borde gris claro */
 }
 
 .modal .actions {
+  /* Fila de botones al final del modal */
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-end;  /* Botones alineados a la derecha */
   gap: 8px;
   margin-top: 12px;
 }
 
 .overlay {
+  /* Capa semi-transparente que cubre toda la pantalla detrás del modal */
   position: fixed;
   left: 0;
   top: 0;
   right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.35);
-  z-index: 999;
+  bottom: 0;             /* Los 4 lados a 0 → ocupa TODA la pantalla */
+  background: rgba(0, 0, 0, 0.35);  /* Negro al 35% de opacidad */
+  z-index: 999;          /* Justo debajo del modal (1000), encima de todo lo demás */
 }
 
-/* --- RESPONSIVE (MÓVIL) --- */
+
+/* ============================================================
+   RESPONSIVE (DISEÑO ADAPTABLE A MÓVIL)
+   @media es una "media query": aplica estilos SOLO cuando se cumple la condición.
+   max-width: 768px → estilos para pantallas de hasta 768px de ancho (tablets/móviles)
+   ============================================================ */
+
 @media (max-width: 768px) {
   .topbar h1 {
-    font-size: 1.2rem;
+    font-size: 1.2rem;  /* Título más pequeño en móvil */
   }
+
   .btn {
-    padding: 0 10px;
-    font-size: 0.85rem;
+    padding: 0 10px;      /* Menos padding lateral */
+    font-size: 0.85rem;   /* Texto más pequeño */
   }
+
   .divider {
-    display: none;
+    display: none;   /* Ocultar el separador vertical en móvil (ahorra espacio) */
   }
+
   .actions {
     gap: 10px;
-    flex-wrap: wrap;
+    flex-wrap: wrap;   /* Los botones se distribuyen en varias filas si no caben */
   }
 }
