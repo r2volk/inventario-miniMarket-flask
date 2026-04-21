@@ -1,8 +1,3 @@
-# ============================================================
-# app.py  —  Servidor web hecho con Flask (Python)
-# Flask es un "micro-framework": te deja crear rutas (URLs)
-# y responder a peticiones HTTP sin mucha configuración.
-# ============================================================
 
 # --- IMPORTACIONES ---
 from flask import Flask, render_template, request, redirect, url_for, jsonify
