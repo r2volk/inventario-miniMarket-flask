@@ -10,41 +10,34 @@ api_bp = Blueprint("api", __name__, url_prefix="/api")
 
 
 # --- LISTA DE PRODUCTOS ---
-# Consumida por el JavaScript del frontend para llenar los <select> de los modales
 @api_bp.route("/products")
 def api_products():
-    conn = get_db()
+    conexion = get_db()
 
-    productos = conn.execute(
+    productos = conexion.execute(
         "SELECT id, codigo, nombre, stock FROM productos ORDER BY nombre"
     ).fetchall()
-    conn.close()
+    conexion.close()
 
-    data = [dict(x) for x in productos]
-    # [dict(x) for x in productos] es una list comprehension:
-    # equivale a:
-    #   data = []
-    #   for x in productos:
-    #       data.append(dict(x))
-    #
-    # dict(x) convierte cada fila de SQLite (tipo Row) en un dict Python normal
-    # Necesario porque jsonify() no sabe cómo serializar objetos Row directamente
+    data = []
+    for x in productos:
+        # dict(x) convierte cada fila de SQLite (tipo Row) en diccionario de python.
+        data.append(dict(x))
 
+    # jsonify convierte la lista de diccionarios en JSON:
     return jsonify(data)
-    # jsonify convierte la lista de dicts en JSON:
-    # [{"id": 1, "codigo": "ARR01", "nombre": "Arroz", "stock": 50}, ...]
+
 
 
 # --- LISTA DE PROVEEDORES ---
-# Consumida por el JavaScript del frontend para llenar el <select> del modal de entrada
 @api_bp.route("/providers")
 def api_providers():
-    conn = get_db()
-    provs = conn.execute(
+    conexion = get_db()
+    provedores = conexion.execute(
         "SELECT id, ruc, nombre FROM proveedores ORDER BY nombre"
     ).fetchall()
-    conn.close()
-    return jsonify([dict(x) for x in provs])
+    conexion.close()
+    return jsonify([dict(x) for x in provedores])
 
 
 # --- DATOS DEL DASHBOARD ---
@@ -53,11 +46,10 @@ def api_providers():
 def api_dashboard():
     conn = get_db()
 
-    # Cuenta el total de productos registrados en la BD
+    # 1. Ejecuta la consulta: COUNT(*) devuelve una tabla de una sola celda.
+    # 2. .fetchone(): Obtiene esa celda, pero Python la recibe como una tupla, ej: (15,)
+    # 3. [0]: Extrae el número de la tupla para que 'total_productos' sea un entero (15) y no una lista (15,).
     total_productos = conn.execute("SELECT COUNT(*) FROM productos").fetchone()[0]
-    # COUNT(*) → cuenta todas las filas de la tabla
-    # fetchone() → devuelve la primera (y única) fila: (42,)
-    # [0] → extrae el número de esa tupla: 42
 
     # Cuenta productos con stock en alerta (stock actual ≤ stock mínimo)
     alertas_stock = conn.execute(
@@ -69,10 +61,14 @@ def api_dashboard():
         "SELECT SUM(stock * precio_compra) FROM productos"
     ).fetchone()[0]
 
+    # Si no hay productos, SUM devuelve NULL,Lo convertimos a 0 para no causar errores.
     if valor_total is None:
         valor_total = 0
-    # Si no hay productos, SUM devuelve NULL (None en Python)
-    # Lo convertimos a 0 para no causar errores al mostrarlo
+
+
+
+
+
 
     # Fechas para filtrar lotes próximos a vencer (en los próximos 30 días)
     hoy    = datetime.date.today().isoformat()
