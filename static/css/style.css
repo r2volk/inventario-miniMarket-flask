@@ -1,390 +1,731 @@
-/* ============================================================
-   style.css  —  Estilos visuales de la aplicación
-   CSS (Cascading Style Sheets) define cómo se ve cada elemento HTML.
-   "Cascading" = los estilos se heredan y pueden sobreescribirse.
-   ============================================================ */
-
-
-/* --- VARIABLES GLOBALES (DESIGN TOKENS) ---
-   :root es el elemento raíz del documento (equivale a <html>)
-   Las variables CSS se definen con --nombre y se usan con var(--nombre)
-   Centralizar colores aquí facilita cambiar el tema en un solo lugar */
+/* ─── TOKENS ─────────────────────────────────────────── */
 :root {
-  --bg: #f6f8fa;       /* Color de fondo general: gris muy claro */
-  --card: #ffffff;     /* Color de las tarjetas/panels: blanco */
-  --primary: #2b7cff;  /* Azul principal para botones y acentos */
-  --muted: #6b7280;    /* Gris para texto secundario/etiquetas */
-  --success: #16a34a;  /* Verde para acciones positivas (guardar, confirmar) */
-  --warning: #d97706;  /* Naranja para alertas moderadas */
-  --danger: #dc2626;   /* Rojo para errores y alertas críticas */
+  --font: 'Geist', 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'Geist Mono', 'Fira Code', monospace;
+
+  --bg:        #f9fafb;
+  --surface:   #ffffff;
+  --border:    #e5e7eb;
+  --border-sm: #f3f4f6;
+
+  --text-primary:   #111827;
+  --text-secondary: #6b7280;
+  --text-muted:     #9ca3af;
+
+  --blue-50:  #eff6ff;
+  --blue-100: #dbeafe;
+  --blue-500: #3b82f6;
+  --blue-600: #2563eb;
+  --blue-700: #1d4ed8;
+
+  --green-50:  #f0fdf4;
+  --green-100: #dcfce7;
+  --green-500: #22c55e;
+  --green-600: #16a34a;
+  --green-700: #15803d;
+
+  --red-50:  #fef2f2;
+  --red-100: #fee2e2;
+  --red-500: #ef4444;
+  --red-600: #dc2626;
+  --red-700: #b91c1c;
+
+  --amber-50:  #fffbeb;
+  --amber-100: #fef3c7;
+  --amber-500: #f59e0b;
+  --amber-600: #d97706;
+  --amber-700: #b45309;
+
+  --sidebar-w: 220px;
+  --topbar-h:  60px;
+  --radius:    8px;
+  --radius-lg: 10px;
 }
 
-/* --- RESET BÁSICO ---
-   El selector * aplica a TODOS los elementos del documento */
-* {
-  box-sizing: border-box;
-  /* Por defecto, width/height no incluyen padding ni border.
-     border-box hace que SÍ los incluya → mucho más intuitivo.
-     Ejemplo: un div con width:200px y padding:20px tendrá 200px total, no 240px */
-
-  font-family: Inter, Segoe UI, Helvetica, Arial, sans-serif;
-  /* Jerarquía de fuentes: usa Inter si está disponible,
-     si no Segoe UI, si no Helvetica, etc.
-     sans-serif es el fallback genérico del navegador */
-}
+/* ─── RESET ──────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  margin: 0;              /* Quita el margen por defecto que los navegadores aplican al body */
-  background: var(--bg);  /* Fondo gris claro usando la variable */
-  color: #111;            /* Color de texto por defecto: casi negro */
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.5;
+  display: flex;
+  min-height: 100vh;
 }
 
-/* --- CONTENEDOR CENTRADO ---
-   .container es una clase reutilizable para centrar el contenido */
-.container {
-  max-width: 1100px;  /* Ancho máximo: en pantallas grandes no se estira más de 1100px */
-  margin: 20px auto;  /* auto en los laterales centra horizontalmente el div */
-  padding: 0 16px;    /* Padding lateral para que en móvil no pegue a los bordes */
+button { font-family: var(--font); cursor: pointer; border: none; background: none; }
+a { text-decoration: none; color: inherit; }
+input, select, textarea { font-family: var(--font); }
+
+/* ─── SIDEBAR ────────────────────────────────────────── */
+.sidebar {
+  width: var(--sidebar-w);
+  min-height: 100vh;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0; top: 0; bottom: 0;
+  z-index: 100;
 }
 
+.sidebar-header {
+  height: var(--topbar-h);
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+}
 
-/* ============================================================
-   CABECERA Y NAVEGACIÓN
-   ============================================================ */
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.logo-icon {
+  width: 28px; height: 28px;
+  background: var(--text-primary);
+  color: white;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.logo-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.2px;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 12px 10px;
+  overflow-y: auto;
+}
+
+.nav-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  padding: 0 8px;
+  margin-bottom: 4px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 10px;
+  border-radius: var(--radius);
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  width: 100%;
+  text-align: left;
+  transition: background 0.12s, color 0.12s;
+  margin-bottom: 1px;
+}
+
+.nav-item:hover {
+  background: var(--bg);
+  color: var(--text-primary);
+}
+
+.nav-item.active {
+  background: var(--blue-50);
+  color: var(--blue-600);
+  font-weight: 500;
+}
+
+.nav-item.active svg { stroke: var(--blue-600); }
+
+.nav-item svg { flex-shrink: 0; opacity: 0.7; }
+.nav-item.active svg { opacity: 1; }
+
+.nav-btn { cursor: pointer; border: none; background: none; }
+
+.sidebar-footer {
+  padding: 12px 10px;
+  border-top: 1px solid var(--border);
+}
+
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 10px;
+  border-radius: var(--radius);
+}
+
+.user-avatar {
+  width: 30px; height: 30px;
+  background: var(--text-primary);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.user-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.user-role {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  line-height: 1.2;
+}
+
+/* ─── MAIN LAYOUT ────────────────────────────────────── */
+.main-wrapper {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
 
 .topbar {
-  background: var(--card);                         /* Fondo blanco */
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);     /* Sombra sutil debajo: x=0, y=2px, blur=6px, opacidad=4% */
-  padding: 12px 0;                                  /* Espacio arriba y abajo */
-}
-
-.topbar .container {
-  /* Dentro del topbar, el container usa flexbox para alinear elementos */
-  display: flex;           /* Activa el modelo de caja flexible */
-  flex-wrap: wrap;         /* Si no caben, los elementos bajan a la siguiente línea */
-  align-items: center;     /* Centra verticalmente todos los hijos */
-  justify-content: space-between;  /* Distribuye espacio: primero al inicio, último al final */
-  gap: 15px;               /* Espacio entre los elementos flex */
-}
-
-.topbar h1 {
-  font-size: 18px;
-  margin: 0;  /* Quita el margen por defecto del h1 */
-}
-
-.actions {
-  /* Contenedor de botones agrupados */
+  height: var(--topbar-h);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
-  gap: 15px;
+  justify-content: space-between;
+  padding: 0 28px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
 }
 
-.btn-group {
-  /* Grupo de botones muy juntos (sin gap entre ellos) */
+.topbar-left { display: flex; flex-direction: column; gap: 1px; }
+
+.page-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.page-subtitle {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.topbar-right { display: flex; align-items: center; gap: 8px; }
+
+.icon-btn {
+  width: 32px; height: 32px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
   display: flex;
-  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  transition: background 0.12s;
 }
 
-.divider {
-  /* Separador visual vertical entre grupos de botones */
-  width: 1px;
-  height: 24px;
-  background-color: #ddd;  /* Gris claro */
-  margin: 0 5px;
+.icon-btn:hover { background: var(--bg); }
+
+.page-content {
+  padding: 24px 28px;
+  flex: 1;
 }
 
-
-/* ============================================================
-   BOTONES
-   .btn es la clase base; se combina con .primary, .success, .danger
-   Ejemplo: <button class="btn primary">Guardar</button>
-   ============================================================ */
-
-.btn {
-  display: inline-flex;      /* Flex para alinear texto/iconos internamente */
-  align-items: center;       /* Centrado vertical interno */
-  justify-content: center;   /* Centrado horizontal interno */
-  padding: 0 16px;           /* Solo padding lateral (el alto lo controla height) */
-  height: 36px;              /* Altura FIJA → todos los botones tienen el mismo alto */
-  border-radius: 6px;        /* Esquinas redondeadas */
-  border: none;              /* Quita el borde por defecto de <button> */
-  background: #e5e7eb;       /* Gris claro por defecto */
-  color: #1f2937;            /* Texto gris oscuro por defecto */
-  cursor: pointer;           /* Cursor de "mano" al pasar sobre el botón */
-  font-family: Inter, Segoe UI, Helvetica, Arial, sans-serif;  /* Igual que el reset global */
-  font-size: 14px;
-  font-weight: 500;          /* Semi-negrita */
-  text-decoration: none;     /* Quita subrayado (útil si se usa en <a> con clase btn) */
-  box-sizing: border-box;    /* Reafirma el box model */
-  transition: opacity 0.2s;  /* Animación suave de 0.2 segundos al cambiar opacidad */
-  white-space: nowrap;       /* Evita que el texto del botón se rompa en varias líneas */
-}
-
-/* Modificadores de color — se usan JUNTO a .btn */
-.btn.primary {
-  background: var(--primary);  /* Azul */
-  color: #fff;                 /* Texto blanco */
-}
-.btn.success {
-  background: var(--success);  /* Verde */
-  color: #fff;
-}
-.btn.danger {
-  background: var(--danger);   /* Rojo */
-  color: #fff;
-}
-
-.btn:hover {
-  opacity: 0.9;
-  /* Al pasar el cursor, baja la opacidad al 90% → efecto de "oscurecimiento" suave
-     Funciona para TODOS los colores de botón sin necesitar reglas extra */
-}
-
-
-/* ============================================================
-   DASHBOARD — Tarjetas y gráfico
-   ============================================================ */
-
-.dashboard-grid {
-  /* Contenedor principal del dashboard: dos columnas */
-  display: flex;
-  gap: 20px;
+/* ─── KPI CARDS ──────────────────────────────────────── */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
   margin-bottom: 20px;
-  flex-wrap: wrap;  /* En pantallas pequeñas las columnas se apilan */
 }
 
-.stats-column {
-  /* Columna izquierda: tarjetas de estadísticas */
-  flex: 1;         /* Ocupa 1 parte del espacio disponible */
-  min-width: 240px; /* Mínimo antes de hacer wrap */
+.kpi-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px 18px;
+}
+
+.kpi-header {
   display: flex;
-  flex-direction: column;  /* Las tarjetas se apilan verticalmente */
-  gap: 15px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
 }
 
-.chart-column {
-  /* Columna derecha: gráfico (más ancha) */
-  flex: 2;          /* Ocupa 2 partes → el doble que .stats-column */
-  min-width: 320px;
+.kpi-label {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text-secondary);
 }
 
+.kpi-icon {
+  width: 28px; height: 28px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kpi-icon--blue  { background: var(--blue-50);  color: var(--blue-600); }
+.kpi-icon--blue svg  { stroke: var(--blue-600); }
+.kpi-icon--red   { background: var(--red-50);   color: var(--red-600); }
+.kpi-icon--red svg   { stroke: var(--red-600); }
+.kpi-icon--amber { background: var(--amber-50); color: var(--amber-600); }
+.kpi-icon--amber svg { stroke: var(--amber-600); }
+.kpi-icon--green { background: var(--green-50); color: var(--green-600); }
+.kpi-icon--green svg { stroke: var(--green-600); }
+
+.kpi-value {
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.kpi-value--red   { color: var(--red-600); }
+.kpi-value--amber { color: var(--amber-600); }
+.kpi-value--green { color: var(--green-600); }
+
+.kpi-change {
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+
+/* ─── CONTENT GRID ───────────────────────────────────── */
+.content-grid {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 14px;
+  align-items: start;
+}
+
+/* ─── CARDS ──────────────────────────────────────────── */
 .card {
-  background: var(--card);                       /* Fondo blanco */
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);   /* Sombra muy sutil */
-  border-left: 5px solid transparent;            /* Borde izquierdo reservado (color definido por modificador) */
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
 }
 
-/* Modificadores de color del borde izquierdo de las tarjetas */
-.card.blue   { border-left-color: var(--primary); }
-.card.red    { border-left-color: var(--danger); }
-.card.green  { border-left-color: var(--success); }
-.card.orange { border-left-color: var(--warning); }
-
-.card h3 {
-  margin: 0;
-  color: var(--muted);           /* Texto gris para el subtítulo */
-  font-size: 0.9rem;             /* rem = relativo al tamaño base del documento (generalmente 16px) */
-  text-transform: uppercase;     /* TODO EN MAYÚSCULAS */
-  letter-spacing: 0.5px;        /* Pequeño espaciado entre letras */
-}
-
-.stat-value {
-  /* El número grande en cada tarjeta */
-  font-size: 2rem;    /* 2 × 16px = 32px */
-  font-weight: 700;   /* Negrita */
-  margin: 5px 0 0 0;  /* Solo margen arriba */
-}
-
-/* Clases de utilidad para colorear texto */
-.text-danger  { color: var(--danger); }
-.text-success { color: var(--success); }
-.text-warning { color: var(--warning); }
-
-.chart-container {
-  /* Contenedor del canvas de Chart.js */
-  position: relative;  /* Necesario para que Chart.js posicione el canvas correctamente */
-  height: 250px;       /* Alto fijo del gráfico */
-  width: 100%;
-}
-
-
-/* ============================================================
-   TABLA Y CONTROLES
-   ============================================================ */
-
-.controls {
-  /* Barra de controles encima de la tabla (búsqueda + botones) */
-  margin: 16px 0;
+.card-header {
   display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--border-sm);
   gap: 12px;
+  flex-wrap: wrap;
+}
+
+.card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.card-subtitle {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.card-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* ─── CHART ──────────────────────────────────────────── */
+.chart-card .chart-container {
+  padding: 16px 18px;
+  height: 280px;
+  position: relative;
+}
+
+/* ─── SEARCH ─────────────────────────────────────────── */
+.search-wrapper {
+  position: relative;
+  display: flex;
   align-items: center;
 }
 
-.table-wrap {
-  /* Contenedor de la tabla con fondo blanco y scroll horizontal en móvil */
-  background: var(--card);
-  padding: 12px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-  overflow-x: auto;   /* Si la tabla es más ancha que la pantalla, aparece scroll horizontal */
+.search-icon {
+  position: absolute;
+  left: 9px;
+  color: var(--text-muted);
+  pointer-events: none;
 }
+
+.search-input {
+  height: 32px;
+  padding: 0 10px 0 28px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 13px;
+  color: var(--text-primary);
+  background: var(--bg);
+  width: 180px;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.search-input:focus {
+  border-color: var(--blue-500);
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+  background: var(--surface);
+}
+
+.btn-primary {
+  height: 32px;
+  padding: 0 14px;
+  background: var(--text-primary);
+  color: white;
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-weight: 500;
+  transition: opacity 0.15s;
+}
+
+.btn-primary:hover { opacity: 0.85; }
+
+/* ─── TABLE ──────────────────────────────────────────── */
+.table-wrap { overflow-x: auto; }
 
 .table {
   width: 100%;
   border-collapse: collapse;
-  /* collapse elimina el espacio doble entre celdas
-     (por defecto cada celda tiene su propio borde y hay espacio entre ellos) */
+}
+
+.table thead tr {
+  border-bottom: 1px solid var(--border-sm);
 }
 
 .table th {
-  /* Encabezados de columna */
+  padding: 10px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
   text-align: left;
-  padding: 10px;
-  border-bottom: 1px solid #f0f0f0;  /* Línea separadora muy sutil */
-  color: var(--muted);                /* Texto gris */
-  font-weight: 600;
+  white-space: nowrap;
+  background: var(--bg);
 }
+
+.table tbody tr {
+  border-bottom: 1px solid var(--border-sm);
+  transition: background 0.1s;
+}
+
+.table tbody tr:last-child { border-bottom: none; }
+
+.table tbody tr:hover { background: #fafafa; }
 
 .table td {
-  /* Celdas de datos */
-  padding: 10px;
-  border-bottom: 1px solid #f7f7f7;  /* Línea separadora aún más sutil */
+  padding: 10px 14px;
+  font-size: 13px;
+  vertical-align: middle;
 }
 
-/* --- SEMÁFORO DE STOCK ---
-   Estos estilos se aplican dinámicamente desde el HTML (Jinja2 en Flask)
-   según si el stock está bien, bajo o agotado */
+.td-name {
+  font-weight: 500;
+  color: var(--text-primary);
+}
 
-.stock.normal {
-  /* Stock OK: verde claro */
-  background: rgba(16, 185, 129, 0.15);  /* Verde muy transparente de fondo */
-  color: #065f46;                          /* Verde oscuro para el texto */
+.td-price {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--text-primary);
+}
+
+.td-date {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.td-desc {
+  color: var(--text-muted);
+  font-size: 12.5px;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.code-cell {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--text-secondary);
+}
+
+.qty-cell {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* ─── BADGES ─────────────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 5px;
+  font-size: 11.5px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.badge--cat {
+  background: var(--blue-50);
+  color: var(--blue-700);
+  border: 1px solid var(--blue-100);
+}
+
+.badge--entrada {
+  background: var(--green-50);
+  color: var(--green-700);
+  border: 1px solid var(--green-100);
+}
+
+.badge--salida {
+  background: var(--red-50);
+  color: var(--red-700);
+  border: 1px solid var(--red-100);
+}
+
+/* ─── STOCK BADGES ───────────────────────────────────── */
+.stock-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  padding: 3px 8px;
+  border-radius: 5px;
+  font-size: 12.5px;
   font-weight: 600;
-  padding: 6px 8px;
-  border-radius: 6px;
-  display: inline-block;   /* inline-block para que el padding funcione en elementos inline */
-}
-.stock.critico {
-  /* Stock bajo: naranja */
-  background: rgba(217, 119, 6, 0.15);
-  color: #92400e;
-  font-weight: 600;
-  padding: 6px 8px;
-  border-radius: 6px;
-  display: inline-block;
-}
-.stock.agotado {
-  /* Sin stock: rojo */
-  background: rgba(220, 38, 38, 0.15);
-  color: #991b1b;
-  font-weight: 600;
-  padding: 6px 8px;
-  border-radius: 6px;
-  display: inline-block;
+  font-family: var(--font-mono);
 }
 
-.info {
-  margin-top: 10px;
-  color: var(--muted);  /* Texto de "Registros: N" debajo de la tabla */
+.stock--ok {
+  background: var(--green-50);
+  color: var(--green-700);
+  border: 1px solid var(--green-100);
 }
 
+.stock--critico {
+  background: var(--amber-50);
+  color: var(--amber-700);
+  border: 1px solid var(--amber-100);
+}
 
-/* ============================================================
-   MODALES
-   Un modal es una ventana emergente que bloquea el contenido de atrás.
-   Se compone de dos partes: .overlay (fondo oscuro) y .modal (la caja)
-   ============================================================ */
+.stock--agotado {
+  background: var(--red-50);
+  color: var(--red-700);
+  border: 1px solid var(--red-100);
+}
+
+/* ─── MODALES ────────────────────────────────────────── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 200;
+  backdrop-filter: blur(2px);
+}
 
 .modal {
-  /* La caja del modal, centrada en la pantalla */
-  position: fixed;            /* fixed = posicionado relativo a la ventana del navegador, no al documento */
-  left: 50%;                  /* Mueve el borde izquierdo al centro */
-  top: 50%;                   /* Mueve el borde superior al centro */
+  position: fixed;
+  left: 50%;
+  top: 50%;
   transform: translate(-50%, -50%);
-  /* translate(-50%, -50%) mueve el elemento la mitad de su propio ancho/alto
-     hacia arriba y a la izquierda → efecto de centrado perfecto */
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.12), 0 4px 16px rgba(0,0,0,0.06);
+  width: 460px;
+  max-width: 94vw;
+  z-index: 300;
+  overflow: hidden;
+  animation: modalIn 0.18s ease;
+}
 
-  background: var(--card);
-  padding: 16px;
-  border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);  /* Sombra más pronunciada que las tarjetas */
-  width: 480px;
-  max-width: 94%;   /* En móvil no excede el 94% del ancho de pantalla */
-  z-index: 1000;    /* z-index controla qué elemento queda "encima" de otros
-                       1000 asegura que el modal esté sobre todo lo demás */
+@keyframes modalIn {
+  from { opacity: 0; transform: translate(-50%, -48%) scale(0.97); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 }
 
 .modal h3 {
-  margin-top: 0;   /* El h3 del título no tiene margen arriba */
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  padding: 18px 20px 0;
+  margin-bottom: 4px;
+}
+
+.modal > p.modal-desc {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  padding: 0 20px 14px;
+  border-bottom: 1px solid var(--border-sm);
 }
 
 .modal .row {
-  /* Fila del formulario: etiqueta + campo de entrada */
-  display: flex;
-  gap: 8px;
-  margin: 8px 0;
+  display: grid;
+  grid-template-columns: 110px 1fr;
   align-items: center;
+  gap: 10px;
+  padding: 7px 20px;
 }
 
 .modal label {
-  min-width: 110px;   /* Ancho mínimo fijo para alinear verticalmente todos los campos */
-  color: var(--muted);
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  font-weight: 500;
 }
 
 .modal input,
 .modal textarea,
 .modal select {
-  /* Todos los campos del formulario tienen el mismo estilo */
-  flex: 1;           /* Ocupan todo el espacio disponible en la fila */
-  padding: 8px;
-  border-radius: 6px;
-  border: 1px solid #e6e6e6;  /* Borde gris claro */
+  height: 34px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 13px;
+  color: var(--text-primary);
+  background: var(--surface);
+  width: 100%;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.modal input:focus,
+.modal select:focus {
+  border-color: var(--blue-500);
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+}
+
+.modal select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; padding-right: 30px; }
+
+.modal .modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 14px 20px;
+  border-top: 1px solid var(--border-sm);
+  margin-top: 8px;
 }
 
 .modal .actions {
-  /* Fila de botones al final del modal */
   display: flex;
-  justify-content: flex-end;  /* Botones alineados a la derecha */
+  justify-content: flex-end;
   gap: 8px;
-  margin-top: 12px;
+  padding: 14px 20px;
+  border-top: 1px solid var(--border-sm);
+  margin-top: 8px;
 }
 
-.overlay {
-  /* Capa semi-transparente que cubre toda la pantalla detrás del modal */
+/* Button variants inside modals */
+.btn {
+  height: 34px;
+  padding: 0 14px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+
+.btn:hover { background: var(--bg); color: var(--text-primary); }
+
+.btn.primary, .btn.success, .btn.danger {
+  border-color: transparent;
+  color: white;
+}
+
+.btn.primary { background: var(--blue-600); }
+.btn.primary:hover { background: var(--blue-700); }
+
+.btn.success { background: var(--green-600); }
+.btn.success:hover { background: var(--green-700); }
+
+.btn.danger { background: var(--red-600); }
+.btn.danger:hover { background: var(--red-700); }
+
+/* ─── TOAST NOTIFICATIONS ────────────────────────────── */
+.toast-container {
   position: fixed;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;             /* Los 4 lados a 0 → ocupa TODA la pantalla */
-  background: rgba(0, 0, 0, 0.35);  /* Negro al 35% de opacidad */
-  z-index: 999;          /* Justo debajo del modal (1000), encima de todo lo demás */
+  bottom: 20px;
+  right: 20px;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
+.toast {
+  background: var(--text-primary);
+  color: white;
+  padding: 10px 16px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  animation: toastIn 0.2s ease;
+  max-width: 320px;
+}
 
-/* ============================================================
-   RESPONSIVE (DISEÑO ADAPTABLE A MÓVIL)
-   @media es una "media query": aplica estilos SOLO cuando se cumple la condición.
-   max-width: 768px → estilos para pantallas de hasta 768px de ancho (tablets/móviles)
-   ============================================================ */
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.toast.success { background: var(--green-600); }
+.toast.error   { background: var(--red-600); }
+
+/* ─── SCROLLBAR ──────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* ─── RESPONSIVE ─────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .content-grid { grid-template-columns: 1fr; }
+}
 
 @media (max-width: 768px) {
-  .topbar h1 {
-    font-size: 1.2rem;  /* Título más pequeño en móvil */
-  }
-
-  .btn {
-    padding: 0 10px;      /* Menos padding lateral */
-    font-size: 0.85rem;   /* Texto más pequeño */
-  }
-
-  .divider {
-    display: none;   /* Ocultar el separador vertical en móvil (ahorra espacio) */
-  }
-
-  .actions {
-    gap: 10px;
-    flex-wrap: wrap;   /* Los botones se distribuyen en varias filas si no caben */
-  }
+  .sidebar { display: none; }
+  .main-wrapper { margin-left: 0; }
+  .kpi-grid { grid-template-columns: 1fr 1fr; }
 }

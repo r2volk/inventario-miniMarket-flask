@@ -1,59 +1,131 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Inventario - Minimarket Don José</title>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/style.css') }}"
-    />
-    <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
-  </head>
-  <body>
-    <header class="topbar">
-      <div class="container">
-        <h1>Minimarket Don José</h1>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Inventario — Minimarket Don José</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+  <script src="{{ url_for('static', filename='js/utils.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/modales/producto.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/modales/proveedor.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/modales/entrada.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/modales/salida.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+</head>
+<body>
 
-        <div class="actions">
-          <div class="btn-group">
-            <button
-              id="btn-add-entry"
-              class="btn success"
-              title="Registrar Compra"
-            >
-              + Entrada
-            </button>
-            <button
-              id="btn-add-output"
-              class="btn danger"
-              title="Registrar Venta"
-            >
-              - Salida
-            </button>
-          </div>
-
-          <div class="divider"></div>
-
-          <div class="btn-group">
-            <button id="btn-add-product" class="btn primary">+ Producto</button>
-            <button id="btn-add-provider" class="btn">Proveedores</button>
-          </div>
-
-          <div class="divider"></div>
-
-          <div class="btn-group">
-            <a href="/historial" class="btn"> Historial </a>
-            <button id="btn-refresh" class="btn" title="Actualizar datos">
-              ↻
-            </button>
-          </div>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <div class="logo-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 0 1-8 0"/>
+          </svg>
         </div>
+        <span class="logo-text">Don José</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <p class="nav-label">General</p>
+      <a href="/" class="nav-item {% if request.path == '/' %}active{% endif %}">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+          <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+        </svg>
+        Dashboard
+      </a>
+      <a href="/historial" class="nav-item {% if request.path == '/historial' %}active{% endif %}">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+          <polyline points="10 9 9 9 8 9"/>
+        </svg>
+        Historial (Kardex)
+      </a>
+
+      <p class="nav-label" style="margin-top:20px">Operaciones</p>
+      <button class="nav-item nav-btn" id="btn-add-entry">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+          <polyline points="17 6 23 6 23 12"/>
+        </svg>
+        Registrar Entrada
+      </button>
+      <button class="nav-item nav-btn" id="btn-add-output">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/>
+          <polyline points="17 18 23 18 23 12"/>
+        </svg>
+        Registrar Salida
+      </button>
+
+      <p class="nav-label" style="margin-top:20px">Catálogos</p>
+      <button class="nav-item nav-btn" id="btn-add-product">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+        </svg>
+        Nuevo Producto
+      </button>
+      <button class="nav-item nav-btn" id="btn-add-provider">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        Nuevo Proveedor
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="user-avatar">DJ</div>
+        <div class="user-info">
+          <p class="user-name">Don José</p>
+          <p class="user-role">Administrador</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-wrapper">
+    <header class="topbar">
+      <div class="topbar-left">
+        <h1 class="page-title">
+          {% if request.path == '/' %}Dashboard{% else %}Historial de Movimientos{% endif %}
+        </h1>
+        {% if request.path == '/' %}
+        <span class="page-subtitle">Minimarket Don José — Control de inventario</span>
+        {% else %}
+        <span class="page-subtitle">Registro completo de entradas y salidas</span>
+        {% endif %}
+      </div>
+      <div class="topbar-right">
+        <button id="btn-refresh" class="icon-btn" title="Actualizar">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="23 4 23 10 17 10"/>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+          </svg>
+        </button>
       </div>
     </header>
 
-    <main class="container">{% block content %}{% endblock %}</main>
+    <main class="page-content">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
 
-    <div id="modal-root"></div>
-  </body>
+  <div id="modal-root"></div>
+</body>
 </html>

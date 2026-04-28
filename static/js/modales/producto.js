@@ -1,0 +1,65 @@
+// Modal para agregar un nuevo producto
+function openAddProduct() {
+  // Construimos el HTML completo del modal como una plantilla literal
+  const html = `
+    <div class="overlay"></div>
+    <div class="modal">
+      <h3>Nuevo Producto</h3>
+      <p class="modal-desc">Completa los datos para registrar un producto al inventario.</p>
+      <div class="row"><label>Código *</label><input id="p-codigo" placeholder="Ej: ARR001"></div>
+      <div class="row"><label>Nombre *</label><input id="p-nombre" placeholder="Ej: Arroz Extra"></div>
+      <div class="row">
+        <label>Categoría</label>
+        <select id="p-cat">
+          <option value="Abarrotes">Abarrotes</option>
+          <option value="Bebidas">Bebidas</option>
+          <option value="Lácteos">Lácteos</option>
+          <option value="Limpieza">Limpieza</option>
+          <option value="Golosinas">Golosinas</option>
+          <option value="Otros">Otros</option>
+        </select>
+      </div>
+      <div class="row"><label>P. Compra (S/)</label><input id="p-pcompra" type="number" step="0.10" value="0.00"></div>
+      <div class="row"><label>P. Venta (S/)</label><input id="p-pventa" type="number" step="0.10" value="0.00"></div>
+      <div class="row"><label>Stock mínimo</label><input id="p-stockmin" type="number" value="5"></div>
+      <div class="row"><label>Descripción</label><input id="p-desc" placeholder="Opcional"></div>
+      <div class="actions">
+        <button id="p-cancel" class="btn">Cancelar</button>
+        <button id="p-save" class="btn primary">Guardar producto</button>
+      </div>
+    </div>`;
+
+  // abrirModal() está definida en utils.js -> inyecta el HTML en #modal-root
+  abrirModal(html);
+
+  // Boton cancelar, cerrarModal() esta en utils.js -> vacía #modal-root
+  document.getElementById("p-cancel").addEventListener("click", cerrarModal);
+
+  // Boton guardar, recoge los datos y los envía al servidor
+  document.getElementById("p-save").addEventListener("click", guardarProducto);
+}
+
+// Lee los valores del formulario y los envía via POST a Flask
+async function guardarProducto() {
+  const data = {
+    codigo: document.getElementById("p-codigo").value,
+    nombre: document.getElementById("p-nombre").value,
+    categoria: document.getElementById("p-cat").value,
+    precio_compra: document.getElementById("p-pcompra").value,
+    precio_venta: document.getElementById("p-pventa").value,
+    stock_min: document.getElementById("p-stockmin").value,
+    descripcion: document.getElementById("p-desc").value,
+  };
+
+  // postForm() está en utils.js → hace el fetch POST y maneja éxito/error
+  await postForm(
+    "/add_product",
+    data,
+    () => {
+      showToast("Producto registrado correctamente", "success");
+      cerrarModal();
+      setTimeout(() => location.reload(), 1200);
+    },
+    (msg) => showToast(msg, "error"),
+  );
+}
