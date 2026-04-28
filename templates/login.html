@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iniciar Sesión — Minimarket Don José</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}" />
+</head>
+<body>
+
+  <!-- Fondo: grid sutil -->
+  <div class="bg-grid"></div>
+
+  <!-- Decoración: orbs de luz -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <!-- Corners decorativos -->
+  <span class="corner corner-tl"></span>
+  <span class="corner corner-tr"></span>
+  <span class="corner corner-bl"></span>
+  <span class="corner corner-br"></span>
+
+  <!-- Overlay de éxito -->
+  <div class="success-overlay" id="successOverlay">
+    <div class="success-box">
+      <div class="success-icon">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <p class="success-label">Acceso concedido</p>
+      <div class="success-bar"><div class="success-fill"></div></div>
+    </div>
+  </div>
+
+  <!-- Layout principal -->
+  <div class="page">
+
+    <!-- ── Panel izquierdo ── -->
+    <div class="left-panel">
+
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 0 1-8 0"/>
+          </svg>
+        </div>
+        <span class="brand-name">Don José</span>
+      </div>
+
+      <div class="left-body">
+        <p class="eyebrow">Sistema de inventario</p>
+        <h1 class="headline">Control de<br/><em>stock</em> en<br/>tiempo real.</h1>
+        <p class="tagline">Entradas, salidas y reportes<br/>desde un solo lugar.</p>
+      </div>
+
+      <div class="left-footer">
+        <span class="status">
+          <span class="dot"></span>
+          Sistema operativo
+        </span>
+        <span class="ver">v1.0</span>
+      </div>
+
+    </div>
+
+    <!-- ── Panel derecho ── -->
+    <div class="right-panel">
+      <div class="form-wrap">
+
+        <!-- Encabezado del form -->
+        <div class="form-head">
+          <p class="form-eyebrow">Autenticación</p>
+          <h2 class="form-title">Iniciar sesión</h2>
+        </div>
+
+        <!-- Banner de error (Flask flash o JS) -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="error-banner show" id="errorBanner">
+                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+                <span>{{ message }}</span>
+              </div>
+            {% endfor %}
+          {% else %}
+            <div class="error-banner" id="errorBanner">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+              </svg>
+              <span id="errorText">Credenciales incorrectas</span>
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <!-- Formulario -->
+        <form id="loginForm" method="POST" action="{{ url_for('auth.login') }}" autocomplete="off" novalidate>
+
+          <!-- Usuario -->
+          <div class="field">
+            <label class="field-label" for="username">Usuario</label>
+            <div class="input-wrap">
+              <input
+                type="text"
+                id="username"
+                name="username"
+                placeholder="admin"
+                autocomplete="off"
+                spellcheck="false"
+              />
+              <span class="input-icon">
+                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+              </span>
+            </div>
+          </div>
+
+          <!-- Contraseña -->
+          <div class="field">
+            <label class="field-label" for="password">Contraseña</label>
+            <div class="input-wrap">
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="••••••••"
+                autocomplete="new-password"
+              />
+              <button type="button" class="toggle-pw" id="togglePw" aria-label="Mostrar contraseña">
+                <svg id="eyeIcon" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-submit" id="submitBtn">
+            <span class="btn-text">Ingresar al sistema</span>
+            <span class="btn-loader">
+              <span class="spinner"></span>
+            </span>
+          </button>
+
+        </form>
+
+        <p class="form-note">Acceso restringido — solo personal autorizado</p>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+      const form        = document.getElementById('loginForm');
+      const submitBtn   = document.getElementById('submitBtn');
+      const errorBanner = document.getElementById('errorBanner');
+      const togglePw    = document.getElementById('togglePw');
+      const eyeIcon     = document.getElementById('eyeIcon');
+      const passInput   = document.getElementById('password');
+      const userInput   = document.getElementById('username');
+
+      /* ── Toggle contraseña ── */
+      let pwVisible = false;
+      togglePw.addEventListener('click', () => {
+        pwVisible = !pwVisible;
+        passInput.type = pwVisible ? 'text' : 'password';
+        eyeIcon.innerHTML = pwVisible
+          ? `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+             <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+             <line x1="1" y1="1" x2="23" y2="23"/>`
+          : `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+             <circle cx="12" cy="12" r="3"/>`;
+      });
+
+      /* ── Ocultar error al escribir ── */
+      [userInput, passInput].forEach(el => {
+        el.addEventListener('input', () => errorBanner.classList.remove('show'));
+      });
+
+      /* ── Ripple en botón ── */
+      submitBtn.addEventListener('click', function(e) {
+        const rect   = this.getBoundingClientRect();
+        const ripple = document.createElement('span');
+        const size   = Math.max(rect.width, rect.height);
+        ripple.className  = 'ripple';
+        ripple.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px`;
+        this.appendChild(ripple);
+        ripple.addEventListener('animationend', () => ripple.remove());
+      });
+
+      /* ── Submit: muestra loader, deja que Flask maneje la auth ── */
+      form.addEventListener('submit', (e) => {
+        const user = userInput.value.trim();
+        const pass = passInput.value.trim();
+
+        if (!user || !pass) {
+          e.preventDefault();
+          errorBanner.querySelector('span:last-child').textContent = 'Completa todos los campos.';
+          errorBanner.classList.add('show');
+          submitBtn.classList.add('shake');
+          submitBtn.addEventListener('animationend', () => submitBtn.classList.remove('shake'), { once: true });
+          return;
+        }
+
+        /* Muestra loading mientras Flask procesa */
+        submitBtn.classList.add('loading');
+      });
+
+    });
+  </script>
+
+</body>
+</html>

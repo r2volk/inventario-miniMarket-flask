@@ -1,7 +1,8 @@
-from flask import Flask
+from flask import Flask, session, redirect, url_for
 
 # Importamos cada Blueprint desde su archivo correspondiente
 # Un Blueprint es un grupo de rutas que se registra en la app principal
+from rutas.auth        import auth_bp
 from rutas.productos   import productos_bp
 from rutas.movimientos import movimientos_bp
 from rutas.proveedores import proveedores_bp
@@ -15,8 +16,14 @@ def create_app():
     # Flask lo usa para encontrar la carpeta /templates y /static
     app = Flask(__name__)
 
+    # SECRET_KEY es necesaria para usar session (cookies firmadas)
+    app.secret_key = "dj-minimarket-secret-2024"
+
     # --- REGISTRO DE BLUEPRINTS ---
     # register_blueprint() une las rutas del Blueprint a la app principal
+
+    # Registra: GET /login, POST /login, GET /logout
+    app.register_blueprint(auth_bp)
 
     # Registra: GET /  y  POST /add_product
     app.register_blueprint(productos_bp)
@@ -29,6 +36,17 @@ def create_app():
 
     # Registra: GET /api/products, GET /api/providers, GET /api/dashboard
     app.register_blueprint(api_bp)
+
+    # --- PROTECCIÓN DE RUTAS ---
+    # Antes de cada request, verifica si hay sesión activa
+    # Si no la hay, redirige al login (excepto para /login y /static)
+    @app.before_request
+    def require_login():
+        rutas_publicas = {"auth.login", "static"}
+        if not session.get("autenticado"):
+            from flask import request
+            if request.endpoint not in rutas_publicas:
+                return redirect(url_for("auth.login"))
 
     return app # Devolvemos la app lista para usarse
 

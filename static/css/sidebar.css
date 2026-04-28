@@ -153,3 +153,20 @@
   color: var(--text-muted);
   line-height: 1.2;
 }
+
+/* Botón de logout en el sidebar footer */
+.logout-btn {
+  margin-left: auto;
+  display: grid;
+  place-items: center;
+  width: 28px; height: 28px;
+  border-radius: 6px;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+.logout-btn:hover {
+  background: var(--border);
+  color: var(--text-primary);
+}
