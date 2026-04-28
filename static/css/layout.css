@@ -1,0 +1,100 @@
+/* ============================================================
+   layout.css — Estructura principal de la página
+   
+   Define el esqueleto visual: el wrapper que rodea todo el
+   contenido principal, el topbar superior y el área de contenido.
+   
+   Trabaja en conjunto con sidebar.css:
+   sidebar ocupa 220px a la izquierda (position: fixed)
+   main-wrapper ocupa el resto con margin-left: 220px
+   ============================================================ */
+
+/* --- WRAPPER PRINCIPAL ---
+   Envuelve el topbar y el contenido de cada página.
+   Se posiciona a la derecha del sidebar. */
+.main-wrapper {
+  margin-left: var(--sidebar-w);  /* Deja espacio para el sidebar fijo (220px) */
+  flex: 1;                         /* Ocupa todo el ancho restante */
+  display: flex;
+  flex-direction: column;          /* Topbar arriba, contenido abajo */
+  min-height: 100vh;
+}
+
+/* --- TOPBAR SUPERIOR ---
+   Barra horizontal fija en la parte superior del área de contenido.
+   Muestra el título de la página actual y botones de acción. */
+.topbar {
+  height: var(--topbar-h);         /* 60px, mismo que sidebar-header → alineación visual */
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;  /* Título a la izquierda, botones a la derecha */
+  padding: 0 28px;
+  position: sticky;
+  /* sticky: el topbar se queda fijo al tope al hacer scroll,
+     pero solo dentro de su contenedor (a diferencia de fixed que es respecto a la ventana) */
+  top: 0;
+  z-index: 50;  /* Sobre el contenido pero bajo el sidebar (100) y modales (200+) */
+}
+
+/* Lado izquierdo del topbar: título y subtítulo de la página */
+.topbar-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.page-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.page-subtitle {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* Lado derecho del topbar: botones de acción */
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Botón cuadrado de ícono (ej: actualizar, notificaciones) */
+.icon-btn {
+  width: 32px; height: 32px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  transition: background 0.12s;
+}
+
+.icon-btn:hover { background: var(--bg); }
+
+/* --- ÁREA DE CONTENIDO ---
+   El <main> de cada página. Todo el contenido va aquí. */
+.page-content {
+  padding: 24px 28px;
+  flex: 1;  /* Ocupa todo el alto disponible → útil para páginas con poco contenido */
+}
+
+/* --- GRID DE CONTENIDO (gráfico + tabla lado a lado) ---
+   Divide el contenido en dos columnas:
+   columna izquierda fija de 340px (ej: gráfico de torta)
+   columna derecha flexible (ej: tabla de productos) */
+.content-grid {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 14px;
+  align-items: start;
+  /* align-items: start → cada columna tiene su propia altura natural,
+     no se estiran para igualarse */
+}
