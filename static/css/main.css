@@ -1,21 +1,21 @@
 /* ============================================================
    main.css — Punto de entrada del CSS
-   
+
    Este archivo NO define estilos propios.
    Su única función es importar todos los demás archivos
    en el orden correcto.
-   
+
    El orden importa porque CSS es "cascading" (en cascada):
    los estilos que vienen DESPUÉS sobreescriben a los anteriores
    si tienen el mismo nivel de especificidad.
-   
+
    Regla general:
      1. Variables primero (todos las usan)
      2. Reset (limpia los estilos del navegador)
      3. Layout estructural (sidebar, topbar, wrapper)
      4. Componentes reutilizables (orden no importa entre ellos)
      5. Utilidades al final (pueden sobreescribir cualquier cosa)
-   
+
    En base.html solo se referencia este archivo:
    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
    ============================================================ */
@@ -37,6 +37,7 @@
    Piezas reutilizables, independientes entre sí */
 @import "components/buttons.css";
 @import "components/cards.css";
+@import "components/dashboard-layout.css";
 @import "components/table.css";
 @import "components/badges.css";
 @import "components/modales.css";

@@ -1,69 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
 
-<!-- KPI CARDS -->
-<div class="kpi-grid">
-  <div class="kpi-card">
-    <div class="kpi-header">
-      <span class="kpi-label">Total Productos</span>
-      <div class="kpi-icon kpi-icon--blue">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-        </svg>
-      </div>
-    </div>
-    <p class="kpi-value" id="dash-total">—</p>
-    <p class="kpi-change">Registrados en el sistema</p>
-  </div>
+<!-- ============================================================
+     BLOQUE SUPERIOR: Gráfico de barras + KPIs en 2x2
+     Layout: columna izquierda = gráfico | columna derecha = 4 KPIs
+     ============================================================ -->
+<div class="dashboard-top">
 
-  <div class="kpi-card">
-    <div class="kpi-header">
-      <span class="kpi-label">Alertas de Stock</span>
-      <div class="kpi-icon kpi-icon--red">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-          <line x1="12" y1="9" x2="12" y2="13"/>
-          <line x1="12" y1="17" x2="12.01" y2="17"/>
-        </svg>
-      </div>
-    </div>
-    <p class="kpi-value kpi-value--red" id="dash-alertas">—</p>
-    <p class="kpi-change">Bajo stock mínimo</p>
-  </div>
-
-  <div class="kpi-card">
-    <div class="kpi-header">
-      <span class="kpi-label">Por Vencer (30d)</span>
-      <div class="kpi-icon kpi-icon--amber">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <circle cx="12" cy="12" r="10"/>
-          <polyline points="12 6 12 12 16 14"/>
-        </svg>
-      </div>
-    </div>
-    <p class="kpi-value kpi-value--amber" id="dash-vencimiento">—</p>
-    <p class="kpi-change">Lotes próximos a vencer</p>
-  </div>
-
-  <div class="kpi-card">
-    <div class="kpi-header">
-      <span class="kpi-label">Valor de Inventario</span>
-      <div class="kpi-icon kpi-icon--green">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <line x1="12" y1="1" x2="12" y2="23"/>
-          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-        </svg>
-      </div>
-    </div>
-    <p class="kpi-value kpi-value--green" id="dash-valor">—</p>
-    <p class="kpi-change">Valor total en stock (S/)</p>
-  </div>
-</div>
-
-<!-- CHART + TABLE LAYOUT -->
-<div class="content-grid">
-
-  <!-- CHART CARD -->
+  <!-- GRÁFICO DE BARRAS REDONDEADO -->
   <div class="card chart-card">
     <div class="card-header">
       <div>
@@ -76,55 +20,118 @@
     </div>
   </div>
 
-  <!-- PRODUCTOS TABLE -->
-  <div class="card table-card">
-    <div class="card-header">
-      <div>
-        <h3 class="card-title">Inventario de Productos</h3>
-        <p class="card-subtitle" id="info-count">{{ productos|length }} productos registrados</p>
-      </div>
-      <div class="card-header-actions">
-        <div class="search-wrapper">
-          <svg class="search-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+  <!-- KPIs EN GRID 2x2 -->
+  <div class="kpi-grid-2x2">
+
+    <div class="kpi-card">
+      <div class="kpi-header">
+        <span class="kpi-label">Total Productos</span>
+        <div class="kpi-icon kpi-icon--blue">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
           </svg>
-          <input id="search" class="search-input" type="text" placeholder="Buscar producto..."/>
         </div>
-        <button id="search-btn" class="btn-primary">Buscar</button>
       </div>
+      <p class="kpi-value" id="dash-total">—</p>
+      <p class="kpi-change">Registrados en el sistema</p>
     </div>
 
-    <div class="table-wrap">
-      <table class="table" id="productos-table">
-        <thead>
-          <tr>
-            <th>Código</th>
-            <th>Nombre</th>
-            <th>Categoría</th>
-            <th>P. Venta</th>
-            <th>Stock</th>
-            <th>Descripción</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for p in productos %}
-          <tr data-id="{{ p['id'] }}">
-            <td><code class="code-cell">{{ p['codigo'] }}</code></td>
-            <td class="td-name">{{ p['nombre'] }}</td>
-            <td><span class="badge badge--cat">{{ p['categoria'] }}</span></td>
-            <td class="td-price">S/ {{ "%.2f"|format(p['precio_venta']) }}</td>
-            <td>
-              <span class="stock-badge {% if p['stock'] <= 0 %}stock--agotado{% elif p['stock'] <= p['stock_min'] %}stock--critico{% else %}stock--ok{% endif %}">
-                {{ p['stock'] }}
-              </span>
-            </td>
-            <td class="td-desc">{{ p['descripcion'] or '—' }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+    <div class="kpi-card">
+      <div class="kpi-header">
+        <span class="kpi-label">Alertas de Stock</span>
+        <div class="kpi-icon kpi-icon--red">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+        </div>
+      </div>
+      <p class="kpi-value kpi-value--red" id="dash-alertas">—</p>
+      <p class="kpi-change">Bajo stock mínimo</p>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-header">
+        <span class="kpi-label">Por Vencer (30d)</span>
+        <div class="kpi-icon kpi-icon--amber">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </div>
+      </div>
+      <p class="kpi-value kpi-value--amber" id="dash-vencimiento">—</p>
+      <p class="kpi-change">Lotes próximos a vencer</p>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-header">
+        <span class="kpi-label">Valor de Inventario</span>
+        <div class="kpi-icon kpi-icon--green">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="12" y1="1" x2="12" y2="23"/>
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+        </div>
+      </div>
+      <p class="kpi-value kpi-value--green" id="dash-valor">—</p>
+      <p class="kpi-change">Valor total en stock (S/)</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================================================
+     BLOQUE INFERIOR: Tabla de productos sola
+     ============================================================ -->
+<div class="card table-card" style="margin-top: 20px;">
+  <div class="card-header">
+    <div>
+      <h3 class="card-title">Inventario de Productos</h3>
+      <p class="card-subtitle" id="info-count">{{ productos|length }} productos registrados</p>
+    </div>
+    <div class="card-header-actions">
+      <div class="search-wrapper">
+        <svg class="search-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input id="search" class="search-input" type="text" placeholder="Buscar producto..."/>
+      </div>
+      <button id="search-btn" class="btn-primary">Buscar</button>
     </div>
   </div>
 
+  <div class="table-wrap">
+    <table class="table" id="productos-table">
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Nombre</th>
+          <th>Categoría</th>
+          <th>P. Venta</th>
+          <th>Stock</th>
+          <th>Descripción</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in productos %}
+        <tr data-id="{{ p['id'] }}">
+          <td><code class="code-cell">{{ p['codigo'] }}</code></td>
+          <td class="td-name">{{ p['nombre'] }}</td>
+          <td><span class="badge badge--cat">{{ p['categoria'] }}</span></td>
+          <td class="td-price">S/ {{ "%.2f"|format(p['precio_venta']) }}</td>
+          <td>
+            <span class="stock-badge {% if p['stock'] <= 0 %}stock--agotado{% elif p['stock'] <= p['stock_min'] %}stock--critico{% else %}stock--ok{% endif %}">
+              {{ p['stock'] }}
+            </span>
+          </td>
+          <td class="td-desc">{{ p['descripcion'] or '—' }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </div>
+
 {% endblock %}
