@@ -38,9 +38,9 @@ function openAddProduct() {
           <option value="Comida Preparada">Comida Preparada</option>
         </select>
       </div>
-      <div class="row"><label>P. Compra (S/)</label><input id="p-pcompra" type="number" step="0.10" value="0.00"></div>
-      <div class="row"><label>P. Venta (S/)</label><input id="p-pventa" type="number" step="0.10" value="0.00"></div>
-      <div class="row"><label>Stock mínimo</label><input id="p-stockmin" type="number" value="5"></div>
+      <div class="row"><label>P. Compra (S/)</label><input id="p-pcompra" type="number" min="0" step="0.10" value="0.00"></div>
+      <div class="row"><label>P. Venta (S/)</label><input id="p-pventa" type="number" min="0" step="0.10" value="0.00"></div>
+      <div class="row"><label>Stock mínimo</label><input id="p-stockmin" type="number" min="0" value="5"></div>
       <div class="row"><label>Descripción</label><input id="p-desc" placeholder="Opcional"></div>
       <div class="actions">
         <button id="p-cancel" class="btn">Cancelar</button>
@@ -87,17 +87,17 @@ async function guardarProducto() {
 // usamos "document.querySelectorAll('.btn-delete').forEach(boton => {" porque tenemos varios botones btn-delete
 // ya que usamos eso en un for, por ende exiten botones cuando el codigo es  "a1" "a2" "a3"...
 // y eso devuelve una lista [btn1, btn2, btn3]
-document.querySelectorAll('.btn-delete').forEach(boton => {
+document.querySelectorAll(".btn-delete").forEach((boton) => {
   // Para cada btn, escucha cuando lo hagan click
-  boton.addEventListener('click', function () {
+  boton.addEventListener("click", function () {
     const codigoEliminar = this.dataset.id;
     fetch(`/producto/${codigoEliminar}`, {
-      method: "DELETE"
-    })
-    .then(response => { //esto espera a que la termine con exito el fetch
+      method: "DELETE",
+    }).then((response) => {
+      //esto espera a que la termine con exito el fetch
       if (response.ok) {
-        location.reload() //recarga la pagina
+        location.reload(); //recarga la pagina
       }
-    })
-  })
+    });
+  });
 });
