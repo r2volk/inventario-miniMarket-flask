@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="card" style="margin-top: 0;">
+<section class="history-shell">
+<article class="card table-card history-card">
   <div class="card-header">
     <div>
+      <p class="section-eyebrow">Kardex</p>
       <h3 class="card-title">Registro de Movimientos</h3>
       <p class="card-subtitle">{{ movimientos|length }} movimientos en total</p>
     </div>
@@ -52,7 +54,8 @@
       </tbody>
     </table>
   </div>
-</div>
+</article>
+</section>
 
 <script>
   document.getElementById('search-hist').addEventListener('input', function() {

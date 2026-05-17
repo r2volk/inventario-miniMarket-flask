@@ -44,24 +44,34 @@ async function loadDashboard(tipo = "categoria") {
             : "Stock por producto",
 
           data: values,
-          backgroundColor: "#111827",
-          borderRadius: 8,
+          backgroundColor: "#18181b",
+          hoverBackgroundColor: "#000000",
+          borderColor: "#000000",
+          borderWidth: 0,
+          borderRadius: 10,
           borderSkipped: false,
-          barPercentage: 0.70,
-          categoryPercentage: 0.85,
+          barPercentage: 0.62,
+          categoryPercentage: 0.78,
         }],
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        animation: {
+          duration: 650,
+          easing: "easeOutQuart"
+        },
         plugins: {
           legend: { display: false },
           tooltip: {
-            backgroundColor: "#111827",
+            backgroundColor: "#09090b",
             titleColor: "#ffffff",
-            bodyColor: "#9ca3af",
-            padding: 10,
-            cornerRadius: 6,
+            bodyColor: "#d4d4d8",
+            borderColor: "#27272a",
+            borderWidth: 1,
+            padding: 12,
+            cornerRadius: 12,
+            displayColors: false,
             callbacks: {
               label: (ctx) => {
                 return tipo === "categoria"
@@ -76,17 +86,19 @@ async function loadDashboard(tipo = "categoria") {
             grid: { display: false },
             border: { display: false },
             ticks: {
-              color: "#9ca3af",
-              font: { family: "'Geist', sans-serif", size: 12 }
+              color: "#71717a",
+              font: { family: "'Geist', sans-serif", size: 11, weight: 500 },
+              maxRotation: 0,
+              autoSkip: true
             }
           },
           y: {
             beginAtZero: true,
-            grid: { color: "#f3f4f6" },
+            grid: { color: "#ececec" },
             border: { display: false },
             ticks: {
-              color: "#9ca3af",
-              font: { family: "'Geist', sans-serif", size: 12 },
+              color: "#a1a1aa",
+              font: { family: "'Geist', sans-serif", size: 11 },
               stepSize: 1
             }
           }
