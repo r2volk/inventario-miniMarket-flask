@@ -17,23 +17,31 @@ function openAddOutput() {
       const html = `
         <div class="overlay"></div>
         <div class="modal">
-          <h3>Registrar Salida</h3>
-          <p class="modal-desc">Egreso de productos por venta o consumo interno.</p>
-          <div class="row"><label>Producto *</label><select id="s-product">${options}</select></div>
-          <div class="row"><label>Cantidad *</label><input id="s-cant" type="number" value="1" min="1"></div>
-          <div class="row"><label>Vendedor</label><input id="s-user" value="Cajero 1"></div>
-          <div class="row">
-            <label>Motivo</label>
-            <select id="s-mot">
-              <option value="Venta al público">Venta al público</option>
-              <option value="Consumo interno">Consumo interno</option>
-              <option value="Merma/Vencido">Merma / Vencido</option>
-              <option value="Devolución">Devolución a Proveedor</option>
-            </select>
+          <div class="modal-header">
+            <div>
+              <span class="modal-kicker">Operación</span>
+              <h3>Registrar Salida</h3>
+              <p class="modal-desc">Egreso de productos por venta o consumo interno.</p>
+            </div>
+            <button class="modal-close" type="button" data-modal-close aria-label="Cerrar">×</button>
           </div>
-          <div class="actions">
-            <button id="s-cancel" class="btn">Cancelar</button>
-            <button id="s-save" class="btn danger">Confirmar salida</button>
+          <div class="modal-body form-grid">
+            <div class="row row--full"><label>Producto *</label><select id="s-product">${options}</select></div>
+            <div class="row"><label>Cantidad *</label><input id="s-cant" type="number" value="1" min="1"></div>
+            <div class="row"><label>Vendedor</label><input id="s-user" value="Cajero 1"></div>
+            <div class="row row--full">
+              <label>Motivo</label>
+              <select id="s-mot">
+                <option value="Venta al público">Venta al público</option>
+                <option value="Consumo interno">Consumo interno</option>
+                <option value="Merma/Vencido">Merma / Vencido</option>
+                <option value="Devolución">Devolución a Proveedor</option>
+              </select>
+            </div>
+          </div>
+          <div class="actions modal-actions">
+            <button id="s-cancel" class="btn btn-ghost">Cancelar</button>
+            <button id="s-save" class="btn btn-dark btn-danger">Confirmar salida</button>
           </div>
         </div>`;
 

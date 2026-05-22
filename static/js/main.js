@@ -10,6 +10,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnAddEntry    = document.getElementById("btn-add-entry");
   const btnAddOutput   = document.getElementById("btn-add-output");
   const btnAddProvider = document.getElementById("btn-add-provider");
+  const heroAddEntry   = document.getElementById("hero-add-entry");
+  const heroAddProduct = document.getElementById("hero-add-product");
   const btnRefresh     = document.getElementById("btn-refresh");
   const searchInput    = document.getElementById("search");
   const searchBtn      = document.getElementById("search-btn");
@@ -23,6 +25,8 @@ document.addEventListener("DOMContentLoaded", function () {
   btnAddEntry    && btnAddEntry.addEventListener("click", openAddEntry);
   btnAddOutput   && btnAddOutput.addEventListener("click", openAddOutput);
   btnAddProvider && btnAddProvider.addEventListener("click", openAddProvider);
+  heroAddEntry   && heroAddEntry.addEventListener("click", openAddEntry);
+  heroAddProduct && heroAddProduct.addEventListener("click", openAddProduct);
   // () => location.reload() → function que recarga la página completa
   btnRefresh     && btnRefresh.addEventListener("click", () => location.reload());
 

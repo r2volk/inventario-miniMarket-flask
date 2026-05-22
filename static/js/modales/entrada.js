@@ -33,17 +33,25 @@ function openAddEntry() {
     const html = `
       <div class="overlay"></div>
       <div class="modal">
-        <h3>Registrar Entrada (Compra)</h3>
-        <p class="modal-desc">Ingreso de mercadería al stock del almacén.</p>
-        <div class="row"><label>Producto *</label><select id="e-product">${prodOptions}</select></div>
-        <div class="row"><label>Proveedor *</label><select id="e-provider">${provOptions}</select></div>
-        <div class="row"><label>Cantidad *</label><input id="e-cant" type="number" value="1" min="1"></div>
-        <div class="row"><label>Vencimiento</label><input id="e-venc" type="date"></div>
-        <div class="row"><label>Responsable</label><input id="e-user" value="Almacenero"></div>
-        <div class="row"><label>Motivo</label><input id="e-mot" value="Reposición de Stock"></div>
-        <div class="actions">
-          <button id="e-save" class="btn success">Confirmar Ingreso</button>
-          <button id="e-cancel" class="btn">Cancelar</button>
+        <div class="modal-header">
+          <div>
+            <span class="modal-kicker">Operación</span>
+            <h3>Registrar Entrada</h3>
+            <p class="modal-desc">Ingreso de mercadería al stock del almacén.</p>
+          </div>
+          <button class="modal-close" type="button" data-modal-close aria-label="Cerrar">×</button>
+        </div>
+        <div class="modal-body form-grid">
+          <div class="row row--full"><label>Producto *</label><select id="e-product">${prodOptions}</select></div>
+          <div class="row row--full"><label>Proveedor *</label><select id="e-provider">${provOptions}</select></div>
+          <div class="row"><label>Cantidad *</label><input id="e-cant" type="number" value="1" min="1"></div>
+          <div class="row"><label>Vencimiento</label><input id="e-venc" type="date"></div>
+          <div class="row"><label>Responsable</label><input id="e-user" value="Almacenero"></div>
+          <div class="row"><label>Motivo</label><input id="e-mot" value="Reposición de Stock"></div>
+        </div>
+        <div class="actions modal-actions">
+          <button id="e-cancel" class="btn btn-ghost">Cancelar</button>
+          <button id="e-save" class="btn btn-dark">Confirmar ingreso</button>
         </div>
       </div>`;
 

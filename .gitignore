@@ -1,0 +1,20 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Entorno virtual
+venv/
+env/
+.env
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverrideFile
+
+# Editores
+.vscode/
+.idea/
+*.swp

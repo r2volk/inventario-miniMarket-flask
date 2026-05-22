@@ -1,0 +1,97 @@
+/* tables.css — Inventory and Kardex table styling with clean headers, hover states, and mobile overflow. */
+
+.table-wrap {
+  width: 100%;
+  overflow: auto;
+  padding: 0 10px 12px;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+
+.table {
+  width: 100%;
+  min-width: 860px;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: var(--text-soft);
+}
+
+.table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  height: 44px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.96);
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-align: left;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.table th,
+.table td {
+  padding: 13px 14px;
+}
+
+.table tbody tr {
+  transition: background 150ms ease, transform 150ms ease;
+}
+
+.table tbody tr:nth-child(even) {
+  background: rgba(250, 250, 250, 0.72);
+}
+
+.table tbody tr:hover {
+  background: #f3f3f4;
+}
+
+.table tbody td {
+  border-bottom: 1px solid rgba(228, 228, 231, 0.78);
+  font-size: 13px;
+  vertical-align: middle;
+}
+
+.td-name {
+  color: var(--text);
+  font-weight: 620;
+}
+
+.td-price,
+.td-date {
+  color: var(--text-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.td-desc {
+  max-width: 320px;
+  overflow: hidden;
+  color: var(--text-muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.th-actions {
+  width: 92px;
+  text-align: center;
+}
+
+.table td:last-child {
+  text-align: center;
+}
+
+.history-card .table {
+  min-width: 780px;
+}
+
+@media (max-width: 780px) {
+  .table-wrap {
+    margin-right: -6px;
+    margin-left: -6px;
+    padding-right: 6px;
+    padding-left: 6px;
+  }
+}
