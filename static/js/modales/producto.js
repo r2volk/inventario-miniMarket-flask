@@ -3,29 +3,42 @@ function openAddProduct() {
   // Construimos el HTML completo del modal como una plantilla literal
   const html = `
     <div class="overlay"></div>
+
     <div class="modal">
       <div class="modal-header">
         <div>
           <span class="modal-kicker">Catálogo</span>
           <h3>Nuevo Producto</h3>
-          <p class="modal-desc">Completa los datos para registrar un producto al inventario.</p>
+          <p class="modal-desc">
+            Completa los datos para registrar un producto al inventario.
+          </p>
         </div>
-        <button class="modal-close" type="button" data-modal-close aria-label="Cerrar">×</button>
+
+        <button
+          class="modal-close"
+          type="button"
+          data-modal-close
+          aria-label="Cerrar"
+        >
+          ×
+        </button>
       </div>
-<<<<<<< HEAD
-      <div class="row"><label>P. Compra (S/)</label><input id="p-pcompra" type="number" min="0" step="0.10" value="0.00"></div>
-      <div class="row"><label>P. Venta (S/)</label><input id="p-pventa" type="number" min="0" step="0.10" value="0.00"></div>
-      <div class="row"><label>Stock mínimo</label><input id="p-stockmin" type="number" min="0" value="5"></div>
-      <div class="row"><label>Descripción</label><input id="p-desc" placeholder="Opcional"></div>
-      <div class="actions">
-        <button id="p-cancel" class="btn">Cancelar</button>
-        <button id="p-save" class="btn primary">Guardar producto</button>
-=======
+
       <div class="modal-body form-grid">
-        <div class="row"><label>Código *</label><input id="p-codigo" placeholder="Ej: ARR001"></div>
-        <div class="row"><label>Nombre *</label><input id="p-nombre" placeholder="Ej: Arroz Extra"></div>
+
+        <div class="row">
+          <label>Código *</label>
+          <input id="p-codigo" placeholder="Ej: ARR001">
+        </div>
+
+        <div class="row">
+          <label>Nombre *</label>
+          <input id="p-nombre" placeholder="Ej: Arroz Extra">
+        </div>
+
         <div class="row row--full">
           <label>Categoría</label>
+
           <select id="p-cat">
             <option value="Frutas y Verduras">Frutas y Verduras</option>
             <option value="Carnes">Carnes</option>
@@ -54,25 +67,72 @@ function openAddProduct() {
             <option value="Comida Preparada">Comida Preparada</option>
           </select>
         </div>
-        <div class="row"><label>P. Compra (S/)</label><input id="p-pcompra" type="number" step="0.10" value="0.00"></div>
-        <div class="row"><label>P. Venta (S/)</label><input id="p-pventa" type="number" step="0.10" value="0.00"></div>
-        <div class="row"><label>Stock mínimo</label><input id="p-stockmin" type="number" value="5"></div>
-        <div class="row row--full"><label>Descripción</label><input id="p-desc" placeholder="Opcional"></div>
-      </div>
-      <div class="actions modal-actions">
-        <button id="p-cancel" class="btn btn-ghost">Cancelar</button>
-        <button id="p-save" class="btn btn-dark">Guardar producto</button>
->>>>>>> 7c1e95e2ce4a4c101cff5511420fbf27051c337b
-      </div>
-    </div>`;
 
-  // abrirModal() está definida en utils.js -> inyecta el HTML en #modal-root
+        <div class="row">
+          <label>P. Compra (S/)</label>
+
+          <input
+            id="p-pcompra"
+            type="number"
+            min="0"
+            step="0.10"
+            value="0.00"
+          >
+        </div>
+
+        <div class="row">
+          <label>P. Venta (S/)</label>
+
+          <input
+            id="p-pventa"
+            type="number"
+            min="0"
+            step="0.10"
+            value="0.00"
+          >
+        </div>
+
+        <div class="row">
+          <label>Stock mínimo</label>
+
+          <input
+            id="p-stockmin"
+            type="number"
+            min="0"
+            value="5"
+          >
+        </div>
+
+        <div class="row row--full">
+          <label>Descripción</label>
+
+          <input
+            id="p-desc"
+            placeholder="Opcional"
+          >
+        </div>
+
+      </div>
+
+      <div class="actions modal-actions">
+        <button id="p-cancel" class="btn btn-ghost">
+          Cancelar
+        </button>
+
+        <button id="p-save" class="btn btn-dark">
+          Guardar producto
+        </button>
+      </div>
+    </div>
+  `;
+
+  // abrirModal() está definida en utils.js
   abrirModal(html);
 
-  // Boton cancelar, cerrarModal() esta en utils.js -> vacía #modal-root
+  // Botón cancelar
   document.getElementById("p-cancel").addEventListener("click", cerrarModal);
 
-  // Boton guardar, recoge los datos y los envía al servidor
+  // Botón guardar
   document.getElementById("p-save").addEventListener("click", guardarProducto);
 }
 
@@ -88,33 +148,37 @@ async function guardarProducto() {
     descripcion: document.getElementById("p-desc").value,
   };
 
-  // postForm() está en utils.js → hace el fetch POST y maneja éxito/error
+  // postForm() está en utils.js
   await postForm(
     "/add_product",
     data,
+
     () => {
       showToast("Producto registrado correctamente", "success");
+
       cerrarModal();
-      setTimeout(() => location.reload(), 1200);
+
+      setTimeout(() => {
+        location.reload();
+      }, 1200);
     },
-    (msg) => showToast(msg, "error"),
+
+    (msg) => {
+      showToast(msg, "error");
+    },
   );
 }
 
-// Funcion para eliminar un producto
-// usamos "document.querySelectorAll('.btn-delete').forEach(boton => {" porque tenemos varios botones btn-delete
-// ya que usamos eso en un for, por ende exiten botones cuando el codigo es  "a1" "a2" "a3"...
-// y eso devuelve una lista [btn1, btn2, btn3]
+// Función para eliminar un producto
 document.querySelectorAll(".btn-delete").forEach((boton) => {
-  // Para cada btn, escucha cuando lo hagan click
   boton.addEventListener("click", function () {
     const codigoEliminar = this.dataset.id;
+
     fetch(`/producto/${codigoEliminar}`, {
       method: "DELETE",
     }).then((response) => {
-      //esto espera a que la termine con exito el fetch
       if (response.ok) {
-        location.reload(); //recarga la pagina
+        location.reload();
       }
     });
   });
