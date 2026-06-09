@@ -1,11 +1,6 @@
-// ============================================================
-// dashboard.js — Carga datos del dashboard y renderiza el gráfico
-// ============================================================
-
 let chartInstance = null;
 
-async function loadDashboard(tipo = "categoria") {
-
+async function renderGrafico(tipo = "categoria") {
   const ctx = document.getElementById("myChart");
   if (!ctx) return;
 
@@ -13,27 +8,11 @@ async function loadDashboard(tipo = "categoria") {
     const res  = await fetch("/api/dashboard");
     const data = await res.json();
 
-    // MÉTRICAS
-    const setVal = (id, val) => {
-      const el = document.getElementById(id);
-      if (el) el.textContent = val;
-    };
-
-    setVal("dash-total",       data.total);
-    setVal("dash-alertas",     data.alertas);
-    setVal("dash-valor",       "S/ " + data.valor.toFixed(2));
-    setVal("dash-vencimiento", data.vencimiento);
-
-    // DATOS DEL GRÁFICO
     const labels = data[tipo].labels;
     const values = data[tipo].values;
 
-    // DESTRUIR GRÁFICO ANTERIOR
-    if (chartInstance) {
-      chartInstance.destroy();
-    }
+    if (chartInstance) chartInstance.destroy();
 
-    // CREAR NUEVO GRÁFICO
     chartInstance = new Chart(ctx, {
       type: "bar",
       data: {
@@ -42,7 +21,6 @@ async function loadDashboard(tipo = "categoria") {
           label: tipo === "categoria"
             ? "Productos por categoría"
             : "Stock por producto",
-
           data: values,
           backgroundColor: "#18181b",
           hoverBackgroundColor: "#000000",
@@ -57,10 +35,7 @@ async function loadDashboard(tipo = "categoria") {
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        animation: {
-          duration: 650,
-          easing: "easeOutQuart"
-        },
+        animation: { duration: 650, easing: "easeOutQuart" },
         plugins: {
           legend: { display: false },
           tooltip: {
@@ -107,19 +82,18 @@ async function loadDashboard(tipo = "categoria") {
     });
 
   } catch (e) {
-    console.error("Error al cargar el dashboard:", e);
+    console.error("Error al cargar el gráfico:", e);
   }
 }
 
-
-function loadDashboard2() {
+function initGrafico() {
   const buttons = document.querySelectorAll('.toggle-btn');
   buttons.forEach(btn => {
     btn.addEventListener('click', () => {
       buttons.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      loadDashboard(btn.dataset.grafico);
+      renderGrafico(btn.dataset.grafico);
     });
   });
-  loadDashboard("categoria");
+  renderGrafico("categoria");
 }

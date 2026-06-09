@@ -1,0 +1,111 @@
+.kpi-grid-2x2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.kpi-card {
+  position: relative;
+  display: grid;
+  min-height: 204px;
+  overflow: hidden;
+  align-content: start;
+  border: 1px solid rgba(228, 228, 231, 0.94);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(250, 250, 250, 0.92));
+  box-shadow: var(--shadow-xs);
+  transition: border-color 170ms ease, box-shadow 170ms ease, transform 170ms ease;
+}
+
+.kpi-card:hover {
+  border-color: #d4d4d8;
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-2px);
+}
+
+.kpi-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.kpi-label {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 620;
+}
+
+.kpi-icon {
+  display: inline-grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #ffffff;
+  color: var(--text);
+}
+
+.kpi-icon--red { color: var(--danger); }
+.kpi-icon--amber { color: var(--warning); }
+.kpi-icon--green { color: var(--success); }
+
+.kpi-value {
+  margin: 28px 0 7px;
+  color: var(--text);
+  font-size: clamp(28px, 3vw, 42px);
+  font-weight: 680;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.kpi-value--red { color: var(--danger); }
+.kpi-value--amber { color: var(--warning); }
+
+.kpi-value--green {
+  color: var(--success);
+  font-size: clamp(28px, 2.45vw, 36px);
+  line-height: 1.08;
+  overflow-wrap: anywhere;
+}
+
+.kpi-change {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 520;
+}
+
+.mini-spark {
+  position: absolute;
+  right: 16px;
+  bottom: 15px;
+  display: flex;
+  align-items: end;
+  gap: 4px;
+  height: 38px;
+  opacity: 0.72;
+}
+
+.mini-spark span {
+  width: 6px;
+  border-radius: 999px;
+  background: #d4d4d8;
+}
+
+.mini-spark span:nth-child(1) { height: 16px; }
+.mini-spark span:nth-child(2) { height: 25px; }
+.mini-spark span:nth-child(3) { height: 20px; }
+.mini-spark span:nth-child(4) { height: 34px; background: #18181b; }
+
+.mini-spark--alert span:nth-child(4) { background: var(--danger); }
+.mini-spark--muted span:nth-child(4) { background: var(--warning); }
+.mini-spark--value span:nth-child(4) { background: var(--success); }
+
+@media (max-width: 860px) {
+  .kpi-grid-2x2 {
+    grid-template-columns: 1fr;
+  }
+}

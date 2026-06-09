@@ -1,0 +1,137 @@
+.side-panel {
+  display: flex;
+  height: clamp(520px, 68vh, 760px);
+  flex-direction: column;
+  gap: 16px;
+}
+
+.activity-card {
+  flex: 0 0 auto;
+}
+
+.activity-list {
+  display: grid;
+  gap: 4px;
+  padding: 0 14px 16px;
+}
+
+.activity-item {
+  display: grid;
+  grid-template-columns: 10px minmax(0, 1fr);
+  gap: 12px;
+  padding: 12px 8px;
+  border-radius: 13px;
+  transition: background 160ms ease;
+}
+
+.activity-item:hover {
+  background: #f6f6f7;
+}
+
+.activity-dot {
+  width: 7px;
+  height: 7px;
+  margin-top: 7px;
+  border-radius: 999px;
+  background: #a1a1aa;
+}
+
+.activity-dot--in { background: var(--success); }
+.activity-dot--out { background: var(--danger); }
+
+.activity-item strong {
+  display: block;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 620;
+}
+
+.activity-item p {
+  margin: 3px 0 0;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.inventory-health-card {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  flex-direction: column;
+}
+
+.health-list {
+  display: grid;
+  gap: 18px;
+  padding: 6px 22px 18px;
+}
+
+.health-item {
+  display: grid;
+  gap: 9px;
+}
+
+.health-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 560;
+}
+
+.health-row strong {
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 660;
+}
+
+.health-track {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #eeeeef;
+}
+
+.health-track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #18181b;
+}
+
+.health-track--danger span {
+  background: var(--danger);
+}
+
+.health-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: auto 16px 16px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fafafa;
+}
+
+.health-note-dot {
+  width: 8px;
+  height: 8px;
+  margin-top: 5px;
+  border-radius: 999px;
+  background: #18181b;
+}
+
+.health-note p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+@media (max-width: 1160px) {
+  .side-panel {
+    display: none;
+  }
+}

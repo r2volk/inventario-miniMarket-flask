@@ -1,0 +1,50 @@
+.dashboard-shell {
+  display: grid;
+  gap: 22px;
+}
+
+.dashboard-hero {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 6px 2px 2px;
+}
+
+.dashboard-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1.42fr) minmax(390px, 0.9fr);
+  gap: 20px;
+  align-items: stretch;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 1280px) and (min-width: 1161px) {
+  .dashboard-top {
+    grid-template-columns: minmax(0, 1fr) minmax(390px, 0.74fr);
+  }
+}
+
+@media (max-width: 1160px) {
+  .dashboard-top,
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 860px) {
+  .dashboard-hero,
+  .dashboard-top {
+    align-items: stretch;
+  }
+
+  .dashboard-hero {
+    flex-direction: column;
+  }
+}

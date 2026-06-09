@@ -1,0 +1,18 @@
+.chart-card {
+  display: flex;
+  min-height: 430px;
+  flex-direction: column;
+}
+
+.chart-container {
+  position: relative;
+  flex: 1;
+  min-height: 320px;
+  padding: 10px 18px 22px;
+}
+
+@media (max-width: 860px) {
+  .chart-card {
+    min-height: 360px;
+  }
+}

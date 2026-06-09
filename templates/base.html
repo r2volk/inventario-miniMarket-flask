@@ -10,13 +10,13 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
   <script src="{{ url_for('static', filename='js/utils.js') }}" defer></script>
-  <script src="{{ url_for('static', filename='js/dashboard.js') }}" defer></script>
   <script src="{{ url_for('static', filename='js/modales/producto.js') }}" defer></script>
   <script src="{{ url_for('static', filename='js/modales/proveedor.js') }}" defer></script>
   <script src="{{ url_for('static', filename='js/modales/entrada.js') }}" defer></script>
   <script src="{{ url_for('static', filename='js/modales/salida.js') }}" defer></script>
   <script src="{{ url_for('static', filename='js/ui.js') }}" defer></script>
   <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+  {% block extra_head %}{% endblock %}
 </head>
 <body>
 

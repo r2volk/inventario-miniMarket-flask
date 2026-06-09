@@ -19,7 +19,7 @@ def index():
 
     # render_template() busca el archivo en la carpeta /templates
     # productos=productos → pasa la lista al HTML para que pueda mostrarla con Jinja2
-    return render_template("index.html", productos=productos)
+    return render_template("dashboard/dashboard.html", productos=productos)
 
 
 # DELETE - eliminar producto

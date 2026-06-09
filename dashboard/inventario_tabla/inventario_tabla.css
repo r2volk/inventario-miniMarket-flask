@@ -1,0 +1,25 @@
+.table-card {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.inventory-table-card {
+  display: flex;
+  height: clamp(520px, 68vh, 760px);
+  flex-direction: column;
+}
+
+.inventory-table-card .card-header {
+  flex: 0 0 auto;
+}
+
+.inventory-table-card .table-wrap {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+@media (max-width: 860px) {
+  .inventory-table-card {
+    height: min(640px, 72vh);
+  }
+}

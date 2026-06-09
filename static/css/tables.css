@@ -1,5 +1,10 @@
 /* tables.css — Inventory and Kardex table styling with clean headers, hover states, and mobile overflow. */
 
+.history-shell {
+  display: grid;
+  gap: 22px;
+}
+
 .table-wrap {
   width: 100%;
   overflow: auto;
