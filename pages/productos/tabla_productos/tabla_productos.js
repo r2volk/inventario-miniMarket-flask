@@ -15,4 +15,14 @@ function initTablaProductos() {
   }
 
   searchBtn.addEventListener("click", applySearch);
+
+  // Eliminar producto
+  document.querySelectorAll(".btn-delete").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      const codigo = this.dataset.id;
+      fetch("/producto/" + codigo, { method: "DELETE" }).then(function (r) {
+        if (r.ok) location.reload();
+      });
+    });
+  });
 }
