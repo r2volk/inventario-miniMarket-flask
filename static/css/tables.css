@@ -1,5 +1,10 @@
 /* tables.css — Inventory and Kardex table styling with clean headers, hover states, and mobile overflow. */
 
+.table-card {
+  min-width: 0;
+  overflow: hidden;
+}
+
 .table-wrap {
   width: 100%;
   overflow: auto;

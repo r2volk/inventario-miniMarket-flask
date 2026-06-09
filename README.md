@@ -59,7 +59,7 @@ Registro unificado de todos los movimientos (entradas y salidas) con buscador en
     *   **Salidas:** Registro de ventas o consumos con validación de existencias en tiempo real para evitar stocks negativos.
 *   🔎 **Buscadores Interactivos en Caliente:** Filtros instantáneos en la tabla de productos y de historial (Kardex) que procesan el texto en el DOM al escribir.
 *   🗑️ **Mantenimiento Simplificado:** Eliminación directa de productos del catálogo desde la misma interfaz con actualización asíncrona.
-*   ⚙️ **Diseño de Hojas de Estilo Modular:** Hojas de estilos divididas de forma estructurada (`tokens`, `reset`, `layout`, `components`, `sidebar`, `tables`, `dashboard`, `login`) para facilitar el mantenimiento y escalabilidad del frontend.
+*   ⚙️ **Diseño de Hojas de Estilo Modular:** Hojas de estilos divididas de forma estructurada (`base`, `sidebar`, `components`, `tables`) para facilitar el mantenimiento y escalabilidad del frontend. Cada página carga además sus propios estilos específicos desde su carpeta en `pages/`.
 
 ---
 

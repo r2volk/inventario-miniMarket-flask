@@ -42,11 +42,6 @@ body {
   mask-image: linear-gradient(to bottom, #000 0%, transparent 78%);
 }
 
-.orb,
-.corner {
-  display: none;
-}
-
 .page {
   position: relative;
   display: grid;
@@ -305,10 +300,6 @@ body {
   color: var(--muted);
   font-size: 12px;
   text-align: center;
-}
-
-.success-overlay {
-  display: none;
 }
 
 .ripple {

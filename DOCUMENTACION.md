@@ -23,48 +23,79 @@ gestion-minimarket/
 │
 ├── app.py               # Punto de entrada y configuración de la app Flask (factoría create_app)
 ├── config.py            # Configuración de variables globales y rutas del sistema (DB_PATH)
+├── base.html            # Template base Jinja2 (sidebar, topbar, carga de assets globales)
 ├── reset_db.py          # Script de utilidad para inicializar o reiniciar las tablas en SQLite
 ├── inventario.db        # Archivo físico de la base de datos SQLite (se genera localmente)
+│
+├── login/               # Página de autenticación (independiente, no hereda de base.html)
+│   ├── login.html       #   Interfaz de inicio de sesión (split-panel con formulario)
+│   ├── login.css        #   Estilos de la pantalla de login (modo oscuro + glassmorphism)
+│   └── login.js         #   Validación cliente, toggle de contraseña y ripple en botón
 │
 ├── imgs/                # Capturas de pantalla e imágenes ilustrativas del sistema
 │
 ├── models/              # Modelos y utilidades de la base de datos
-│   └── db.py            # Función get_db() para gestionar la conexión SQLite
+│   └── db.py            #   Función get_db() para gestionar la conexión SQLite
 │
 ├── rutas/               # Controladores agrupados en Blueprints (Rutas y endpoints)
-│   ├── __init__.py      # Inicializador del paquete de rutas
-│   ├── api.py           # Endpoints JSON para el dashboard y listados de la API
-│   ├── auth.py          # Rutas de autenticación (Login, Logout y manejo de sesión)
-│   ├── movimientos.py   # Registro de entradas, salidas y consulta de historial
-│   ├── productos.py     # Rutas de administración y eliminación del catálogo de productos
-│   └── proveedores.py   # Rutas para el registro de nuevos proveedores
+│   ├── __init__.py      #   Inicializador del paquete de rutas
+│   ├── api.py           #   Endpoints JSON públicos (/api/products, /api/providers)
+│   ├── auth.py          #   Rutas de autenticación (Login, Logout y manejo de sesión)
+│   ├── dashboard_api.py #   Endpoints JSON del dashboard (/api/dashboard, /api/recent-activity)
+│   ├── movimientos.py   #   Registro de entradas, salidas y consulta de historial
+│   ├── operaciones.py   #   Ruta /operaciones (página de entrada/salida de stock)
+│   ├── productos.py     #   Rutas del catálogo: dashboard (/), /productos, /add_product, DELETE
+│   └── proveedores.py   #   Rutas de proveedores: /proveedores, /add_provider
+│
+├── pages/               # Vistas organizadas por página (patrón modular tipo widget)
+│   ├── administrador/   #   Dashboard principal (panel de control)
+│   │   ├── administrador.html
+│   │   ├── administrador.css
+│   │   ├── administrador.js
+│   │   ├── grafico/           # Gráfico Chart.js con toggle Categorías/Productos
+│   │   ├── kpi_card/          # Tarjetas KPI (total productos, alertas, valor, vencimientos)
+│   │   ├── resumen_tablas/    # Mini-tablas laterales (productos + proveedores)
+│   │   └── actividad_reciente/# Modal de actividad reciente + pulso de inventario
+│   │
+│   ├── productos/       #   Gestión de catálogo de productos
+│   │   ├── productos.html
+│   │   ├── productos.css
+│   │   ├── productos.js
+│   │   ├── tabla_productos/  # Tabla completa con búsqueda en caliente y eliminación
+│   │   └── nuevo_producto/   # Formulario de registro de productos
+│   │
+│   ├── proveedores/     #   Gestión de proveedores
+│   │   ├── proveedores.html
+│   │   ├── proveedores.css
+│   │   ├── proveedores.js
+│   │   ├── tabla_proveedores/ # Tabla de proveedores
+│   │   └── nuevo_proveedor/   # Formulario de registro de proveedores
+│   │
+│   ├── operaciones/     #   Registro de entradas y salidas de stock
+│   │   ├── operaciones.html
+│   │   ├── operaciones.css
+│   │   ├── operaciones.js
+│   │   ├── registrar_entrada/ # Formulario de entrada de mercancía
+│   │   └── registrar_salida/  # Formulario de salida de mercancía
+│   │
+│   └── historial/       #   Kardex de movimientos
+│       ├── historial.html
+│       ├── historial.css
+│       ├── historial.js
+│       └── tabla_movimientos/ # Tabla unificada entradas+salidas con buscador
 │
 ├── static/              # Recursos estáticos servidos directamente al cliente
-│   ├── css/             # Hojas de estilo estructuradas por módulos
-│   │   ├── base.css       # Estilos globales, variables CSS (Tokens) y reset base
-│   │   ├── layout.css     # Estructura grid y posicionamiento de paneles principales
-│   │   ├── sidebar.css    # Estilos de la barra lateral de navegación colapsable
-│   │   ├── components.css # Estilos de botones, selectores, modales, toasts y badges
-│   │   ├── dashboard.css  # Estilos para las tarjetas KPI y contenedores de gráficos
-│   │   ├── tables.css     # Formato de las tablas de datos e historial
-│   │   ├── login.css      # Estilos premium del portal de inicio de sesión
-│   │   └── main.css       # Archivo de importaciones generales (entrypoint CSS)
+│   ├── css/             #   Hojas de estilo globales (entrypoint: main.css)
+│   │   ├── main.css       #   Archivo de importaciones generales
+│   │   ├── base.css       #   Variables CSS (tokens), reset, page-shell, topbar, responsive
+│   │   ├── sidebar.css    #   Barra lateral colapsable con navegación
+│   │   ├── components.css #   Cards, botones, badges, modales, toasts, inputs
+│   │   └── tables.css     #   Formato de tablas de datos e historial
 │   │
-│   └── js/              # Código JavaScript para interactividad en el cliente
-│       ├── main.js        # Configura listeners globales y el buscador de productos
-│       ├── utils.js       # Funciones comunes (gestión de modales, toasts y envío asíncrono POST)
-│       ├── dashboard.js   # Maneja consultas HTTP a la API y dibuja gráficos con Chart.js
-│       └── modales/       # Scripts individuales que renderizan y validan formularios dinámicos
-│           ├── producto.js   # Modal para añadir productos y lógica para eliminar elementos
-│           ├── proveedor.js  # Modal para registrar datos de proveedores
-│           ├── entrada.js    # Modal para ingresar stock (solicita datos de productos/proveedores)
-│           └── salida.js     # Modal para registrar salidas de stock con validación local
-│
-└── templates/           # Vistas en HTML renderizadas mediante el motor Jinja2
-    ├── base.html        # Estructura base común (Sidebar, Topbar y carga secuencial de scripts)
-    ├── index.html       # Panel de control (Dashboard, Gráficos y Tabla de Productos)
-    ├── historial.html   # Vista del Kardex histórico de movimientos con buscador local
-    └── login.html       # Interfaz de inicio de sesión para control de acceso
+│   └── js/              #   JavaScript compartido entre todas las páginas
+│       ├── utils.js       #   Funciones comunes (modales, toasts, postForm, buildOptions)
+│       ├── ui.js          #   Sidebar toggle, cierre de modales (clic/Escape)
+│       └── main.js        #   Listeners globales (botón refresh, actividad reciente)
 ```
 
 ---
@@ -179,15 +210,14 @@ El sistema implementa un esquema de seguridad simple mediante sesiones cifradas 
     ```python
     @app.before_request
     def require_login():
-        rutas_publicas = {"auth.login", "static"}
-        # Si el endpoint pertenece al Blueprint de la API, se exime de autenticación
-        if request.blueprint == "api":
+        rutas_publicas = {"auth.login", "static", "scrn_assets"}
+        if request.blueprint in ("api", "dashboard_api"):
             return
         if not session.get("autenticado"):
             if request.endpoint not in rutas_publicas:
                 return redirect(url_for("auth.login"))
     ```
-*   **Excepciones Públicas:** La carpeta `static` (CSS, JS, imágenes), la ruta `/login` y los endpoints del Blueprint de la `/api` están configurados para ser de libre consulta. Las demás rutas HTML redirigen automáticamente a `/login` si no se detecta sesión activa.
+*   **Excepciones Públicas:** Los blueprints `api` y `dashboard_api`, la carpeta `static`, la ruta `/scrn/` (assets de páginas) y `/login` están configurados como acceso libre. El resto de rutas redirigen a `/login` si no hay sesión activa.
 
 ---
 
@@ -208,6 +238,7 @@ La aplicación Flask se organiza utilizando **Blueprints** para agrupar rutas se
 | Método | Ruta | Función | Descripción | Respuesta |
 | :--- | :--- | :--- | :--- | :--- |
 | **GET** | `/` | `index()` | Página principal del dashboard. Envía lista de productos. | `HTML` (Jinja2) |
+| **GET** | `/productos` | `productos_page()` | Página de gestión de catálogo de productos. | `HTML` (Jinja2) |
 | **POST** | `/add_product` | `add_product()` | Registra un nuevo producto validando unicidad de código. | `JSON`: `{"ok": true, "msg": "..."}` |
 | **DELETE**| `/producto/<codigo>` | `eliminar_producto()` | Elimina físicamente un producto según su código. | `JSON`: `{"ok": true, "msg": "..."}` |
 
@@ -223,16 +254,24 @@ La aplicación Flask se organiza utilizando **Blueprints** para agrupar rutas se
 
 | Método | Ruta | Función | Descripción | Respuesta |
 | :--- | :--- | :--- | :--- | :--- |
+| **GET** | `/proveedores` | `proveedores_page()` | Página de gestión de proveedores. | `HTML` (Jinja2) |
 | **POST** | `/add_provider` | `add_provider()` | Registra un nuevo proveedor validando unicidad de RUC. | `JSON`: `{"ok": true, "msg": "..."}` |
 
-### 5.5 Endpoints JSON de la API (`rutas/api.py`)
-Todas las rutas de este bloque inician automáticamente con el prefijo `/api` por configuración del Blueprint.
+### 5.5 Rutas de Operaciones (`rutas/operaciones.py`)
 
 | Método | Ruta | Función | Descripción | Respuesta |
 | :--- | :--- | :--- | :--- | :--- |
-| **GET** | `/api/products` | `api_products()` | Lista los productos registrados para rellenar selects. | `JSON` (`[{id, codigo, nombre, stock}]`) |
-| **GET** | `/api/providers` | `api_providers()` | Lista los proveedores registrados para rellenar selects. | `JSON` (`[{id, ruc, nombre}]`) |
-| **GET** | `/api/dashboard` | `api_dashboard()` | Retorna métricas analíticas e información de gráficos. | `JSON` (Métricas + datasets de Chart.js) |
+| **GET** | `/operaciones` | `operaciones()` | Página de registro de entradas y salidas de stock. | `HTML` (Jinja2) |
+
+### 5.6 Endpoints JSON de la API (`rutas/api.py` y `rutas/dashboard_api.py`)
+Todas las rutas de este bloque inician automáticamente con el prefijo `/api` por configuración del Blueprint.
+
+| Método | Ruta | Blueprint | Función | Descripción | Respuesta |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **GET** | `/api/products` | `api` | `api_products()` | Lista los productos registrados para rellenar selects. | `JSON` (`[{id, codigo, nombre, stock}]`) |
+| **GET** | `/api/providers` | `api` | `api_providers()` | Lista los proveedores registrados para rellenar selects. | `JSON` (`[{id, ruc, nombre}]`) |
+| **GET** | `/api/dashboard` | `dashboard_api` | `api_dashboard()` | Retorna métricas analíticas (totales, alertas, valor, distribución por categoría, stock por producto). | `JSON` |
+| **GET** | `/api/recent-activity` | `dashboard_api` | `api_recent_activity()` | Retorna los últimos 12 movimientos (entradas + salidas) con fecha formateada. | `JSON` |
 
 ---
 
@@ -240,21 +279,15 @@ Todas las rutas de este bloque inician automáticamente con el prefijo `/api` po
 
 La interfaz de usuario ha sido renovada bajo una estética premium moderna y limpia, utilizando CSS puro y estructurado de forma modular, apoyada con JavaScript moderno (ES6).
 
-### 6.1 Lógica de Modales Dinámicos (`static/js/utils.js` y `modales/`)
-El sistema utiliza ventanas modales dinámicas inyectadas directamente en un elemento contenedor `#modal-root`. Esto permite completar flujos de datos sin recargar la página.
+### 6.1 Formularios en línea (por página)
 
-1.  **Apertura e Inyección:** Al hacer clic en un botón operativo, se llama a una función (e.g. `openAddProduct()`) que contiene una plantilla HTML en forma de string. Esta se inyecta utilizando la función auxiliar `abrirModal(html)`.
-2.  **Cierre:** La función `cerrarModal()` simplemente vacía el contenedor (`innerHTML = ""`).
-3.  **Consultas Concurrentes (Promise.all):** Al abrir el modal de entradas, se deben rellenar selectores dinámicos de productos y proveedores de manera simultánea. Para evitar bloqueos, se usa `Promise.all` para lanzar ambos fetches en paralelo antes de renderizar el modal:
-    ```javascript
-    Promise.all([
-      fetch("/api/products").then(r => r.json()),
-      fetch("/api/providers").then(r => r.json())
-    ]).then(([products, providers]) => { ... });
-    ```
+Cada página tiene sus formularios directamente en su HTML, sin usar modales dinámicos inyectados desde JavaScript. Los formularios se incluyen mediante `{% include "pages/<page>/<widget>/<widget>.html" %}` y se envían asíncronamente con `postForm()`, evitando recargas de página.
 
-#### Formularios Modales del Sistema
-A continuación se muestran las capturas de las interfaces modales dinámicas implementadas:
+Las funciones de utilidad `cerrarModal()`, `abrirModal(html)`, `showToast(msg, type)` y `postForm(url, data, onOk, onError)` viven en `static/js/utils.js` y se usan desde cualquier widget que lo necesite.
+
+#### Formularios del Sistema
+
+A continuación se muestran las capturas de las interfaces de formularios implementadas:
 
 *   **Nuevo Producto:** Formulario dinámico para registrar productos en el catálogo.
     ![Nuevo Producto](imgs/NuevoProducto.png)
@@ -275,7 +308,8 @@ El envío de los formularios se realiza asíncronamente mediante `fetch` con la 
 *   En caso de éxito, muestra el aviso de confirmación y recarga la interfaz tras un retraso controlado (`1.2 segundos`) para reflejar los cambios en el almacén.
 
 ### 6.3 Dashboard Dinámico con Chart.js
-El script `static/js/dashboard.js` se encarga de consultar `/api/dashboard` de forma asíncrona:
+
+El script `pages/administrador/grafico/grafico.js` se encarga de consultar `/api/dashboard` de forma asíncrona y dibujar un gráfico de barras con Chart.js. Chart.js solo se carga en la página del dashboard (no en el resto del sitio).
 *   **Métricas KPI:** Actualiza dinámicamente el total de productos, las alertas críticas, la cantidad de lotes por vencer y el valorizado del inventario.
 *   **Conmutación del Gráfico:** Mediante botones alternadores, cambia el dataset del gráfico de barras de Chart.js en caliente sin destruir la estructura CSS de la tarjeta. Permite visualizar:
     *   *Categorías:* Cantidad de productos registrados en cada categoría del catálogo.
@@ -293,7 +327,7 @@ El Dashboard cuenta con múltiples vistas interactivas configurables en caliente
     ![Dashboard Principal 3](imgs/DashboardPrincipal3.png)
 
 ### 6.4 Buscador en Caliente (Búsqueda por DOM) y Tablas
-Para optimizar las consultas a la base de datos, las búsquedas en la tabla de inventario (`index.html`) e historial (`historial.html`) se realizan en el cliente (DOM) mediante la evaluación de eventos `input` en tiempo real. 
+Para optimizar las consultas a la base de datos, las búsquedas en la tabla de productos (`productos.html`) e historial (`historial.html`) se realizan en el cliente (DOM) mediante la evaluación de eventos `input` en tiempo real. 
 Al escribir en la caja de texto, se evalúa si cada fila `<tr>` contiene la cadena de búsqueda (pasando todo a minúsculas) y se ocultan los elementos no coincidentes utilizando `display = "none"`.
 
 #### Interfaz de Tablas del Sistema

@@ -20,7 +20,6 @@ def create_app():
     # --- EXTENDER BÚSQUEDA DE TEMPLATES ---
     # Permite {% include "pages/administrador/grafico/grafico.html" %} desde la raíz
     app.jinja_loader = ChoiceLoader([
-        FileSystemLoader(os.path.join(app.root_path, 'templates')),
         FileSystemLoader(app.root_path),
     ])
 
