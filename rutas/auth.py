@@ -27,7 +27,7 @@ def login():
             else:
                 flash("Contraseña incorrecta.", "error")
 
-    return render_template("login.html")
+    return render_template("login/login.html")
 
 
 @auth_bp.route("/logout")
