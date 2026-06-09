@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('scrn_assets', filename='pages/productos/productos.css') }}">
+<link rel="stylesheet" href="{{ url_for('scrn_assets', filename='pages/productos/tabla_productos/tabla_productos.css') }}">
+<link rel="stylesheet" href="{{ url_for('scrn_assets', filename='pages/productos/nuevo_producto/nuevo_producto.css') }}">
+<script src="{{ url_for('scrn_assets', filename='pages/productos/tabla_productos/tabla_productos.js') }}" defer></script>
+<script src="{{ url_for('scrn_assets', filename='pages/productos/nuevo_producto/nuevo_producto.js') }}" defer></script>
+<script src="{{ url_for('scrn_assets', filename='pages/productos/productos.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+<section class="productos-shell">
+  <div class="productos-grid">
+    {% include "pages/productos/tabla_productos/tabla_productos.html" %}
+    {% include "pages/productos/nuevo_producto/nuevo_producto.html" %}
+  </div>
+</section>
+{% endblock %}

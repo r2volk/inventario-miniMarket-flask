@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('scrn_assets', filename='pages/administrador/administrador.css') }}">
+<link rel="stylesheet" href="{{ url_for('scrn_assets', filename='pages/administrador/grafico/grafico.css') }}">
+<link rel="stylesheet" href="{{ url_for('scrn_assets', filename='pages/administrador/kpi_card/kpi_card.css') }}">
+<link rel="stylesheet" href="{{ url_for('scrn_assets', filename='pages/administrador/resumen_tablas/resumen_tablas.css') }}">
+<link rel="stylesheet" href="{{ url_for('scrn_assets', filename='pages/administrador/actividad_reciente/actividad_reciente.css') }}">
+<script src="{{ url_for('scrn_assets', filename='pages/administrador/grafico/grafico.js') }}" defer></script>
+<script src="{{ url_for('scrn_assets', filename='pages/administrador/kpi_card/kpi_card.js') }}" defer></script>
+<script src="{{ url_for('scrn_assets', filename='pages/administrador/resumen_tablas/resumen_tablas.js') }}" defer></script>
+<script src="{{ url_for('scrn_assets', filename='pages/administrador/actividad_reciente/actividad_reciente.js') }}" defer></script>
+<script src="{{ url_for('scrn_assets', filename='pages/administrador/administrador.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+
+<section class="dashboard-shell">
+  <div class="dashboard-hero">
+    <div>
+      <p class="section-eyebrow">Vista general</p>
+      <h2 class="section-title">Inventario en tiempo real</h2>
+    </div>
+    <div class="hero-actions">
+      <button class="btn btn-dark" id="hero-activity" type="button">Actividad Reciente</button>
+    </div>
+  </div>
+
+  <div class="dashboard-top">
+    {% include "pages/administrador/grafico/grafico.html" %}
+    {% include "pages/administrador/kpi_card/kpi_card.html" %}
+  </div>
+
+  <div class="content-grid">
+    {% include "pages/administrador/resumen_tablas/resumen_tablas.html" %}
+  </div>
+</section>
+
+{% endblock %}

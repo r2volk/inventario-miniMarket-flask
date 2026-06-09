@@ -1,0 +1,30 @@
+<article class="card table-card">
+  <div class="card-header">
+    <div>
+      <h3 class="card-title">Proveedores Registrados</h3>
+      <p class="card-subtitle">{{ proveedores|length }} proveedores en el sistema</p>
+    </div>
+  </div>
+  <div class="table-wrap">
+    <table class="table" id="proveedores-table">
+      <thead>
+        <tr>
+          <th>RUC / DNI</th>
+          <th>Razón Social</th>
+          <th>Teléfono</th>
+          <th>Dirección</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in proveedores %}
+        <tr>
+          <td><code class="code-cell">{{ p['ruc'] }}</code></td>
+          <td class="td-name">{{ p['nombre'] }}</td>
+          <td>{{ p['telefono'] or '—' }}</td>
+          <td class="td-desc">{{ p['direccion'] or '—' }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</article>

@@ -1,0 +1,64 @@
+<div class="overlay"></div>
+
+<div class="modal modal--wide modal--activity">
+  <div class="modal-header">
+    <div>
+      <h3>Actividad Reciente</h3>
+      <p class="modal-desc">Últimos movimientos y estado del inventario.</p>
+    </div>
+    <button class="modal-close" type="button" data-modal-close aria-label="Cerrar">×</button>
+  </div>
+
+  <div class="modal-activity-grid">
+    <article class="card activity-card">
+      <div class="card-header card-header--compact">
+        <div>
+          <h3 class="card-title">Últimos movimientos</h3>
+          <p class="card-subtitle">Entradas y salidas recientes</p>
+        </div>
+      </div>
+      <div class="activity-list" id="modal-activity-list">
+        <div class="activity-loader">Cargando...</div>
+      </div>
+    </article>
+
+    <article class="card inventory-health-card">
+      <div class="card-header card-header--compact">
+        <div>
+          <h3 class="card-title">Pulso del inventario</h3>
+          <p class="card-subtitle">Indicadores visuales de seguimiento</p>
+        </div>
+      </div>
+      <div class="health-list">
+        <div class="health-item">
+          <div class="health-row">
+            <span>Stock saludable</span>
+            <strong>82%</strong>
+          </div>
+          <div class="health-track"><span style="width: 82%"></span></div>
+        </div>
+        <div class="health-item">
+          <div class="health-row">
+            <span>Rotación semanal</span>
+            <strong>64%</strong>
+          </div>
+          <div class="health-track"><span style="width: 64%"></span></div>
+        </div>
+        <div class="health-item">
+          <div class="health-row">
+            <span>Riesgo de quiebre</span>
+            <strong>18%</strong>
+          </div>
+          <div class="health-track health-track--danger"><span style="width: 18%"></span></div>
+        </div>
+        <div class="health-item">
+          <div class="health-row">
+            <span>Productos sin stock</span>
+            <strong>7%</strong>
+          </div>
+          <div class="health-track health-track--danger"><span style="width: 7%"></span></div>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>

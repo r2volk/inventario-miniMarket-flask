@@ -1,0 +1,17 @@
+.productos-shell {
+  display: grid;
+  gap: 22px;
+}
+
+.productos-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 1000px) {
+  .productos-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('scrn_assets', filename='pages/historial/historial.css') }}">
+<link rel="stylesheet" href="{{ url_for('scrn_assets', filename='pages/historial/tabla_movimientos/tabla_movimientos.css') }}">
+<script src="{{ url_for('scrn_assets', filename='pages/historial/tabla_movimientos/tabla_movimientos.js') }}" defer></script>
+<script src="{{ url_for('scrn_assets', filename='pages/historial/historial.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+<section class="history-shell">
+  {% include "pages/historial/tabla_movimientos/tabla_movimientos.html" %}
+</section>
+{% endblock %}

@@ -156,4 +156,4 @@ def historial():
     conexion.close()
 
     # Pasa la lista de movimientos al template para que los muestre en una tabla
-    return render_template("historial.html", movimientos=movimientos)
+    return render_template("pages/historial/historial.html", movimientos=movimientos)

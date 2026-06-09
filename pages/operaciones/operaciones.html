@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('scrn_assets', filename='pages/operaciones/operaciones.css') }}">
+<link rel="stylesheet" href="{{ url_for('scrn_assets', filename='pages/operaciones/registrar_entrada/registrar_entrada.css') }}">
+<link rel="stylesheet" href="{{ url_for('scrn_assets', filename='pages/operaciones/registrar_salida/registrar_salida.css') }}">
+<script src="{{ url_for('scrn_assets', filename='pages/operaciones/registrar_entrada/registrar_entrada.js') }}" defer></script>
+<script src="{{ url_for('scrn_assets', filename='pages/operaciones/registrar_salida/registrar_salida.js') }}" defer></script>
+<script src="{{ url_for('scrn_assets', filename='pages/operaciones/operaciones.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+<section class="operaciones-shell">
+  <div class="operaciones-grid">
+    {% include "pages/operaciones/registrar_entrada/registrar_entrada.html" %}
+    {% include "pages/operaciones/registrar_salida/registrar_salida.html" %}
+  </div>
+</section>
+{% endblock %}

@@ -28,8 +28,8 @@ async function renderGrafico(tipo = "categoria") {
           borderWidth: 0,
           borderRadius: 10,
           borderSkipped: false,
-          barPercentage: 0.62,
-          categoryPercentage: 0.78,
+          barPercentage: 0.72,
+          categoryPercentage: 0.86,
         }],
       },
       options: {

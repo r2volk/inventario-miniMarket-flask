@@ -1,7 +1,3 @@
-{% extends "base.html" %}
-{% block content %}
-
-<section class="history-shell">
 <article class="card table-card history-card">
   <div class="card-header">
     <div>
@@ -55,14 +51,3 @@
     </table>
   </div>
 </article>
-</section>
-
-<script>
-  document.getElementById('search-hist').addEventListener('input', function() {
-    const q = this.value.trim().toLowerCase();
-    document.querySelectorAll('#hist-table tbody tr').forEach(r => {
-      r.style.display = r.textContent.toLowerCase().includes(q) ? '' : 'none';
-    });
-  });
-</script>
-{% endblock %}

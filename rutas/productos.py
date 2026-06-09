@@ -7,7 +7,6 @@ from models.db import get_db
 productos_bp = Blueprint("productos", __name__)
 
 
-# --- PAGINA PRINCIPAL ---
 @productos_bp.route("/")
 def index():
     conn = get_db()
@@ -19,7 +18,15 @@ def index():
 
     # render_template() busca el archivo en la carpeta /templates
     # productos=productos → pasa la lista al HTML para que pueda mostrarla con Jinja2
-    return render_template("dashboard/dashboard.html", productos=productos)
+    return render_template("pages/administrador/administrador.html", productos=productos)
+
+
+@productos_bp.route("/productos")
+def productos_page():
+    conn = get_db()
+    productos = conn.execute("SELECT * FROM productos ORDER BY nombre").fetchall()
+    conn.close()
+    return render_template("pages/productos/productos.html", productos=productos)
 
 
 # DELETE - eliminar producto

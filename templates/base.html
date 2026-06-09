@@ -11,9 +11,8 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
   <script src="{{ url_for('static', filename='js/utils.js') }}" defer></script>
   <script src="{{ url_for('static', filename='js/modales/producto.js') }}" defer></script>
-  <script src="{{ url_for('static', filename='js/modales/proveedor.js') }}" defer></script>
-  <script src="{{ url_for('static', filename='js/modales/entrada.js') }}" defer></script>
-  <script src="{{ url_for('static', filename='js/modales/salida.js') }}" defer></script>
+
+
   <script src="{{ url_for('static', filename='js/ui.js') }}" defer></script>
   <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
   {% block extra_head %}{% endblock %}
@@ -51,7 +50,7 @@
           <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
         </svg>
         </span>
-        <span class="nav-text">Dashboard</span>
+        <span class="nav-text">Administrador</span>
       </a>
       <a href="/historial" class="nav-item {% if request.path == '/historial' %}active{% endif %}">
         <span class="nav-icon">
@@ -66,36 +65,27 @@
         <span class="nav-text">Historial</span>
       </a>
 
-      <p class="nav-label">Operaciones</p>
-      <button class="nav-item nav-btn" id="btn-add-entry">
+      <a href="/operaciones" class="nav-item {% if request.path == '/operaciones' %}active{% endif %}">
         <span class="nav-icon">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
-          <polyline points="17 6 23 6 23 12"/>
+          <polyline points="17 1 21 5 17 9"/>
+          <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+          <polyline points="7 23 3 19 7 15"/>
+          <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
         </svg>
         </span>
-        <span class="nav-text">Registrar Entrada</span>
-      </button>
-      <button class="nav-item nav-btn" id="btn-add-output">
-        <span class="nav-icon">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/>
-          <polyline points="17 18 23 18 23 12"/>
-        </svg>
-        </span>
-        <span class="nav-text">Registrar Salida</span>
-      </button>
+        <span class="nav-text">Operaciones</span>
+      </a>
 
-      <p class="nav-label">Catálogos</p>
-      <button class="nav-item nav-btn" id="btn-add-product">
+      <a href="/productos" class="nav-item {% if request.path == '/productos' %}active{% endif %}">
         <span class="nav-icon">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
         </svg>
         </span>
-        <span class="nav-text">Nuevo Producto</span>
-      </button>
-      <button class="nav-item nav-btn" id="btn-add-provider">
+        <span class="nav-text">Productos</span>
+      </a>
+      <a href="/proveedores" class="nav-item {% if request.path == '/proveedores' %}active{% endif %}">
         <span class="nav-icon">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
@@ -104,8 +94,8 @@
           <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
         </svg>
         </span>
-        <span class="nav-text">Nuevo Proveedor</span>
-      </button>
+        <span class="nav-text">Proveedores</span>
+      </a>
     </nav>
 
     <div class="sidebar-footer">
@@ -135,10 +125,20 @@
       <div class="topbar-left">
         <span class="workspace-pill">Minimarket Don José</span>
         <h1 class="page-title">
-          {% if request.path == '/' %}Dashboard{% else %}Historial de Movimientos{% endif %}
+          {% if request.path == '/' %}Administrador
+          {% elif request.path == '/operaciones' %}Operaciones
+          {% elif request.path == '/productos' %}Productos
+          {% elif request.path == '/proveedores' %}Proveedores
+          {% else %}Historial de Movimientos{% endif %}
         </h1>
         {% if request.path == '/' %}
         <span class="page-subtitle">Control de stock, valor y rotación con una vista limpia.</span>
+        {% elif request.path == '/operaciones' %}
+        <span class="page-subtitle">Registra entradas y salidas de mercadería.</span>
+        {% elif request.path == '/productos' %}
+        <span class="page-subtitle">Gestiona el catálogo de productos del inventario.</span>
+        {% elif request.path == '/proveedores' %}
+        <span class="page-subtitle">Administra los proveedores registrados en el sistema.</span>
         {% else %}
         <span class="page-subtitle">Trazabilidad completa de entradas y salidas del inventario.</span>
         {% endif %}

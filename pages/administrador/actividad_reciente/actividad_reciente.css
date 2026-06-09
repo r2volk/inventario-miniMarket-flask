@@ -1,18 +1,32 @@
-.side-panel {
-  display: flex;
-  height: clamp(520px, 68vh, 760px);
-  flex-direction: column;
-  gap: 16px;
+.modal--activity .modal-header {
+  border-bottom: none;
+  padding-bottom: 12px;
 }
 
+.modal-activity-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding: 0 24px 24px;
+}
+
+.modal-activity-grid .card {
+  height: 310px;
+}
+
+/* ── Actividad reciente ── */
+
 .activity-card {
-  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .activity-list {
   display: grid;
-  gap: 4px;
+  gap: 2px;
   padding: 0 14px 16px;
+  overflow: auto;
 }
 
 .activity-item {
@@ -31,7 +45,7 @@
 .activity-dot {
   width: 7px;
   height: 7px;
-  margin-top: 7px;
+  margin-top: 8px;
   border-radius: 999px;
   background: #a1a1aa;
 }
@@ -39,18 +53,35 @@
 .activity-dot--in { background: var(--success); }
 .activity-dot--out { background: var(--danger); }
 
-.activity-item strong {
+.activity-item-body strong {
   display: block;
   color: var(--text);
   font-size: 13px;
   font-weight: 620;
 }
 
-.activity-item p {
-  margin: 3px 0 0;
+.activity-item-body p {
+  margin: 2px 0 0;
   color: var(--text-muted);
   font-size: 12px;
 }
+
+.activity-meta {
+  display: block;
+  margin-top: 2px;
+  color: var(--text-faint);
+  font-size: 11px;
+}
+
+.activity-loader,
+.activity-empty {
+  padding: 24px 8px;
+  color: var(--text-muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+/* ── Pulso del inventario ── */
 
 .inventory-health-card {
   display: flex;
@@ -61,8 +92,8 @@
 
 .health-list {
   display: grid;
-  gap: 18px;
-  padding: 6px 22px 18px;
+  gap: 16px;
+  padding: 6px 26px 20px;
 }
 
 .health-item {
@@ -102,36 +133,4 @@
 
 .health-track--danger span {
   background: var(--danger);
-}
-
-.health-note {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  margin: auto 16px 16px;
-  padding: 14px;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  background: #fafafa;
-}
-
-.health-note-dot {
-  width: 8px;
-  height: 8px;
-  margin-top: 5px;
-  border-radius: 999px;
-  background: #18181b;
-}
-
-.health-note p {
-  margin: 0;
-  color: var(--text-muted);
-  font-size: 12px;
-  line-height: 1.5;
-}
-
-@media (max-width: 1160px) {
-  .side-panel {
-    display: none;
-  }
 }

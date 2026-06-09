@@ -1,0 +1,4 @@
+.table-card .table th:last-child,
+.table-card .table td:last-child {
+  text-align: left;
+}

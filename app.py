@@ -8,6 +8,7 @@ from rutas.movimientos   import movimientos_bp
 from rutas.proveedores   import proveedores_bp
 from rutas.api           import api_bp
 from rutas.dashboard_api import dashboard_api_bp
+from rutas.operaciones   import operaciones_bp
 
 
 def create_app():
@@ -17,7 +18,7 @@ def create_app():
     app.secret_key = "dj-minimarket-secret-2024"
 
     # --- EXTENDER BÚSQUEDA DE TEMPLATES ---
-    # Permite {% include "dashboard/grafico/grafico.html" %} desde la raíz
+    # Permite {% include "pages/administrador/grafico/grafico.html" %} desde la raíz
     app.jinja_loader = ChoiceLoader([
         FileSystemLoader(os.path.join(app.root_path, 'templates')),
         FileSystemLoader(app.root_path),
@@ -30,9 +31,10 @@ def create_app():
     app.register_blueprint(proveedores_bp)
     app.register_blueprint(api_bp)
     app.register_blueprint(dashboard_api_bp)
+    app.register_blueprint(operaciones_bp)
 
     # --- SERVIDOR DE ASSETS POR PANTALLA ---
-    # Sirve estáticos desde dashboard/, historial/, etc.
+    # Sirve estáticos desde pages/, historial/, etc.
     @app.route("/scrn/<path:filename>")
     def scrn_assets(filename):
         return send_from_directory(app.root_path, filename)

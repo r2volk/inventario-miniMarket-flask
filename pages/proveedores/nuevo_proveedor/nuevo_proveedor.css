@@ -1,0 +1,10 @@
+.form-card .card-body {
+  padding: 6px 22px 10px;
+}
+
+.form-card .card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 10px 22px 22px;
+}

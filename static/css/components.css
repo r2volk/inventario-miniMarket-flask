@@ -293,6 +293,10 @@
   background: #991b1b;
 }
 
+.modal--wide {
+  width: min(820px, calc(100vw - 28px));
+}
+
 .overlay {
   position: fixed;
   inset: 0;

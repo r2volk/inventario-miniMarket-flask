@@ -1,12 +1,18 @@
 import sqlite3
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, render_template
 from models.db import get_db
 
-# Blueprint para todo lo relacionado con proveedores
 proveedores_bp = Blueprint("proveedores", __name__)
 
 
-# POST - Agregar Provedores
+@proveedores_bp.route("/proveedores")
+def proveedores_page():
+    conn = get_db()
+    proveedores = conn.execute("SELECT * FROM proveedores ORDER BY nombre").fetchall()
+    conn.close()
+    return render_template("pages/proveedores/proveedores.html", proveedores=proveedores)
+
+
 @proveedores_bp.route("/add_provider", methods=["POST"])
 def add_provider():
 

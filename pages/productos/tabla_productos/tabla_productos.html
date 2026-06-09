@@ -1,0 +1,63 @@
+<article class="card table-card inventory-table-card">
+  <div class="card-header">
+    <div>
+      <h3 class="card-title">Inventario de Productos</h3>
+      <p class="card-subtitle" id="info-count">{{ productos|length }} productos registrados</p>
+    </div>
+    <div class="card-header-actions">
+      <div class="search-wrapper">
+        <svg class="search-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input id="search" class="search-input" type="text" placeholder="Buscar producto..."/>
+      </div>
+      <button id="search-btn" class="btn btn-dark">Buscar</button>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table class="table" id="productos-table">
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Nombre</th>
+          <th>Categoría</th>
+          <th>P. Venta</th>
+          <th>Stock</th>
+          <th>Descripción</th>
+          <th class="th-actions">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in productos %}
+        <tr data-id="{{ p['id'] }}">
+          <td><code class="code-cell">{{ p['codigo'] }}</code></td>
+          <td class="td-name">{{ p['nombre'] }}</td>
+          <td><span class="badge badge--cat">{{ p['categoria'] }}</span></td>
+          <td class="td-price">S/ {{ "%.2f"|format(p['precio_venta']) }}</td>
+          <td>
+            <span class="stock-badge
+              {% if p['stock'] <= 0 %}stock--agotado
+              {% elif p['stock'] <= p['stock_min'] %}stock--critico
+              {% else %}stock--ok{% endif %}">
+              {{ p['stock'] }}
+            </span>
+          </td>
+          <td class="td-desc">{{ p['descripcion'] or '—' }}</td>
+          <td>
+            <button class="btn-icon btn-delete" data-id="{{ p['codigo'] }}" title="Eliminar producto">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                <path d="M10 11v6"/>
+                <path d="M14 11v6"/>
+                <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+              </svg>
+            </button>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</article>
