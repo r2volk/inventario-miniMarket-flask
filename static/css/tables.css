@@ -80,12 +80,18 @@
 }
 
 .th-actions {
-  width: 92px;
+  width: 130px;
   text-align: center;
 }
 
 .table td:last-child {
   text-align: center;
+}
+
+.td-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
 }
 
 .history-card .table {

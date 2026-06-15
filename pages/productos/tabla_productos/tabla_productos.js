@@ -1,6 +1,6 @@
 function initTablaProductos() {
   const searchInput = document.getElementById("search");
-  const searchBtn   = document.getElementById("search-btn");
+  const searchBtn = document.getElementById("search-btn");
   if (!searchInput || !searchBtn) return;
 
   function applySearch() {
@@ -16,13 +16,30 @@ function initTablaProductos() {
 
   searchBtn.addEventListener("click", applySearch);
 
-  // Eliminar producto
   document.querySelectorAll(".btn-delete").forEach(function (btn) {
-    btn.addEventListener("click", function () {
+    btn.addEventListener("click", async function () {
       const codigo = this.dataset.id;
+      const nombre = this.closest("tr").querySelector(".td-name").textContent;
+      const ok = await confirmar('Eliminar producto "' + nombre + '" (' + codigo + ')?');
+      if (!ok) return;
       fetch("/producto/" + codigo, { method: "DELETE" }).then(function (r) {
         if (r.ok) location.reload();
+        else r.json().then(function (data) { showToast(data.msg, "error"); });
       });
+    });
+  });
+
+  document.querySelectorAll(".btn-edit").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      const codigo = this.dataset.id;
+      fetch("/api/producto/" + codigo)
+        .then(function (r) { return r.json(); })
+        .then(function (p) {
+          if (typeof cargarProducto === "function") {
+            document.querySelector(".productos-grid").scrollIntoView({ behavior: "smooth" });
+            cargarProducto(p);
+          }
+        });
     });
   });
 }

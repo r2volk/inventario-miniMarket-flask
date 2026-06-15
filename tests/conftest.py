@@ -12,6 +12,11 @@ from app import create_app
 import config
 
 SCHEMA_SQL = """
+CREATE TABLE IF NOT EXISTS categorias (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nombre TEXT UNIQUE NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS usuarios (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT UNIQUE NOT NULL,
@@ -81,6 +86,35 @@ def app():
         "INSERT INTO proveedores (ruc, nombre, telefono, direccion) VALUES (?, ?, ?, ?)",
         ("00000000000", "Proveedor General", "000-000", "Local"),
     )
+    categorias_default = [
+        "Frutas y Verduras",
+        "Carnes",
+        "Panadería",
+        "Congelados",
+        "Enlatados",
+        "Granos y Cereales",
+        "Pastas",
+        "Aceites",
+        "Condimentos",
+        "Botanas",
+        "Café",
+        "Té",
+        "Jugos",
+        "Agua",
+        "Bebidas Energéticas",
+        "Cuidado Personal",
+        "Higiene Personal",
+        "Productos para Bebé",
+        "Mascotas",
+        "Papel y Desechables",
+        "Utensilios de Cocina",
+        "Papelería",
+        "Ferretería",
+        "Ropa",
+        "Comida Preparada",
+    ]
+    for cat in categorias_default:
+        conn.execute("INSERT OR IGNORE INTO categorias (nombre) VALUES (?)", (cat,))
     conn.commit()
     conn.close()
 

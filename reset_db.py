@@ -10,6 +10,7 @@ cursor.execute("DROP TABLE IF EXISTS salidas")
 cursor.execute("DROP TABLE IF EXISTS productos")
 cursor.execute("DROP TABLE IF EXISTS proveedores")
 cursor.execute("DROP TABLE IF EXISTS usuarios")
+cursor.execute("DROP TABLE IF EXISTS categorias")
 
 # 2. Tabla de usuarios (NUEVA)
 cursor.execute("""
@@ -29,7 +30,46 @@ cursor.execute(
     ("admin", pw_hash, "Administrador", "admin"),
 )
 
-# 3. Tablas base
+# 3. Tabla de categorías
+cursor.execute("""
+CREATE TABLE categorias (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nombre TEXT UNIQUE NOT NULL
+)
+""")
+
+# Poblar con categorías por defecto
+categorias = [
+    "Frutas y Verduras",
+    "Carnes",
+    "Panadería",
+    "Congelados",
+    "Enlatados",
+    "Granos y Cereales",
+    "Pastas",
+    "Aceites",
+    "Condimentos",
+    "Botanas",
+    "Café",
+    "Té",
+    "Jugos",
+    "Agua",
+    "Bebidas Energéticas",
+    "Cuidado Personal",
+    "Higiene Personal",
+    "Productos para Bebé",
+    "Mascotas",
+    "Papel y Desechables",
+    "Utensilios de Cocina",
+    "Papelería",
+    "Ferretería",
+    "Ropa",
+    "Comida Preparada",
+]
+for cat in categorias:
+    cursor.execute("INSERT OR IGNORE INTO categorias (nombre) VALUES (?)", (cat,))
+
+# 4. Tablas base
 cursor.execute("""
 CREATE TABLE productos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -54,7 +94,7 @@ CREATE TABLE proveedores (
 )
 """)
 
-# 4. Tabla ENTRADAS
+# 5. Tabla ENTRADAS
 cursor.execute("""
 CREATE TABLE entradas (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -82,7 +122,7 @@ CREATE TABLE salidas (
 )
 """)
 
-# 5. Datos de prueba mínimos
+# 6. Datos de prueba mínimos
 cursor.execute(
     "INSERT INTO proveedores (ruc, nombre, telefono, direccion) VALUES (?, ?, ?, ?)",
     ("00000000000", "Proveedor General", "000-000", "Local"),

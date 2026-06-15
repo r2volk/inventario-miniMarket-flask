@@ -15,6 +15,65 @@ def proveedores_page():
     )
 
 
+@proveedores_bp.route("/api/proveedor/<int:id>")
+def obtener_proveedor(id):
+    conn = get_db()
+    row = conn.execute("SELECT * FROM proveedores WHERE id = ?", (id,)).fetchone()
+    conn.close()
+    if not row:
+        return jsonify({"ok": False, "msg": "Proveedor no encontrado."}), 404
+    return jsonify(
+        {
+            "id": row["id"],
+            "ruc": row["ruc"],
+            "nombre": row["nombre"],
+            "telefono": row["telefono"],
+            "direccion": row["direccion"],
+        }
+    )
+
+
+@proveedores_bp.route("/proveedor/<int:id>/editar", methods=["POST"])
+def editar_proveedor(id):
+    nombre = request.form.get("nombre", "").strip()
+    telefono = request.form.get("telefono", "").strip()
+    direccion = request.form.get("direccion", "").strip()
+
+    if not nombre:
+        return jsonify({"ok": False, "msg": "El nombre es obligatorio."}), 400
+
+    conn = get_db()
+    conn.execute(
+        "UPDATE proveedores SET nombre=?, telefono=?, direccion=? WHERE id=?",
+        (nombre, telefono, direccion, id),
+    )
+    conn.commit()
+    conn.close()
+    current_app.logger.info(f"Proveedor actualizado: ID {id} - {nombre}")
+    return jsonify({"ok": True, "msg": "Proveedor actualizado."})
+
+
+@proveedores_bp.route("/proveedor/<int:id>", methods=["DELETE"])
+def eliminar_proveedor(id):
+    conn = get_db()
+    try:
+        cursor = conn.execute("DELETE FROM proveedores WHERE id = ?", (id,))
+        conn.commit()
+        if cursor.rowcount == 0:
+            return jsonify({"ok": False, "msg": "Proveedor no encontrado."}), 404
+        current_app.logger.info(f"Proveedor eliminado: ID {id}")
+        return jsonify({"ok": True, "msg": "Proveedor eliminado."})
+    except sqlite3.IntegrityError:
+        return (
+            jsonify(
+                {"ok": False, "msg": "No se puede eliminar: tiene entradas asociadas."}
+            ),
+            400,
+        )
+    finally:
+        conn.close()
+
+
 @proveedores_bp.route("/add_provider", methods=["POST"])
 def add_provider():
     ruc = request.form.get("ruc", "").strip()

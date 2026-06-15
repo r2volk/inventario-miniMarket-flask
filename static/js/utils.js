@@ -4,9 +4,41 @@
 
 // Vacia el contenedor #modal-root, Se usa en los modales al hacer click en "Cancelar"
 function cerrarModal() {
-  // innerHTML = "" borra todo el contenido HTML dentro del div
   document.getElementById("modal-root").innerHTML = "";
+}
 
+// Muestra un modal de confirmación y retorna una Promise con true/false
+function confirmar(mensaje) {
+  return new Promise(function (resolve) {
+    const html =
+      '<div class="overlay" data-modal-close></div>' +
+      '<div class="modal" role="dialog" aria-modal="true" style="max-width:420px">' +
+        '<div class="modal-header">' +
+          '<div>' +
+            '<h3>Confirmar</h3>' +
+            '<p class="modal-desc">' + mensaje + '</p>' +
+          '</div>' +
+        '</div>' +
+        '<div class="modal-actions" style="display:flex;justify-content:flex-end;gap:10px;padding:0 24px 22px">' +
+          '<button class="btn btn-ghost" id="confirm-no">Cancelar</button>' +
+          '<button class="btn btn-danger" id="confirm-yes">Sí, eliminar</button>' +
+        '</div>' +
+      '</div>';
+    abrirModal(html);
+
+    document.getElementById("confirm-yes").addEventListener("click", function () {
+      cerrarModal();
+      resolve(true);
+    });
+    document.getElementById("confirm-no").addEventListener("click", function () {
+      cerrarModal();
+      resolve(false);
+    });
+    document.querySelector("[data-modal-close]").addEventListener("click", function () {
+      cerrarModal();
+      resolve(false);
+    });
+  });
 }
 
 // Inyecta HTML en un modal

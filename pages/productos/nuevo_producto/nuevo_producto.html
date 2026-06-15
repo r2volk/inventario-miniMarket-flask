@@ -17,33 +17,10 @@
     </div>
     <div class="row row--full">
       <label>Categoría</label>
-      <select id="p-cat">
-        <option value="Frutas y Verduras">Frutas y Verduras</option>
-        <option value="Carnes">Carnes</option>
-        <option value="Panadería">Panadería</option>
-        <option value="Congelados">Congelados</option>
-        <option value="Enlatados">Enlatados</option>
-        <option value="Granos y Cereales">Granos y Cereales</option>
-        <option value="Pastas">Pastas</option>
-        <option value="Aceites">Aceites</option>
-        <option value="Condimentos">Condimentos</option>
-        <option value="Botanas">Botanas</option>
-        <option value="Café">Café</option>
-        <option value="Té">Té</option>
-        <option value="Jugos">Jugos</option>
-        <option value="Agua">Agua</option>
-        <option value="Bebidas Energéticas">Bebidas Energéticas</option>
-        <option value="Cuidado Personal">Cuidado Personal</option>
-        <option value="Higiene Personal">Higiene Personal</option>
-        <option value="Productos para Bebé">Productos para Bebé</option>
-        <option value="Mascotas">Mascotas</option>
-        <option value="Papel y Desechables">Papel y Desechables</option>
-        <option value="Utensilios de Cocina">Utensilios de Cocina</option>
-        <option value="Papelería">Papelería</option>
-        <option value="Ferretería">Ferretería</option>
-        <option value="Ropa">Ropa</option>
-        <option value="Comida Preparada">Comida Preparada</option>
-      </select>
+      <div class="row-combo">
+        <select id="p-cat"></select>
+        <button id="btn-add-cat" class="btn btn-ghost" type="button" title="Nueva categoría">+</button>
+      </div>
     </div>
     <div class="row">
       <label>P. Compra (S/)</label>
@@ -64,5 +41,6 @@
   </div>
   <div class="card-actions">
     <button id="p-save" class="btn btn-dark">Guardar producto</button>
+    <button id="p-cancel-edit" class="btn btn-ghost" style="display:none">Cancelar</button>
   </div>
 </article>
