@@ -1,9 +1,9 @@
 /* components.css — Buttons, cards, badges, inputs, modals, toasts, and shared UI primitives. */
 
 .card {
-  border: 1px solid rgba(228, 228, 231, 0.92);
+  border: 1px solid var(--line);
   border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.86);
+  background: var(--surface-glass-strong);
   box-shadow: var(--shadow-xs);
 }
 
@@ -88,29 +88,30 @@
 .btn-dark,
 .btn-primary,
 .btn.primary {
-  border-color: #09090b;
-  background: #09090b;
-  color: #ffffff;
+  border-color: var(--surface-inverse);
+  background: var(--surface-inverse);
+  color: var(--surface-inverse-hover);
   box-shadow: 0 10px 24px rgba(9, 9, 11, 0.12);
 }
 
 .btn-dark:hover,
 .btn-primary:hover,
 .btn.primary:hover {
-  background: #18181b;
+  background: var(--surface-inverse-hover);
+  color: var(--surface-inverse);
 }
 
 .btn-ghost,
 .btn {
   border-color: var(--line);
-  background: rgba(255, 255, 255, 0.78);
+  background: var(--surface-glass);
   color: var(--text-soft);
 }
 
 .btn-ghost:hover,
 .btn:hover {
   border-color: var(--line-strong);
-  background: #ffffff;
+  background: var(--surface);
   color: var(--text);
 }
 
@@ -134,7 +135,7 @@
   height: 36px;
   padding: 0;
   border-color: var(--line);
-  background: #ffffff;
+  background: var(--surface);
   color: var(--text-muted);
 }
 
@@ -146,7 +147,7 @@
 
 .btn-edit:hover {
   border-color: rgba(24, 24, 27, 0.2);
-  background: #f4f4f5;
+  background: var(--surface-soft);
   color: var(--text);
 }
 
@@ -162,7 +163,7 @@
   border: 1px solid var(--line);
   border-radius: 12px;
   padding: 0 12px;
-  background: #ffffff;
+  background: var(--surface);
   color: var(--text);
   outline: none;
   transition: border-color 160ms ease, box-shadow 160ms ease;
@@ -179,7 +180,7 @@
   padding: 3px;
   border: 1px solid var(--line);
   border-radius: 999px;
-  background: #f4f4f5;
+  background: var(--surface-soft);
 }
 
 .toggle-btn {
@@ -199,7 +200,7 @@
 }
 
 .toggle-btn.active {
-  background: #ffffff;
+  background: var(--surface);
   color: var(--text);
   box-shadow: var(--shadow-xs);
 }
@@ -224,7 +225,7 @@
   min-height: 40px;
   border: 1px solid var(--line);
   border-radius: 12px;
-  background: #ffffff;
+  background: var(--surface);
   color: var(--text);
   outline: none;
   transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
@@ -262,7 +263,7 @@
   border: 1px solid var(--line);
   border-radius: 999px;
   padding: 0 10px;
-  background: #ffffff;
+  background: var(--surface);
   color: var(--text-soft);
   font-size: 12px;
   font-weight: 610;
@@ -270,7 +271,7 @@
 }
 
 .badge--cat {
-  background: #f4f4f5;
+  background: var(--surface-soft);
 }
 
 .badge--entrada,
@@ -301,7 +302,7 @@
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 0 8px;
-  background: #fafafa;
+  background: var(--surface-soft);
   color: var(--text-soft);
   font-family: var(--font-mono);
   font-size: 11px;
@@ -322,8 +323,8 @@
   border: 1px solid var(--line);
   border-radius: 14px;
   padding: 12px 14px;
-  background: #09090b;
-  color: #ffffff;
+  background: var(--surface-inverse);
+  color: var(--surface-inverse-hover);
   box-shadow: var(--shadow-md);
   font-size: 13px;
   font-weight: 540;
@@ -341,7 +342,7 @@
   position: fixed;
   inset: 0;
   z-index: 60;
-  background: rgba(9, 9, 11, 0.38);
+  background: color-mix(in srgb, var(--surface-inverse) 38%, transparent);
   backdrop-filter: blur(10px);
   animation: fadeIn 160ms ease both;
 }
@@ -354,9 +355,9 @@
   width: min(640px, calc(100vw - 28px));
   max-height: calc(100vh - 32px);
   overflow: auto;
-  border: 1px solid rgba(228, 228, 231, 0.9);
+  border: 1px solid var(--line);
   border-radius: 22px;
-  background: rgba(255, 255, 255, 0.96);
+  background: var(--surface-glass-strong);
   box-shadow: var(--shadow-md);
   transform: translate(-50%, -50%);
   animation: modalIn 190ms ease both;
@@ -392,7 +393,7 @@
   place-items: center;
   border: 1px solid var(--line);
   border-radius: 12px;
-  background: #ffffff;
+  background: var(--surface);
   color: var(--text-muted);
   font-size: 22px;
   line-height: 1;

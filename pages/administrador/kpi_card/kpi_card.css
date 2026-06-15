@@ -10,16 +10,16 @@
   min-height: 204px;
   overflow: hidden;
   align-content: start;
-  border: 1px solid rgba(228, 228, 231, 0.94);
+  border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   padding: 18px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(250, 250, 250, 0.92));
+  background: linear-gradient(180deg, var(--surface-glass-strong), var(--surface-glass));
   box-shadow: var(--shadow-xs);
   transition: border-color 170ms ease, box-shadow 170ms ease, transform 170ms ease;
 }
 
 .kpi-card:hover {
-  border-color: #d4d4d8;
+  border-color: var(--line-strong);
   box-shadow: var(--shadow-sm);
   transform: translateY(-2px);
 }
@@ -44,7 +44,7 @@
   place-items: center;
   border: 1px solid var(--line);
   border-radius: 12px;
-  background: #ffffff;
+  background: var(--surface);
   color: var(--text);
 }
 
@@ -92,13 +92,13 @@
 .mini-spark span {
   width: 6px;
   border-radius: 999px;
-  background: #d4d4d8;
+  background: var(--surface-strong);
 }
 
 .mini-spark span:nth-child(1) { height: 16px; }
 .mini-spark span:nth-child(2) { height: 25px; }
 .mini-spark span:nth-child(3) { height: 20px; }
-.mini-spark span:nth-child(4) { height: 34px; background: #18181b; }
+.mini-spark span:nth-child(4) { height: 34px; background: var(--surface-inverse); }
 
 .mini-spark--alert span:nth-child(4) { background: var(--danger); }
 .mini-spark--muted span:nth-child(4) { background: var(--warning); }

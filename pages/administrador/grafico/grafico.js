@@ -1,8 +1,24 @@
 let chartInstance = null;
+let currentGraficoType = "categoria";
+
+function readThemeTokens() {
+  const styles = getComputedStyle(document.documentElement);
+  return {
+    bar: styles.getPropertyValue("--surface-inverse").trim() || "#09090b",
+    barHover: styles.getPropertyValue("--surface-inverse-hover").trim() || "#18181b",
+    tooltipBg: styles.getPropertyValue("--surface-inverse").trim() || "#09090b",
+    tooltipText: styles.getPropertyValue("--surface-inverse-hover").trim() || "#ffffff",
+    tooltipBody: styles.getPropertyValue("--text-muted").trim() || "#71717a",
+    tooltipBorder: styles.getPropertyValue("--line-strong").trim() || "#27272a",
+    axisText: styles.getPropertyValue("--text-muted").trim() || "#71717a",
+    grid: styles.getPropertyValue("--line").trim() || "#ececec",
+  };
+}
 
 async function renderGrafico(tipo = "categoria") {
   const ctx = document.getElementById("myChart");
   if (!ctx) return;
+  currentGraficoType = tipo;
 
   try {
     const res  = await fetch("/api/dashboard");
@@ -10,6 +26,7 @@ async function renderGrafico(tipo = "categoria") {
 
     const labels = data[tipo].labels;
     const values = data[tipo].values;
+    const theme = readThemeTokens();
 
     if (chartInstance) chartInstance.destroy();
 
@@ -22,9 +39,9 @@ async function renderGrafico(tipo = "categoria") {
             ? "Productos por categoría"
             : "Stock por producto",
           data: values,
-          backgroundColor: "#18181b",
-          hoverBackgroundColor: "#000000",
-          borderColor: "#000000",
+          backgroundColor: theme.bar,
+          hoverBackgroundColor: theme.barHover,
+          borderColor: theme.barHover,
           borderWidth: 0,
           borderRadius: 10,
           borderSkipped: false,
@@ -39,10 +56,10 @@ async function renderGrafico(tipo = "categoria") {
         plugins: {
           legend: { display: false },
           tooltip: {
-            backgroundColor: "#09090b",
-            titleColor: "#ffffff",
-            bodyColor: "#d4d4d8",
-            borderColor: "#27272a",
+            backgroundColor: theme.tooltipBg,
+            titleColor: theme.tooltipText,
+            bodyColor: theme.tooltipBody,
+            borderColor: theme.tooltipBorder,
             borderWidth: 1,
             padding: 12,
             cornerRadius: 12,
@@ -61,7 +78,7 @@ async function renderGrafico(tipo = "categoria") {
             grid: { display: false },
             border: { display: false },
             ticks: {
-              color: "#71717a",
+              color: theme.axisText,
               font: { family: "'Geist', sans-serif", size: 11, weight: 500 },
               maxRotation: 0,
               autoSkip: true
@@ -69,10 +86,10 @@ async function renderGrafico(tipo = "categoria") {
           },
           y: {
             beginAtZero: true,
-            grid: { color: "#ececec" },
+            grid: { color: theme.grid },
             border: { display: false },
             ticks: {
-              color: "#a1a1aa",
+              color: theme.axisText,
               font: { family: "'Geist', sans-serif", size: 11 },
               stepSize: 1
             }
@@ -97,3 +114,9 @@ function initGrafico() {
   });
   renderGrafico("categoria");
 }
+
+document.addEventListener("themechange", () => {
+  if (currentGraficoType) {
+    renderGrafico(currentGraficoType);
+  }
+});

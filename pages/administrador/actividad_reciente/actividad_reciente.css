@@ -39,7 +39,7 @@
 }
 
 .activity-item:hover {
-  background: #f6f6f7;
+  background: var(--surface-soft);
 }
 
 .activity-dot {
@@ -47,7 +47,7 @@
   height: 7px;
   margin-top: 8px;
   border-radius: 999px;
-  background: #a1a1aa;
+  background: var(--text-faint);
 }
 
 .activity-dot--in { background: var(--success); }
@@ -121,14 +121,14 @@
   height: 8px;
   overflow: hidden;
   border-radius: 999px;
-  background: #eeeeef;
+  background: var(--surface-soft);
 }
 
 .health-track span {
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: #18181b;
+  background: var(--surface-inverse);
 }
 
 .health-track--danger span {

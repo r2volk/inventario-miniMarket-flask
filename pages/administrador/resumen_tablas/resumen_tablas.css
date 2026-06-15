@@ -32,7 +32,7 @@
   top: 0;
   height: 36px;
   border-bottom: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.96);
+  background: var(--surface-glass-strong);
   color: var(--text-muted);
   font-size: 11px;
   font-weight: 700;
@@ -53,11 +53,11 @@
 }
 
 .mini-table tbody tr:hover {
-  background: #f3f3f4;
+  background: var(--surface-muted);
 }
 
 .mini-table tbody td {
-  border-bottom: 1px solid rgba(228, 228, 231, 0.6);
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 60%, transparent);
   font-size: 12px;
   vertical-align: middle;
 }
