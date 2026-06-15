@@ -38,6 +38,7 @@
   --theme-toggle-knob-active: #ffffff;
   --theme-toggle-icon: #ffffff;
   --theme-toggle-icon-active: #09090b;
+  --logo-icon-color: #ffffff;
   --radius-sm: 10px;
   --radius-md: 14px;
   --radius-lg: 18px;
@@ -79,6 +80,7 @@ html[data-theme="dark"] {
   --theme-toggle-knob-active: #09090b;
   --theme-toggle-icon: #09090b;
   --theme-toggle-icon-active: #ffffff;
+  --logo-icon-color: #09090b;
 }
 
 *,
@@ -335,13 +337,13 @@ html[data-theme="dark"] .theme-toggle__thumb {
 }
 
 html[data-theme="dark"] .theme-toggle__icon--sun {
-  color: var(--theme-toggle-icon-active);
-  opacity: 0.7;
+  color: var(--theme-toggle-icon);
+  opacity: 1;
 }
 
 html[data-theme="dark"] .theme-toggle__icon--moon {
   color: var(--theme-toggle-icon);
-  opacity: 1;
+  opacity: 0.45;
 }
 
 .theme-toggle--floating {

@@ -44,7 +44,7 @@
   border: 1px solid var(--surface-inverse);
   border-radius: 13px;
   background: var(--surface-inverse);
-  color: var(--surface-inverse-hover);
+  color: var(--logo-icon-color);
   box-shadow: 0 12px 28px rgba(9, 9, 11, 0.18);
 }
 
