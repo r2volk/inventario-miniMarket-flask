@@ -23,9 +23,7 @@ def test_duplicate_product_code(auth):
 
 def test_duplicate_provider_ruc(auth):
     auth.post("/add_provider", data={"ruc": "20123456789", "nombre": "ABC"})
-    response = auth.post(
-        "/add_provider", data={"ruc": "20123456789", "nombre": "XYZ"}
-    )
+    response = auth.post("/add_provider", data={"ruc": "20123456789", "nombre": "XYZ"})
     assert response.status_code == 400
     assert "RUC ya existe" in response.get_json()["msg"]
 

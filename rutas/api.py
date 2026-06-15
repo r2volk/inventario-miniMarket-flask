@@ -22,6 +22,3 @@ def api_providers():
     ).fetchall()
     conexion.close()
     return jsonify([dict(x) for x in provedores])
-
-
-

@@ -7,17 +7,17 @@ movimientos_bp = Blueprint("movimientos", __name__)
 
 @movimientos_bp.route("/add_entry", methods=["POST"])
 def add_entry():
-    producto_id  = request.form.get("producto_id","")
-    proveedor_id = request.form.get("proveedor_id","")
-    cantidad     = request.form.get("cantidad","")
-    vencimiento  = request.form.get("vencimiento")
-    usuario      = request.form.get("usuario", "").strip()
-    motivo       = request.form.get("motivo", "").strip()
+    producto_id = request.form.get("producto_id", "")
+    proveedor_id = request.form.get("proveedor_id", "")
+    cantidad = request.form.get("cantidad", "")
+    vencimiento = request.form.get("vencimiento")
+    usuario = request.form.get("usuario", "").strip()
+    motivo = request.form.get("motivo", "").strip()
 
     try:
-        producto_id  = int(producto_id)
+        producto_id = int(producto_id)
         proveedor_id = int(proveedor_id)
-        cantidad     = int(cantidad)
+        cantidad = int(cantidad)
     except ValueError:
         return jsonify({"ok": False, "msg": "Datos inválidos."}), 400
 
@@ -27,40 +27,43 @@ def add_entry():
     if not vencimiento:
         vencimiento = "2099-12-31"
 
-    fecha = datetime.datetime.now().isoformat(timespec='seconds')
+    fecha = datetime.datetime.now().isoformat(timespec="seconds")
 
     conexion = get_db()
     try:
-        conexion.execute("""
+        conexion.execute(
+            """
             INSERT INTO entradas
               (producto_id, proveedor_id, cantidad, fecha, vencimiento, usuario, motivo)
             VALUES (?, ?, ?, ?, ?, ?, ?)""",
-            (producto_id, proveedor_id, cantidad, fecha, vencimiento, usuario, motivo)
+            (producto_id, proveedor_id, cantidad, fecha, vencimiento, usuario, motivo),
         )
         conexion.execute(
             "UPDATE productos SET stock = stock + ? WHERE id = ?",
-            (cantidad, producto_id)
+            (cantidad, producto_id),
         )
         conexion.commit()
-        current_app.logger.info(f"Entrada de stock: +{cantidad} unidades (producto_id={producto_id})")
-        return jsonify({"ok": True,"msg": "Entrada registrada."})
+        current_app.logger.info(
+            f"Entrada de stock: +{cantidad} unidades (producto_id={producto_id})"
+        )
+        return jsonify({"ok": True, "msg": "Entrada registrada."})
     except Exception as e:
         current_app.logger.error(f"Error al registrar entrada: {e}")
-        return jsonify({"ok": False,"msg": str(e)}), 500
+        return jsonify({"ok": False, "msg": str(e)}), 500
     finally:
         conexion.close()
 
 
 @movimientos_bp.route("/add_output", methods=["POST"])
 def add_output():
-    producto_id = request.form.get("producto_id","")
-    cantidad    = request.form.get("cantidad","")
-    usuario     = request.form.get("usuario", "").strip()
-    motivo      = request.form.get("motivo", "").strip()
+    producto_id = request.form.get("producto_id", "")
+    cantidad = request.form.get("cantidad", "")
+    usuario = request.form.get("usuario", "").strip()
+    motivo = request.form.get("motivo", "").strip()
 
     try:
         producto_id = int(producto_id)
-        cantidad    = int(cantidad)
+        cantidad = int(cantidad)
     except (TypeError, ValueError):
         return jsonify({"ok": False, "msg": "Datos inválidos."}), 400
 
@@ -70,37 +73,45 @@ def add_output():
     conexion = get_db()
     try:
         producto = conexion.execute(
-            "SELECT stock, nombre FROM productos WHERE id = ?",
-            (producto_id,)
+            "SELECT stock, nombre FROM productos WHERE id = ?", (producto_id,)
         ).fetchone()
 
         if not producto:
-            current_app.logger.warning(f"Salida fallida: producto_id={producto_id} no existe")
+            current_app.logger.warning(
+                f"Salida fallida: producto_id={producto_id} no existe"
+            )
             return jsonify({"ok": False, "msg": "Producto no encontrado."}), 404
 
-        stockActual = producto['stock']
+        stockActual = producto["stock"]
 
         if cantidad > stockActual:
             current_app.logger.warning(
                 f"Salida fallida: stock insuficiente. "
                 f"Producto={producto['nombre']}, solicitado={cantidad}, disponible={stockActual}"
             )
-            return jsonify({
-                "ok": False,
-                "msg": f"Stock insuficiente. Solo tienes {stockActual} unidades de {producto['nombre']}."
-            }), 400
+            return (
+                jsonify(
+                    {
+                        "ok": False,
+                        "msg": f"Stock insuficiente. Solo tienes {stockActual} unidades de {producto['nombre']}.",
+                    }
+                ),
+                400,
+            )
 
-        fecha = datetime.datetime.now().isoformat(timespec='seconds')
+        fecha = datetime.datetime.now().isoformat(timespec="seconds")
         conexion.execute(
             "INSERT INTO salidas (producto_id, cantidad, fecha, usuario, motivo) VALUES (?, ?, ?, ?, ?)",
-            (producto_id, cantidad, fecha, usuario, motivo)
+            (producto_id, cantidad, fecha, usuario, motivo),
         )
         conexion.execute(
             "UPDATE productos SET stock = stock - ? WHERE id = ?",
-            (cantidad, producto_id)
+            (cantidad, producto_id),
         )
         conexion.commit()
-        current_app.logger.info(f"Salida de stock: -{cantidad} unidades (producto_id={producto_id})")
+        current_app.logger.info(
+            f"Salida de stock: -{cantidad} unidades (producto_id={producto_id})"
+        )
         return jsonify({"ok": True, "msg": "Venta/Salida registrada correctamente."})
 
     except Exception as e:

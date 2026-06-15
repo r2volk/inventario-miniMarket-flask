@@ -1,7 +1,7 @@
 import sqlite3
 import bcrypt
 
-connection = sqlite3.connect('inventario.db')
+connection = sqlite3.connect("inventario.db")
 cursor = connection.cursor()
 
 # 1. Limpieza total

@@ -1,16 +1,25 @@
 import os
 import logging
-from flask import Flask, session, redirect, url_for, send_from_directory, render_template, request, jsonify
+from flask import (
+    Flask,
+    session,
+    redirect,
+    url_for,
+    send_from_directory,
+    render_template,
+    request,
+    jsonify,
+)
 from flask_wtf.csrf import CSRFProtect
 from jinja2 import FileSystemLoader, ChoiceLoader
 
-from rutas.auth          import auth_bp
-from rutas.productos     import productos_bp
-from rutas.movimientos   import movimientos_bp
-from rutas.proveedores   import proveedores_bp
-from rutas.api           import api_bp
+from rutas.auth import auth_bp
+from rutas.productos import productos_bp
+from rutas.movimientos import movimientos_bp
+from rutas.proveedores import proveedores_bp
+from rutas.api import api_bp
 from rutas.dashboard_api import dashboard_api_bp
-from rutas.operaciones   import operaciones_bp
+from rutas.operaciones import operaciones_bp
 
 import config
 
@@ -27,7 +36,9 @@ def create_app():
     log_path = os.path.join(config.BASE_DIR, "app.log")
     handler = logging.FileHandler(log_path)
     handler.setLevel(logging.INFO)
-    formatter = logging.Formatter("%(asctime)s | %(levelname)-8s | %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
+    formatter = logging.Formatter(
+        "%(asctime)s | %(levelname)-8s | %(message)s", datefmt="%Y-%m-%d %H:%M:%S"
+    )
     handler.setFormatter(formatter)
     app.logger.addHandler(handler)
     app.logger.setLevel(logging.INFO)
@@ -37,9 +48,11 @@ def create_app():
     csrf.init_app(app)
 
     # --- EXTENDER BÚSQUEDA DE TEMPLATES ---
-    app.jinja_loader = ChoiceLoader([
-        FileSystemLoader(app.root_path),
-    ])
+    app.jinja_loader = ChoiceLoader(
+        [
+            FileSystemLoader(app.root_path),
+        ]
+    )
 
     # --- REGISTRO DE BLUEPRINTS ---
     app.register_blueprint(auth_bp)
@@ -72,6 +85,7 @@ def create_app():
     @app.before_request
     def require_login():
         from flask import request
+
         rutas_publicas = {"auth.login", "static", "scrn_assets"}
         if request.blueprint in ("api", "dashboard_api"):
             return

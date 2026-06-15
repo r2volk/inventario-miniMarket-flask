@@ -1,6 +1,3 @@
-from flask import session
-
-
 def test_login_get_returns_form(client):
     response = client.get("/login")
     assert response.status_code == 200

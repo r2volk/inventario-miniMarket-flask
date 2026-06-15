@@ -12,7 +12,9 @@ def index():
     conn = get_db()
     productos = conn.execute("SELECT * FROM productos ORDER BY nombre").fetchall()
     conn.close()
-    return render_template("pages/administrador/administrador.html", productos=productos)
+    return render_template(
+        "pages/administrador/administrador.html", productos=productos
+    )
 
 
 @productos_bp.route("/productos")
@@ -30,7 +32,9 @@ def eliminar_producto(codigo):
     conexion.commit()
 
     if cursor.rowcount == 0:
-        current_app.logger.warning(f"Intento de eliminar producto inexistente: {codigo}")
+        current_app.logger.warning(
+            f"Intento de eliminar producto inexistente: {codigo}"
+        )
         return jsonify({"ok": False, "msg": "Código no existe"}), 404
 
     current_app.logger.info(f"Producto eliminado: {codigo}")
@@ -58,14 +62,16 @@ def add_product():
         return jsonify({"ok": False, "msg": "Valores numéricos inválidos."}), 400
 
     if precio_compra < 0 or precio_venta < 0:
-        return jsonify(
-            {"ok": False, "msg": "Los precios no pueden ser negativos."}
-        ), 400
+        return (
+            jsonify({"ok": False, "msg": "Los precios no pueden ser negativos."}),
+            400,
+        )
 
     if stock_min < 0:
-        return jsonify(
-            {"ok": False, "msg": "El stock mínimo no puede ser negativo."}
-        ), 400
+        return (
+            jsonify({"ok": False, "msg": "El stock mínimo no puede ser negativo."}),
+            400,
+        )
 
     conexion = get_db()
     try:
@@ -75,14 +81,24 @@ def add_product():
               (codigo, nombre, categoria, precio_compra, precio_venta, stock, stock_min, descripcion)
             VALUES (?, ?, ?, ?, ?, 0, ?, ?)
         """,
-            (codigo, nombre, categoria, precio_compra, precio_venta, stock_min, descripcion),
+            (
+                codigo,
+                nombre,
+                categoria,
+                precio_compra,
+                precio_venta,
+                stock_min,
+                descripcion,
+            ),
         )
         conexion.commit()
         current_app.logger.info(f"Producto creado: {codigo} - {nombre}")
         return jsonify({"ok": True, "msg": "Producto registrado."})
 
     except sqlite3.IntegrityError:
-        current_app.logger.warning(f"Intento de crear producto con código duplicado: {codigo}")
+        current_app.logger.warning(
+            f"Intento de crear producto con código duplicado: {codigo}"
+        )
         return jsonify({"ok": False, "msg": "Código ya registrado."}), 400
 
     finally:

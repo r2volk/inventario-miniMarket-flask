@@ -12,4 +12,6 @@ def get_db():
         return conexion
     except sqlite3.Error as e:
         logger.error(f"Error al conectar con la base de datos: {e}")
-        raise RuntimeError("No se pudo conectar con la base de datos. Verifica que el archivo exista y no esté corrupto.")
+        raise RuntimeError(
+            "No se pudo conectar con la base de datos. Verifica que el archivo exista y no esté corrupto."
+        )

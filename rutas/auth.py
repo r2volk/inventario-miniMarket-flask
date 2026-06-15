@@ -1,5 +1,14 @@
 import bcrypt
-from flask import Blueprint, render_template, request, redirect, url_for, session, flash, current_app
+from flask import (
+    Blueprint,
+    render_template,
+    request,
+    redirect,
+    url_for,
+    session,
+    flash,
+    current_app,
+)
 from models.db import get_db
 
 auth_bp = Blueprint("auth", __name__)
@@ -11,7 +20,7 @@ def login():
         return redirect(url_for("productos.index"))
 
     if request.method == "POST":
-        usuario  = request.form.get("username", "").strip()
+        usuario = request.form.get("username", "").strip()
         password = request.form.get("password", "").strip()
 
         conn = get_db()
@@ -24,15 +33,19 @@ def login():
             password.encode("utf-8"), user["password_hash"].encode("utf-8")
         ):
             session["autenticado"] = True
-            session["usuario"]     = usuario
+            session["usuario"] = usuario
             current_app.logger.info(f"Inicio de sesión exitoso: {usuario}")
             return redirect(url_for("productos.index"))
         else:
             if not user:
-                current_app.logger.warning(f"Intento de login: usuario no encontrado ({usuario})")
+                current_app.logger.warning(
+                    f"Intento de login: usuario no encontrado ({usuario})"
+                )
                 flash("Usuario no encontrado.", "error")
             else:
-                current_app.logger.warning(f"Intento de login: contraseña incorrecta ({usuario})")
+                current_app.logger.warning(
+                    f"Intento de login: contraseña incorrecta ({usuario})"
+                )
                 flash("Contraseña incorrecta.", "error")
 
     return render_template("login/login.html")

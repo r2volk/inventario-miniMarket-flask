@@ -2,14 +2,29 @@ import datetime
 from flask import Blueprint, jsonify
 from models.db import get_db
 
+
 def _formatear_fecha(iso):
     """Convierte ISO 8601 a algo legible, ej: '12 ene, 15:30'"""
     try:
         dt = datetime.datetime.fromisoformat(iso)
-        meses = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"]
+        meses = [
+            "ene",
+            "feb",
+            "mar",
+            "abr",
+            "may",
+            "jun",
+            "jul",
+            "ago",
+            "sep",
+            "oct",
+            "nov",
+            "dic",
+        ]
         return f"{dt.day} {meses[dt.month-1]}, {dt.hour:02d}:{dt.minute:02d}"
-    except:
+    except Exception:
         return iso
+
 
 dashboard_api_bp = Blueprint("dashboard_api", __name__, url_prefix="/api")
 
@@ -44,20 +59,22 @@ def api_dashboard():
 
     conn.close()
 
-    return jsonify({
-        "total":        total_productos,
-        "alertas":      alertas_stock,
-        "vencimiento":  por_vencer,
-        "valor":        valor_total,
-        "categoria": {
-            "labels": [row['categoria'] for row in query_grafico_categoria],
-            "values": [row['cantidad'] for row in query_grafico_categoria]
-        },
-        "productos": {
-            "labels": [row['nombre'] for row in query_grafico_productos],
-            "values": [row['stock'] for row in query_grafico_productos]
+    return jsonify(
+        {
+            "total": total_productos,
+            "alertas": alertas_stock,
+            "vencimiento": por_vencer,
+            "valor": valor_total,
+            "categoria": {
+                "labels": [row["categoria"] for row in query_grafico_categoria],
+                "values": [row["cantidad"] for row in query_grafico_categoria],
+            },
+            "productos": {
+                "labels": [row["nombre"] for row in query_grafico_productos],
+                "values": [row["stock"] for row in query_grafico_productos],
+            },
         }
-    })
+    )
 
 
 @dashboard_api_bp.route("/recent-activity")
@@ -74,11 +91,16 @@ def api_recent_activity():
     """).fetchall()
     conn.close()
 
-    return jsonify([{
-        "tipo":     r["tipo"],
-        "producto": r["producto"],
-        "cantidad": r["cantidad"],
-        "fecha":    _formatear_fecha(r["fecha"]),
-        "usuario":  r["usuario"] or "—",
-        "motivo":   r["motivo"] or "—",
-    } for r in rows])
+    return jsonify(
+        [
+            {
+                "tipo": r["tipo"],
+                "producto": r["producto"],
+                "cantidad": r["cantidad"],
+                "fecha": _formatear_fecha(r["fecha"]),
+                "usuario": r["usuario"] or "—",
+                "motivo": r["motivo"] or "—",
+            }
+            for r in rows
+        ]
+    )

@@ -11,7 +11,6 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from app import create_app
 import config
 
-
 SCHEMA_SQL = """
 CREATE TABLE IF NOT EXISTS usuarios (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -89,10 +88,12 @@ def app():
     config.DB_PATH = db_path
 
     app = create_app()
-    app.config.update({
-        "TESTING": True,
-        "WTF_CSRF_ENABLED": False,
-    })
+    app.config.update(
+        {
+            "TESTING": True,
+            "WTF_CSRF_ENABLED": False,
+        }
+    )
 
     yield app
 
