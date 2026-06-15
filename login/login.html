@@ -6,54 +6,9 @@
   <title>Iniciar Sesión — Minimarket Don José</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <script>
-    (function () {
-      const storageKey = "inventario-theme";
-      let saved = null;
-      try {
-        saved = localStorage.getItem(storageKey);
-      } catch (error) {
-        saved = null;
-      }
-      const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-      const theme = saved === "dark" || saved === "light" ? saved : (prefersDark ? "dark" : "light");
-      document.documentElement.dataset.theme = theme;
-      document.documentElement.style.colorScheme = theme;
-    })();
-  </script>
   <link rel="stylesheet" href="{{ url_for('scrn_assets', filename='login/login.css') }}" />
 </head>
 <body>
-
-  <button
-    class="theme-toggle theme-toggle--floating"
-    type="button"
-    data-theme-toggle
-    aria-label="Cambiar entre modo claro y oscuro"
-    aria-pressed="false"
-  >
-    <span class="theme-toggle__track" aria-hidden="true">
-      <span class="theme-toggle__icon theme-toggle__icon--sun">
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="4"/>
-          <path d="M12 2v2"/>
-          <path d="M12 20v2"/>
-          <path d="m4.93 4.93 1.41 1.41"/>
-          <path d="m17.66 17.66 1.41 1.41"/>
-          <path d="M2 12h2"/>
-          <path d="M20 12h2"/>
-          <path d="m6.34 17.66-1.41 1.41"/>
-          <path d="m19.07 4.93-1.41 1.41"/>
-        </svg>
-      </span>
-      <span class="theme-toggle__icon theme-toggle__icon--moon">
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M21 12.8A8.5 8.5 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"/>
-        </svg>
-      </span>
-      <span class="theme-toggle__thumb"></span>
-    </span>
-  </button>
 
   <div class="bg-grid"></div>
 
@@ -161,7 +116,6 @@
 
   </div>
 
-  <script src="{{ url_for('scrn_assets', filename='static/js/theme.js') }}"></script>
   <script src="{{ url_for('scrn_assets', filename='login/login.js') }}"></script>
 
 </body>

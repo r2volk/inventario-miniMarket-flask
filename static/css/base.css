@@ -233,7 +233,7 @@ svg {
 }
 
 .page-content {
-  width: min(100%, 1540px);
+  width: min(100%, 2000px);
   margin: 0 auto;
   padding: 34px 42px 54px;
 }

@@ -22,7 +22,7 @@ function initTablaProductos() {
       const nombre = this.closest("tr").querySelector(".td-name").textContent;
       const ok = await confirmar('Eliminar producto "' + nombre + '" (' + codigo + ')?');
       if (!ok) return;
-      fetch("/producto/" + codigo, { method: "DELETE" }).then(function (r) {
+      fetch("/producto/" + codigo, { method: "DELETE", headers: { "X-CSRFToken": document.querySelector('meta[name="csrf-token"]').getAttribute("content") } }).then(function (r) {
         if (r.ok) location.reload();
         else r.json().then(function (data) { showToast(data.msg, "error"); });
       });

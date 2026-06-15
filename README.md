@@ -1,104 +1,103 @@
-# 📦 Sistema de Gestión de Inventario para Minimarket — "Don José"
+# Sistema de Gestión de Inventario para Minimarket
 
-[![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python&logoColor=white)](https://www.python.org/)
-[![Flask](https://img.shields.io/badge/Flask-Framework-lightgrey?logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
-[![SQLite](https://img.shields.io/badge/SQLite-Database-003B57?logo=sqlite&logoColor=white)](https://www.sqlite.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+**Python / Flask / SQLite / CSS Modular / JavaScript ES6**
 
-Una solución web moderna y profesional diseñada para el control y la administración de suministros en tiendas y pequeños negocios. Cuenta con un diseño premium optimizado, control de acceso mediante inicio de sesión, métricas del estado del inventario en tiempo real y gráficos interactivos.
+Aplicación web responsiva para control de inventario, proveedores, entradas/salidas de stock y dashboard analítico con gráficos.
 
 ---
 
-## 📸 Vista de la Aplicación
+## Capturas
 
-El sistema cuenta con una interfaz renovada basada en la familia tipográfica **Geist**, micro-animaciones fluidas, un panel de login dedicado y una barra lateral de navegación estructurada.
-
-### 🔐 Inicio de Sesión
-Acceso restringido mediante cookies firmadas de sesión para personal autorizado.
-![Login](imgs/Login.png)
-
-### 📊 Panel de Control (Dashboard)
-Tarjetas KPI que calculan automáticamente el valor total del almacén, alertas de stock mínimo y productos por vencer en los próximos 30 días.
-![Dashboard Principal 1](imgs/DashboardPrincipal.png)
-![Dashboard Principal 2](imgs/DashboardPrincipal2.png)
-![Dashboard Principal 3](imgs/DashboardPrincipal3.png)
-
-### 📋 Gestión de Catálogo y Tablas
-Visualización de productos con filtros de búsqueda instantánea en caliente por DOM.
-![Tabla de Productos](imgs/TablaProductos.png)
-
-### ➕ Formularios Modales y Operaciones
-Registro rápido de productos, proveedores, entradas y salidas de stock sin recargas de página mediante JavaScript asíncrono (`fetch` API).
-
-*   **Nuevo Producto:**
-    ![Nuevo Producto](imgs/NuevoProducto.png)
-
-*   **Nuevo Proveedor:**
-    ![Nuevo Proveedor](imgs/NuevoProveedor.png)
-
-*   **Registrar Entrada de Stock:**
-    ![Registrar Entrada](imgs/RegistrarEntrada.png)
-
-*   **Registrar Salida de Stock:**
-    ![Registrar Salida](imgs/RegistrarSalida.png)
-
-### 📜 Historial de Cambios (Kardex)
-Registro unificado de todos los movimientos (entradas y salidas) con buscador en tiempo real.
-![Historial de Cambios](imgs/HistorialCambios.png)
+| Login | Dashboard | Productos | Kardex |
+|-------|-----------|-----------|--------|
+| ![Login](imgs/Login.png) | ![Dashboard](imgs/DashboardPrincipal.png) | ![Productos](imgs/TablaProductos.png) | ![Historial](imgs/HistorialCambios.png) |
 
 ---
 
-## ✨ Características Principales
+## Características
 
-*   🔒 **Seguridad y Autenticación:** Módulo de login con protección de rutas intermedia (`@app.before_request`) que restringe el acceso de forma global y permite cerrar sesión de manera segura.
-*   📊 **Dashboard Analítico:** Tarjetas KPI de control y gráficos dinámicos interactivos de Chart.js con soporte de cambio de dataset en tiempo real.
-*   📅 **Control de Vencimientos:** Monitoreo activo de lotes de productos perecederos próximos a caducar dentro de los siguientes 30 días.
-*   💸 **Valorización del Inventario:** Cálculo del valor monetario total del almacén basado en el precio de adquisición (`stock * precio_compra`).
-*   📦 **Gestión Inteligente de Stock (Entradas y Salidas):** 
-    *   **Entradas:** Registro de compras especificando cantidad, proveedor y fecha de vencimiento.
-    *   **Salidas:** Registro de ventas o consumos con validación de existencias en tiempo real para evitar stocks negativos.
-*   🔎 **Buscadores Interactivos en Caliente:** Filtros instantáneos en la tabla de productos y de historial (Kardex) que procesan el texto en el DOM al escribir.
-*   🗑️ **Mantenimiento Simplificado:** Eliminación directa de productos del catálogo desde la misma interfaz con actualización asíncrona.
-*   ⚙️ **Diseño de Hojas de Estilo Modular:** Hojas de estilos divididas de forma estructurada (`base`, `sidebar`, `components`, `tables`) para facilitar el mantenimiento y escalabilidad del frontend. Cada página carga además sus propios estilos específicos desde su carpeta en `pages/`.
-
----
-
-## 🛠️ Stack Tecnológico
-
-*   **Backend:** Python 3.x & Flask (Estructurado mediante Blueprints)
-*   **Base de Datos:** SQLite3 (Persistencia de datos local rápida y ligera)
-*   **Frontend:** HTML5 (Plantillas Jinja2), CSS3 Modular (Variables de diseño en HSL) y JavaScript (ES6+, sin dependencias externas pesadas)
-*   **Gráficos:** Chart.js (Mediante CDN)
+- **Autenticación** con bcrypt + sesión cifrada (contraseñas en DB)
+- **Dashboard** con tarjetas KPI, gráfico Chart.js (categorías / stock), alertas de stock mínimo y vencimientos
+- **CRUD de productos** con categorías, edición en línea, eliminación con confirmación
+- **CRUD de proveedores** con edición y eliminación (protección por FK)
+- **Entradas y salidas** de stock con validación de existencias y control de lotes/fechas
+- **Historial unificado** (Kardex) con buscador en tiempo real
+- **Modo oscuro** con persistencia en localStorage
+- **CSRF** automático en todos los formularios POST via Flask-WTF
+- **33 tests** (unitarios, integración, estrés y E2E), cobertura ~77 %
+- **Código verificado** con ruff, black, radon, bandit
 
 ---
 
-## ⚙️ Instalación y Ejecución
+## Stack
 
-Sigue estos sencillos pasos para levantar el entorno de desarrollo localmente:
+| Capa | Tecnología |
+|------|-----------|
+| Backend | Python 3, Flask, Flask-WTF |
+| Base de datos | SQLite3 |
+| Frontend | HTML (Jinja2), CSS modular, JavaScript ES6 |
+| Gráficos | Chart.js (CDN) |
+| Seguridad | bcrypt, python-dotenv, sesiones cifradas |
+| Tests | pytest, pytest-cov |
 
-1.  **Clona el repositorio:**
-    ```bash
-    git clone https://github.com/rlaur205/gestion-inventario-flask.git
-    cd gestion-inventario-flask
-    ```
+---
 
-2.  **Instala Flask:**
-    ```bash
-    pip install flask
-    ```
+## Instalación y ejecución
 
-3.  **Inicializa la base de datos (SQLite):**
-    ```bash
-    python reset_db.py
-    ```
-    > ⚠️ **Nota:** Esto creará el archivo `inventario.db` y las tablas necesarias con un proveedor general de prueba.
+```bash
+# 1. Clonar
+git clone https://github.com/rlaur205/gestion-inventario-flask.git
+cd gestion-inventario-flask
 
-4.  **Ejecuta el servidor de desarrollo:**
-    ```bash
-    python app.py
-    ```
+# 2. Crear entorno virtual (opcional pero recomendado)
+python3 -m venv venv
+source venv/bin/activate
 
-5.  **Accede desde tu navegador:**
-    Abre la dirección [http://localhost:5000](http://localhost:5000) e ingresa con las credenciales por defecto:
-    *   **Usuario:** `admin`
-    *   **Contraseña:** `12345`
+# 3. Instalar dependencias
+pip install -r requirements.txt
+# Si no usas requirements.txt: pip install flask flask-wtf pytest pytest-cov python-dotenv bcrypt
+
+# 4. Configurar variable de entorno SECRET_KEY
+echo "SECRET_KEY=$(python3 -c 'import secrets; print(secrets.token_hex(32))')" > .env
+
+# 5. Inicializar base de datos
+python3 reset_db.py
+
+# 6. Ejecutar
+python3 app.py
+```
+
+Abrir `http://localhost:5000` y acceder con:
+
+| Usuario | Contraseña |
+|---------|-----------|
+| admin | 12345 |
+
+---
+
+## Tests
+
+```bash
+pytest                          # 33 tests
+pytest --cov=. --cov-report=term  # cobertura
+pytest tests/test_stress.py     # test de estrés (500 productos)
+pytest tests/test_e2e.py -v     # tests end-to-end
+```
+
+---
+
+## Calidad de código
+
+```bash
+ruff check .                    # linting
+black --check .                 # formato
+radon cc . -s                   # complejidad ciclomática
+radon mi . -s                   # maintainability index
+bandit -r .                     # seguridad
+```
+
+---
+
+## Licencia
+
+MIT
