@@ -1,5 +1,5 @@
 import sqlite3
-from flask import Blueprint, request, jsonify, render_template
+from flask import Blueprint, request, jsonify, render_template, current_app
 from models.db import get_db
 
 proveedores_bp = Blueprint("proveedores", __name__)
@@ -15,13 +15,11 @@ def proveedores_page():
 
 @proveedores_bp.route("/add_provider", methods=["POST"])
 def add_provider():
-
     ruc       = request.form.get("ruc", "").strip()
     nombre    = request.form.get("nombre", "").strip()
     telefono  = request.form.get("telefono", "").strip()
     direccion = request.form.get("direccion", "").strip()
 
-    # RUC y nombre son obligatorios → si falta alguno, rechazamos la petición
     if not ruc or not nombre:
         return jsonify({"ok": False, "msg": "RUC y Nombre son obligatorios."}), 400
 
@@ -32,13 +30,12 @@ def add_provider():
             (ruc, nombre, telefono, direccion)
         )
         conexion.commit()
+        current_app.logger.info(f"Proveedor creado: {nombre} (RUC: {ruc})")
         return jsonify({"ok": True, "msg": "Proveedor registrado."})
 
     except sqlite3.IntegrityError:
-        # El RUC tiene restricción UNIQUE en la BD → no pueden existir dos iguales
-        # Si ya existe, SQLite lanza IntegrityError
+        current_app.logger.warning(f"Intento de crear proveedor con RUC duplicado: {ruc}")
         return jsonify({"ok": False, "msg": "El RUC ya existe."}), 400
 
     finally:
-        # Se ejecuta siempre (con o sin error), garantiza que la conexion se cierre
         conexion.close()

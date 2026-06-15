@@ -1,16 +1,15 @@
 import sqlite3
+import logging
+import config
 
-# Importamos DB_PATH desde config.py para no repetir la ruta en cada archivo
-from config import DB_PATH
+logger = logging.getLogger(__name__)
 
-#abre una conexion a la base de datos SQlite, se llama al inicio de cada ruta que acceda a la bd
+
 def get_db():
-
-    # sqlite3.connect() abre el archivo .db (lo crea si no existe)
-    conexion = sqlite3.connect(DB_PATH)
-
-    #cambia el formato de los resultados, acceso por nombre de column (row['nombre'], row['stock'])
-    conexion.row_factory = sqlite3.Row
-
-    # devolvemos la conexión para que la ruta pueda ejecutar consultas
-    return conexion
+    try:
+        conexion = sqlite3.connect(config.DB_PATH)
+        conexion.row_factory = sqlite3.Row
+        return conexion
+    except sqlite3.Error as e:
+        logger.error(f"Error al conectar con la base de datos: {e}")
+        raise RuntimeError("No se pudo conectar con la base de datos. Verifica que el archivo exista y no esté corrupto.")

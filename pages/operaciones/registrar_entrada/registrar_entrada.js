@@ -23,18 +23,23 @@ async function initRegistrarEntrada() {
 
 
 async function guardarEntrada() {
-  const data = {
+  const datos = sanitizarYValidar({
     producto_id:  document.getElementById("e-product").value,
     proveedor_id: document.getElementById("e-provider").value,
     cantidad:     document.getElementById("e-cant").value,
     vencimiento:  document.getElementById("e-venc").value,
     usuario:      document.getElementById("e-user").value,
     motivo:       document.getElementById("e-mot").value,
-  };
+  }, {
+    producto_id: { obligatorio: true, mensaje: "Debes seleccionar un producto." },
+    proveedor_id: { obligatorio: true, mensaje: "Debes seleccionar un proveedor." },
+    cantidad: { obligatorio: true, tipo: "entero", mensaje: "La cantidad debe ser un número entero mayor a 0." },
+  });
+  if (!datos) return;
 
   await postForm(
     "/add_entry",
-    data,
+    datos,
     () => {
       showToast("Entrada registrada. Stock actualizado.", "success");
       setTimeout(() => location.reload(), 1200);

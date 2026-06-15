@@ -18,3 +18,12 @@ env/
 .vscode/
 .idea/
 *.swp
+
+# Tests & coverage
+.pytest_cache/
+htmlcov/
+.coverage
+.coverage.*
+
+# Logs
+*.log

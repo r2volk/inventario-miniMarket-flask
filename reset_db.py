@@ -1,4 +1,5 @@
 import sqlite3
+import bcrypt
 
 connection = sqlite3.connect('inventario.db')
 cursor = connection.cursor()
@@ -8,8 +9,27 @@ cursor.execute("DROP TABLE IF EXISTS entradas")
 cursor.execute("DROP TABLE IF EXISTS salidas")
 cursor.execute("DROP TABLE IF EXISTS productos")
 cursor.execute("DROP TABLE IF EXISTS proveedores")
+cursor.execute("DROP TABLE IF EXISTS usuarios")
 
-# 2. Tablas Base
+# 2. Tabla de usuarios (NUEVA)
+cursor.execute("""
+CREATE TABLE usuarios (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    nombre TEXT DEFAULT 'Administrador',
+    rol TEXT DEFAULT 'admin'
+)
+""")
+
+# Insertar usuario admin por defecto con contraseña hasheada
+pw_hash = bcrypt.hashpw(b"12345", bcrypt.gensalt()).decode("utf-8")
+cursor.execute(
+    "INSERT INTO usuarios (username, password_hash, nombre, rol) VALUES (?, ?, ?, ?)",
+    ("admin", pw_hash, "Administrador", "admin"),
+)
+
+# 3. Tablas base
 cursor.execute("""
 CREATE TABLE productos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -34,7 +54,7 @@ CREATE TABLE proveedores (
 )
 """)
 
-# 3. Tabla ENTRADAS (Con campo VENCIMIENTO)
+# 4. Tabla ENTRADAS
 cursor.execute("""
 CREATE TABLE entradas (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -42,7 +62,7 @@ CREATE TABLE entradas (
     proveedor_id INTEGER,
     cantidad INTEGER NOT NULL,
     fecha TEXT NOT NULL,
-    vencimiento TEXT,  -- Nuevo campo crítico
+    vencimiento TEXT,
     usuario TEXT,
     motivo TEXT,
     FOREIGN KEY(producto_id) REFERENCES productos(id),
@@ -62,9 +82,12 @@ CREATE TABLE salidas (
 )
 """)
 
-# Datos de prueba mínimos
-cursor.execute("INSERT INTO proveedores (ruc, nombre, telefono, direccion) VALUES ('00000000000', 'Proveedor General', '000-000', 'Local')")
+# 5. Datos de prueba mínimos
+cursor.execute(
+    "INSERT INTO proveedores (ruc, nombre, telefono, direccion) VALUES (?, ?, ?, ?)",
+    ("00000000000", "Proveedor General", "000-000", "Local"),
+)
 
 connection.commit()
 connection.close()
-print("LISTO: Base de datos actualizada con Control de Vencimientos.")
+print("LISTO: Base de datos actualizada con tabla de usuarios y contraseñas hasheadas.")

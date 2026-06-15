@@ -15,16 +15,20 @@ async function initRegistrarSalida() {
 
 
 async function guardarSalida() {
-  const data = {
+  const datos = sanitizarYValidar({
     producto_id: document.getElementById("s-product").value,
     cantidad:    document.getElementById("s-cant").value,
     usuario:     document.getElementById("s-user").value,
     motivo:      document.getElementById("s-mot").value,
-  };
+  }, {
+    producto_id: { obligatorio: true, mensaje: "Debes seleccionar un producto." },
+    cantidad: { obligatorio: true, tipo: "entero", mensaje: "La cantidad debe ser un número entero mayor a 0." },
+  });
+  if (!datos) return;
 
   await postForm(
     "/add_output",
-    data,
+    datos,
     () => {
       showToast("Salida registrada. Stock descontado.", "success");
       setTimeout(() => location.reload(), 1200);

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>500 — Error interno</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html, body { height:100%; }
+    body {
+      font-family: 'Geist', -apple-system, sans-serif;
+      background: #0b0d10;
+      color: #e4e7ed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card {
+      background: #14171c;
+      border: 1px solid #262b33;
+      border-radius: 16px;
+      padding: 48px 56px;
+      max-width: 420px;
+      text-align: center;
+    }
+    .code {
+      font-size: 64px;
+      font-weight: 700;
+      color: #e11d48;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    p {
+      color: #8b92a0;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 24px;
+      background: #e11d48;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .btn:hover { background: #be123c; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="code">500</div>
+    <h1 class="title">Error interno del servidor</h1>
+    <p>Ocurrió un problema inesperado.<br>El equipo de sistemas ya fue notificado.<br>Intentá de nuevo más tarde.</p>
+    <a href="/" class="btn">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+      Volver al inicio
+    </a>
+  </div>
+</body>
+</html>

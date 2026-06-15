@@ -9,11 +9,11 @@
   <div class="card-body form-grid">
     <div class="row">
       <label>RUC / DNI *</label>
-      <input id="pr-ruc" placeholder="20601234567">
+      <input id="pr-ruc" placeholder="20601234567" required pattern="\d*" maxlength="11" title="Solo dígitos">
     </div>
     <div class="row">
       <label>Razón Social *</label>
-      <input id="pr-nombre" placeholder="Empresa S.A.C.">
+      <input id="pr-nombre" placeholder="Empresa S.A.C." required maxlength="100">
     </div>
     <div class="row">
       <label>Teléfono</label>

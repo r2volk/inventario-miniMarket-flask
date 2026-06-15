@@ -52,12 +52,64 @@ function showToast(msg, type = "success") {
   }, 3000);
 }
 
+// Valida y sanitiza datos antes de enviar al servidor.
+//   datos  → objeto con los campos del formulario
+//   reglas → objeto con reglas por campo:
+//     { campo: { obligatorio: true, tipo: "texto"|"numero"|"entero"|"ruc", mensaje: "..." } }
+//   Retorna los datos sanitizados o null si hay error.
+function sanitizarYValidar(datos, reglas) {
+  for (const [campo, regla] of Object.entries(reglas)) {
+    const valor = (datos[campo] || "").toString().trim();
+    datos[campo] = valor;
+
+    if (regla.obligatorio && !valor) {
+      showToast(regla.mensaje || `El campo ${campo} es obligatorio.`, "error");
+      return null;
+    }
+
+    if (regla.tipo === "numero") {
+      if (valor && isNaN(Number(valor))) {
+        showToast(regla.mensaje || `El campo ${campo} debe ser un número.`, "error");
+        return null;
+      }
+      if (valor && Number(valor) < 0) {
+        showToast(regla.mensaje || `El campo ${campo} no puede ser negativo.`, "error");
+        return null;
+      }
+    }
+
+    if (regla.tipo === "entero") {
+      if (valor && (!Number.isInteger(Number(valor)) || isNaN(Number(valor)))) {
+        showToast(regla.mensaje || `El campo ${campo} debe ser un número entero.`, "error");
+        return null;
+      }
+      if (valor && Number(valor) < 0) {
+        showToast(regla.mensaje || `El campo ${campo} no puede ser negativo.`, "error");
+        return null;
+      }
+    }
+
+    if (regla.tipo === "ruc") {
+      if (valor && !/^\d+$/.test(valor)) {
+        showToast(regla.mensaje || "El RUC debe contener solo dígitos.", "error");
+        return null;
+      }
+    }
+  }
+  return datos;
+}
+
+
 // Envia el formulario al servidor.
 //   url    → ruta del servidor Flask (ej: "/add_product")
 //   data   → objeto con los datos del formulario (ej: { nombre: "Arroz", stock: 10 })
 //   onOk   → función que se ejecuta si el servidor responde con éxito (código 200-299)
 //   onError → función que se ejecuta si hay error (opcional)
 async function postForm(url, data, onOk, onError) {
+
+  // Agregar token CSRF automáticamente a toda petición POST
+  const meta = document.querySelector('meta[name="csrf-token"]');
+  if (meta) data.csrf_token = meta.getAttribute("content");
 
   try {
     // fetch() hace la petición HTTP al servidor Flask
