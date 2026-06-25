@@ -77,6 +77,33 @@ def api_dashboard():
     )
 
 
+@dashboard_api_bp.route("/top-products")
+def api_top_products():
+    conn = get_db()
+    rows = conn.execute("""
+        SELECT p.id, p.codigo, p.nombre, p.precio_venta,
+               COALESCE(SUM(s.cantidad), 0) AS total_vendido
+        FROM productos p
+        LEFT JOIN salidas s ON s.producto_id = p.id
+        GROUP BY p.id
+        ORDER BY total_vendido DESC
+        LIMIT 10
+    """).fetchall()
+    conn.close()
+    return jsonify(
+        [
+            {
+                "id": r["id"],
+                "codigo": r["codigo"],
+                "nombre": r["nombre"],
+                "precio_venta": r["precio_venta"],
+                "total_vendido": r["total_vendido"],
+            }
+            for r in rows
+        ]
+    )
+
+
 @dashboard_api_bp.route("/recent-activity")
 def api_recent_activity():
     conn = get_db()

@@ -1,0 +1,31 @@
+<article class="card form-card" id="widget-nuevo-cliente">
+  <div class="card-header">
+    <div>
+      <span class="section-eyebrow">Cartera</span>
+      <h3 class="card-title">Nuevo Cliente</h3>
+      <p class="card-subtitle">Registra los datos del cliente para futuras ventas.</p>
+    </div>
+  </div>
+  <div class="card-body form-grid">
+    <div class="row">
+      <label>DNI / RUC *</label>
+      <input id="cl-dni-ruc" placeholder="20601234567" required pattern="\d*" maxlength="11" title="Solo dígitos">
+    </div>
+    <div class="row">
+      <label>Nombre *</label>
+      <input id="cl-nombre" placeholder="Nombre o Razón Social" required maxlength="100">
+    </div>
+    <div class="row">
+      <label>Teléfono</label>
+      <input id="cl-tel" placeholder="999-888-777">
+    </div>
+    <div class="row row--full">
+      <label>Dirección</label>
+      <input id="cl-dir" placeholder="Av. Principal 123">
+    </div>
+  </div>
+  <div class="card-actions">
+    <button id="cl-save" class="btn btn-dark">Guardar cliente</button>
+    <button id="cl-cancel-edit" class="btn btn-ghost" style="display:none">Cancelar</button>
+  </div>
+</article>

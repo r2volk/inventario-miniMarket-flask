@@ -98,6 +98,17 @@
         </span>
         <span class="nav-text">Productos</span>
       </a>
+      <a href="/clientes" class="nav-item {% if request.path == '/clientes' %}active{% endif %}">
+        <span class="nav-icon">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        </span>
+        <span class="nav-text">Clientes</span>
+      </a>
       <a href="/proveedores" class="nav-item {% if request.path == '/proveedores' %}active{% endif %}">
         <span class="nav-icon">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -141,6 +152,7 @@
           {% if request.path == '/' %}Administrador
           {% elif request.path == '/operaciones' %}Operaciones
           {% elif request.path == '/productos' %}Productos
+          {% elif request.path == '/clientes' %}Clientes
           {% elif request.path == '/proveedores' %}Proveedores
           {% else %}Historial de Movimientos{% endif %}
         </h1>
@@ -150,6 +162,8 @@
         <span class="page-subtitle">Registra entradas y salidas de mercadería.</span>
         {% elif request.path == '/productos' %}
         <span class="page-subtitle">Gestiona el catálogo de productos del inventario.</span>
+        {% elif request.path == '/clientes' %}
+        <span class="page-subtitle">Gestiona la cartera de clientes frecuentes del minimarket.</span>
         {% elif request.path == '/proveedores' %}
         <span class="page-subtitle">Administra los proveedores registrados en el sistema.</span>
         {% else %}

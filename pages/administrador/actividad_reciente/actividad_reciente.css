@@ -81,56 +81,65 @@
   text-align: center;
 }
 
-/* ── Pulso del inventario ── */
+/* ── Top 10 más vendidos ── */
 
-.inventory-health-card {
+.top-card {
   display: flex;
   flex: 1 1 auto;
   min-height: 0;
   flex-direction: column;
 }
 
-.health-list {
-  display: grid;
-  gap: 16px;
-  padding: 6px 26px 20px;
-}
-
-.health-item {
-  display: grid;
-  gap: 9px;
-}
-
-.health-row {
+.top-list {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  color: var(--text-muted);
-  font-size: 12px;
-  font-weight: 560;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0 14px 16px;
+  overflow: auto;
 }
 
-.health-row strong {
-  color: var(--text);
-  font-size: 13px;
-  font-weight: 660;
+.top-item {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 10px;
+  padding: 10px 8px;
+  border-radius: 13px;
+  transition: background 160ms ease;
 }
 
-.health-track {
-  height: 8px;
-  overflow: hidden;
-  border-radius: 999px;
+.top-item:hover {
   background: var(--surface-soft);
 }
 
-.health-track span {
-  display: block;
-  height: 100%;
-  border-radius: inherit;
-  background: var(--surface-inverse);
+.top-item.top-medal .top-rank {
+  color: var(--warning);
+  font-weight: 700;
 }
 
-.health-track--danger span {
-  background: var(--danger);
+.top-rank {
+  font-size: 14px;
+  font-weight: 660;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.top-item-body strong {
+  display: block;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 620;
+}
+
+.top-meta {
+  display: block;
+  margin-top: 1px;
+  color: var(--text-faint);
+  font-size: 11px;
+}
+
+.top-empty {
+  padding: 24px 8px;
+  color: var(--text-muted);
+  font-size: 13px;
+  text-align: center;
 }

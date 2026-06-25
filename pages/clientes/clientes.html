@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('scrn_assets', filename='pages/clientes/clientes.css') }}">
+<link rel="stylesheet" href="{{ url_for('scrn_assets', filename='pages/clientes/nuevo_cliente/nuevo_cliente.css') }}">
+<link rel="stylesheet" href="{{ url_for('scrn_assets', filename='pages/clientes/tabla_clientes/tabla_clientes.css') }}">
+<script src="{{ url_for('scrn_assets', filename='pages/clientes/nuevo_cliente/nuevo_cliente.js') }}" defer></script>
+<script src="{{ url_for('scrn_assets', filename='pages/clientes/tabla_clientes/tabla_clientes.js') }}" defer></script>
+<script src="{{ url_for('scrn_assets', filename='pages/clientes/clientes.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+<section class="clientes-shell">
+  <div class="clientes-grid">
+    {% include "pages/clientes/tabla_clientes/tabla_clientes.html" %}
+    {% include "pages/clientes/nuevo_cliente/nuevo_cliente.html" %}
+  </div>
+</section>
+{% endblock %}

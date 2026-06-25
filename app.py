@@ -18,6 +18,7 @@ from rutas.productos import productos_bp
 from rutas.movimientos import movimientos_bp
 from rutas.proveedores import proveedores_bp
 from rutas.api import api_bp
+from rutas.clientes import clientes_bp
 from rutas.dashboard_api import dashboard_api_bp
 from rutas.operaciones import operaciones_bp
 
@@ -60,6 +61,7 @@ def create_app():
     app.register_blueprint(movimientos_bp)
     app.register_blueprint(proveedores_bp)
     app.register_blueprint(api_bp)
+    app.register_blueprint(clientes_bp)
     app.register_blueprint(dashboard_api_bp)
     app.register_blueprint(operaciones_bp)
 

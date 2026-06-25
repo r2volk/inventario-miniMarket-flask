@@ -17,16 +17,40 @@ function buildActivityRows(items) {
   }).join('');
 }
 
+function buildTopRows(items) {
+  if (!items || items.length === 0) {
+    return '<div class="top-empty">No hay ventas registradas aún.</div>';
+  }
+  return items.map((p, i) => {
+    const rank = i + 1;
+    const medal = rank <= 3 ? 'top-medal' : '';
+    return `
+      <div class="top-item ${medal}">
+        <span class="top-rank">#${rank}</span>
+        <div class="top-item-body">
+          <strong>${p.nombre}</strong>
+          <span class="top-meta">${p.codigo} · ${p.total_vendido} vendidos · S/ ${parseFloat(p.precio_venta).toFixed(2)}</span>
+        </div>
+      </div>`;
+  }).join('');
+}
+
 async function openActivityModal() {
-  let data = [];
+  let activityData = [];
+  let topData = [];
   try {
-    const res = await fetch("/api/recent-activity");
-    data = await res.json();
+    const [actRes, topRes] = await Promise.all([
+      fetch("/api/recent-activity"),
+      fetch("/api/top-products"),
+    ]);
+    activityData = await actRes.json();
+    topData = await topRes.json();
   } catch (e) {
-    /* no-op, empty list will show fallback */
+    /* no-op */
   }
 
-  const rows = buildActivityRows(data);
+  const rows = buildActivityRows(activityData);
+  const topRows = buildTopRows(topData);
 
   const html = `
     <div class="overlay"></div>
@@ -35,7 +59,7 @@ async function openActivityModal() {
       <div class="modal-header">
         <div>
           <h3>Actividad Reciente</h3>
-          <p class="modal-desc">Últimos movimientos y estado del inventario.</p>
+          <p class="modal-desc">Últimos movimientos y rotación de productos.</p>
         </div>
         <button class="modal-close" type="button" data-modal-close aria-label="Cerrar">×</button>
       </div>
@@ -53,42 +77,15 @@ async function openActivityModal() {
           </div>
         </article>
 
-        <article class="card inventory-health-card">
+        <article class="card top-card">
           <div class="card-header card-header--compact">
             <div>
-              <h3 class="card-title">Pulso del inventario</h3>
-              <p class="card-subtitle">Indicadores visuales de seguimiento</p>
+              <h3 class="card-title">⭐ Top 10 más vendidos</h3>
+              <p class="card-subtitle">Productos con mayor rotación en el inventario</p>
             </div>
           </div>
-          <div class="health-list">
-            <div class="health-item">
-              <div class="health-row">
-                <span>Stock saludable</span>
-                <strong>82%</strong>
-              </div>
-              <div class="health-track"><span style="width: 82%"></span></div>
-            </div>
-            <div class="health-item">
-              <div class="health-row">
-                <span>Rotación semanal</span>
-                <strong>64%</strong>
-              </div>
-              <div class="health-track"><span style="width: 64%"></span></div>
-            </div>
-            <div class="health-item">
-              <div class="health-row">
-                <span>Riesgo de quiebre</span>
-                <strong>18%</strong>
-              </div>
-              <div class="health-track health-track--danger"><span style="width: 18%"></span></div>
-            </div>
-            <div class="health-item">
-              <div class="health-row">
-                <span>Productos sin stock</span>
-                <strong>7%</strong>
-              </div>
-              <div class="health-track health-track--danger"><span style="width: 7%"></span></div>
-            </div>
+          <div class="top-list">
+            ${topRows}
           </div>
         </article>
       </div>
