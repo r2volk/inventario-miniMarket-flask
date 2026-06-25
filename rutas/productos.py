@@ -1,6 +1,9 @@
+import datetime
 import sqlite3
+from io import BytesIO
 
-from flask import Blueprint, jsonify, render_template, request, current_app
+from flask import Blueprint, jsonify, render_template, request, current_app, send_file
+from fpdf import FPDF
 
 from models.db import get_db
 
@@ -214,3 +217,77 @@ def add_categoria():
         return jsonify({"ok": False, "msg": "Esa categoría ya existe."}), 400
     finally:
         conn.close()
+
+
+@productos_bp.route("/productos/exportar-pdf")
+def exportar_pdf():
+    conn = get_db()
+    productos = conn.execute(
+        "SELECT * FROM productos ORDER BY nombre"
+    ).fetchall()
+    conn.close()
+
+    pdf = FPDF(orientation="L", unit="mm", format="A4")
+    pdf.set_auto_page_break(auto=True, margin=15)
+    pdf.add_page()
+
+    # ── Encabezado ──
+    pdf.set_font("Helvetica", "B", 16)
+    pdf.cell(0, 10, "Minimarket Don Jose - Reporte de Inventario", new_x="LMARGIN", new_y="NEXT", align="C")
+    pdf.set_font("Helvetica", "", 10)
+    pdf.cell(0, 6, f"Generado: {datetime.datetime.now().strftime('%d/%m/%Y %H:%M')}", new_x="LMARGIN", new_y="NEXT", align="C")
+    pdf.ln(8)
+
+    # ── Encabezados de tabla ──
+    cols = ["Codigo", "Nombre", "Categoria", "Stock", "P. Compra", "P. Venta"]
+    widths = [22, 80, 40, 18, 28, 28]
+    pdf.set_font("Helvetica", "B", 9)
+    pdf.set_fill_color(30, 30, 30)
+    pdf.set_text_color(255, 255, 255)
+
+    for i, col in enumerate(cols):
+        pdf.cell(widths[i], 7, col, border=1, align="C", fill=True)
+    pdf.ln()
+
+    # ── Filas ──
+    pdf.set_font("Helvetica", "", 8)
+    pdf.set_text_color(0, 0, 0)
+    fill = False
+    total_valor = 0
+
+    for p in productos:
+        stock = p["stock"] or 0
+        pc = p["precio_compra"] or 0
+        pv = p["precio_venta"] or 0
+        total_valor += stock * pc
+
+        if fill:
+            pdf.set_fill_color(240, 240, 240)
+        else:
+            pdf.set_fill_color(255, 255, 255)
+
+        pdf.cell(widths[0], 6, str(p["codigo"]), border=1, align="C", fill=True)
+        pdf.cell(widths[1], 6, p["nombre"][:50], border=1, fill=True)
+        pdf.cell(widths[2], 6, p["categoria"] or "-", border=1, align="C", fill=True)
+        pdf.cell(widths[3], 6, str(stock), border=1, align="C", fill=True)
+        pdf.cell(widths[4], 6, f"S/ {pc:.2f}", border=1, align="R", fill=True)
+        pdf.cell(widths[5], 6, f"S/ {pv:.2f}", border=1, align="R", fill=True)
+        pdf.ln()
+        fill = not fill
+
+    # ── Pie ──
+    pdf.ln(4)
+    pdf.set_font("Helvetica", "B", 10)
+    pdf.cell(0, 6, f"Total productos: {len(productos)}", new_x="LMARGIN", new_y="NEXT")
+    pdf.cell(0, 6, f"Valor total del inventario: S/ {total_valor:.2f}", new_x="LMARGIN", new_y="NEXT")
+
+    buf = BytesIO()
+    pdf.output(buf)
+    buf.seek(0)
+
+    return send_file(
+        buf,
+        mimetype="application/pdf",
+        as_attachment=False,
+        download_name=f"inventario_{datetime.date.today().isoformat()}.pdf",
+    )

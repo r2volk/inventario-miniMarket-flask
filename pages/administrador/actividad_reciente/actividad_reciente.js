@@ -35,6 +35,11 @@ function buildTopRows(items) {
   }).join('');
 }
 
+document.addEventListener("DOMContentLoaded", function () {
+  const btn = document.getElementById("hero-activity");
+  if (btn) btn.addEventListener("click", openActivityModal);
+});
+
 async function openActivityModal() {
   let activityData = [];
   let topData = [];
@@ -49,48 +54,16 @@ async function openActivityModal() {
     /* no-op */
   }
 
-  const rows = buildActivityRows(activityData);
-  const topRows = buildTopRows(topData);
+  const template = document.getElementById("activity-modal-template");
+  const clone = template.content.cloneNode(true);
 
-  const html = `
-    <div class="overlay"></div>
+  const list = clone.getElementById("modal-activity-list");
+  list.innerHTML = buildActivityRows(activityData);
 
-    <div class="modal modal--wide modal--activity">
-      <div class="modal-header">
-        <div>
-          <h3>Actividad Reciente</h3>
-          <p class="modal-desc">Últimos movimientos y rotación de productos.</p>
-        </div>
-        <button class="modal-close" type="button" data-modal-close aria-label="Cerrar">×</button>
-      </div>
+  const topList = clone.getElementById("modal-top-list");
+  topList.innerHTML = buildTopRows(topData);
 
-      <div class="modal-activity-grid">
-        <article class="card activity-card">
-          <div class="card-header card-header--compact">
-            <div>
-              <h3 class="card-title">Últimos movimientos</h3>
-              <p class="card-subtitle">Entradas y salidas recientes</p>
-            </div>
-          </div>
-          <div class="activity-list" id="modal-activity-list">
-            ${rows}
-          </div>
-        </article>
-
-        <article class="card top-card">
-          <div class="card-header card-header--compact">
-            <div>
-              <h3 class="card-title">⭐ Top 10 más vendidos</h3>
-              <p class="card-subtitle">Productos con mayor rotación en el inventario</p>
-            </div>
-          </div>
-          <div class="top-list">
-            ${topRows}
-          </div>
-        </article>
-      </div>
-    </div>
-  `;
-
-  abrirModal(html);
+  const root = document.getElementById("modal-root");
+  root.innerHTML = "";
+  root.appendChild(clone);
 }
